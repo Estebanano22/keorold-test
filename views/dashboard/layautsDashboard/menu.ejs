@@ -1,0 +1,210 @@
+<!-- Sidemenu -->
+<div class="main-sidebar main-sidebar-sticky side-menu">
+    <div class="sidemenu-logo">
+        <a class="main-logo" href="/dashboard/inicio">
+            <img src="/assetsDashboard/img/brand/logo-light.svg" class="header-brand-img desktop-logo mx-0 w-100 pt-1" alt="logo">
+            <img src="/assetsDashboard/img/brand/icon.svg" class="header-brand-img icon-logo pt-1 pb-3 px-2" alt="logo">
+        </a>
+    </div>
+    <div class="main-sidebar-body">
+        <ul class="nav">
+            <li class="nav-header"><span class="nav-label">Dashboard</span></li>
+            <!-- Inicio -->
+            <li class="nav-item <%= classActive === 'inicio' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/inicio"><span class="shape1"></span><span class="shape2"></span><i class="ti-home sidemenu-icon"></i><span class="sidemenu-label">Dashboard</span></a>
+            </li>
+
+        <% if(usuario.perfil === 'admin') { %>
+
+            <!-- Usuarios -->
+            <li class="nav-header"><span class="nav-label">Usuarios</span></li>
+            <li class="nav-item <%= classActive === 'adminUsuarios' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminUsuarios"><span class="shape1"></span><span class="shape2"></span><i class="ti-user sidemenu-icon"></i><span class="sidemenu-label">Usuarios</span></a>
+            </li>
+            <!-- Plataformas -->
+            <li class="nav-header"><span class="nav-label">Plataformas</span></li>
+            <li class="nav-item <%= classActive === 'adminPlataformas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminPlataformas"><span class="shape1"></span><span class="shape2"></span><i class="ti-control-forward sidemenu-icon"></i><span class="sidemenu-label">Plataformas</span></a>
+            </li>
+            <!-- Marcas blancas -->
+            <li class="nav-header"><span class="nav-label">Marcas Blancas</span></li>
+            <li class="nav-item <%= classActive === 'adminMarcasBlancas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminMarcasBlancas"><span class="shape1"></span><span class="shape2"></span><i class="ti-panel sidemenu-icon"></i><span class="sidemenu-label">Marcas Blancas</span></a>
+            </li>
+
+        <% } else if(usuario.perfil === 'superdistribuidor') {  %>
+
+            <!-- Usuarios -->
+            <li class="nav-header"><span class="nav-label">Usuarios</span></li>
+            <li class="nav-item <%= classActive === 'adminUsuariosSuperdistribuidor' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminUsuariosSuperdistribuidor"><span class="shape1"></span><span class="shape2"></span><i class="ti-user sidemenu-icon"></i><span class="sidemenu-label">Usuarios</span></a>
+            </li>
+
+            <!-- Plataformas -->
+            <li class="nav-header"><span class="nav-label">Plataformas</span></li>
+            <li class="nav-item <%= classActive === 'adminPlataformasSuperdistribuidor' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminPlataformasSuperdistribuidor"><span class="shape1"></span><span class="shape2"></span><i class="ti-control-forward sidemenu-icon"></i><span class="sidemenu-label">Plataformas</span></a>
+            </li>
+
+            <!-- Cuentas -->
+            <li class="nav-header"><span class="nav-label">Cuentas</span></li>
+            <li class="nav-item <%= classActive === 'subirCuentas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/subirCuentas"><span class="shape1"></span><span class="shape2"></span><i class="far fa-file-excel-o sidemenu-icon"></i><span class="sidemenu-label">Subir</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'cuentasSinTomar' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasSinTomar"><span class="shape1"></span><span class="shape2"></span><i class="fe fe-folder-minus sidemenu-icon"></i><span class="sidemenu-label">Sin tomar</span></a>
+            </li>
+
+            <!-- Ganancias Red -->
+            <li class="nav-header"><span class="nav-label">Ganancias</span></li>
+            <li class="nav-item <%= classActive === 'ganancias' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/ganancias"><span class="shape1"></span><span class="shape2"></span><i class="ti-gift sidemenu-icon"></i><span class="sidemenu-label">Ganancias red</span></a>
+            </li>
+
+            <!-- Medios de consignacion -->
+            <li class="nav-header"><span class="nav-label">Herramientas</span></li>
+            <li class="nav-item <%= classActive === 'mediosConsignacion' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/mediosConsignacion"><span class="shape1"></span><span class="shape2"></span><i class="fe fe-inbox sidemenu-icon"></i><span class="sidemenu-label">Medios de consignación</span></a>
+            </li>
+
+        <% } else if(usuario.perfil === 'distribuidor') {  %>
+
+            <!-- Usuarios -->
+            <li class="nav-header"><span class="nav-label">Usuarios</span></li>
+            <li class="nav-item <%= classActive === 'usuarios' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/usuarios"><span class="shape1"></span><span class="shape2"></span><i class="ti-user sidemenu-icon"></i><span class="sidemenu-label">Usuarios</span></a>
+            </li>
+
+            <!-- Comprar Plataformas -->
+            <li class="nav-header"><span class="nav-label">Tienda</span></li>
+            <li class="nav-item <%= classActive === 'plataformas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/plataformas"><span class="shape1"></span><span class="shape2"></span><i class="ti-shopping-cart sidemenu-icon"></i><span class="sidemenu-label">Plataformas</span></a>
+            </li>
+
+            <!-- Cuentas -->
+            <li class="nav-header"><span class="nav-label">Cuentas</span></li>
+            <li class="nav-item <%= classActive === 'cuentasVendidas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasVendidas"><span class="shape1"></span><span class="shape2"></span><i class="ti-angle-double-right sidemenu-icon"></i><span class="sidemenu-label">Vendidas</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'cuentasRenovaciones' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasRenovaciones"><span class="shape1"></span><span class="shape2"></span><i class="ti-back-left sidemenu-icon"></i><span class="sidemenu-label">Renovaciones</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'cuentasPersonalizadas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasPersonalizadas"><span class="shape1"></span><span class="shape2"></span><i class="ti-split-h sidemenu-icon"></i><span class="sidemenu-label">Personalizadas</span></a>
+            </li>
+
+            <!-- Reportar Consignaciones -->
+            <li class="nav-header"><span class="nav-label">Consignaciones</span></li>
+            <li class="nav-item <%= classActive === 'reportarConsignacion' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/reportarConsignacion"><span class="shape1"></span><span class="shape2"></span><i class="ti-wallet sidemenu-icon"></i><span class="sidemenu-label">Subir</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'linkPse' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/linkPse"><span class="shape1"></span><span class="shape2"></span><i class="ti-credit-card sidemenu-icon"></i><span class="sidemenu-label">Link PSE</span></a>
+            </li>
+
+            <!-- Insidencias -->
+            <li class="nav-header"><span class="nav-label">Insidencias</span></li>
+            <li class="nav-item <%= classActive === 'reportarInsidencia' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/reportarInsidencia"><span class="shape1"></span><span class="shape2"></span><i class="ti-face-sad sidemenu-icon"></i><span class="sidemenu-label">Reportar</span></a>
+            </li>
+
+        <% } else { %>
+
+            <!-- Comprar Plataformas -->
+            <li class="nav-header"><span class="nav-label">Tienda</span></li>
+            <li class="nav-item <%= classActive === 'plataformas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/plataformas"><span class="shape1"></span><span class="shape2"></span><i class="ti-shopping-cart sidemenu-icon"></i><span class="sidemenu-label">Plataformas</span></a>
+            </li>
+            
+            <!-- Cuentas -->
+            <li class="nav-header"><span class="nav-label">Cuentas</span></li>
+            <li class="nav-item <%= classActive === 'cuentasVendidas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasVendidas"><span class="shape1"></span><span class="shape2"></span><i class="ti-angle-double-right sidemenu-icon"></i><span class="sidemenu-label">Vendidas</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'cuentasRenovaciones' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasRenovaciones"><span class="shape1"></span><span class="shape2"></span><i class="ti-back-left sidemenu-icon"></i><span class="sidemenu-label">Renovaciones</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'cuentasPersonalizadas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasPersonalizadas"><span class="shape1"></span><span class="shape2"></span><i class="ti-split-h sidemenu-icon"></i><span class="sidemenu-label">Personalizadas</span></a>
+            </li>
+
+            <!-- Reportar Consignaciones -->
+            <li class="nav-header"><span class="nav-label">Consignaciones</span></li>
+            <li class="nav-item <%= classActive === 'reportarConsignacion' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/reportarConsignacion"><span class="shape1"></span><span class="shape2"></span><i class="ti-wallet sidemenu-icon"></i><span class="sidemenu-label">Subir</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'linkPse' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/linkPse"><span class="shape1"></span><span class="shape2"></span><i class="ti-credit-card sidemenu-icon"></i><span class="sidemenu-label">Link PSE</span></a>
+            </li>
+
+            <!-- Insidencias -->
+            <li class="nav-header"><span class="nav-label">Insidencias</span></li>
+            <li class="nav-item <%= classActive === 'reportarInsidencia' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/reportarInsidencia"><span class="shape1"></span><span class="shape2"></span><i class="ti-face-sad sidemenu-icon"></i><span class="sidemenu-label">Reportar</span></a>
+            </li>
+
+        <% } %>
+
+            <!-- Mi Cuenta -->
+            <li class="nav-header"><span class="nav-label">Mi Cuenta</span></li>
+        <% if(usuario.perfil === 'distribuidor') { %>
+
+            <!-- Ganancias Red -->
+            <li class="nav-item <%= classActive === 'gananciasRed' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/gananciasRed"><span class="shape1"></span><span class="shape2"></span><i class="ti-gift sidemenu-icon"></i><span class="sidemenu-label">Mis Ganancias</span></a>
+            </li>
+
+        <% } %>
+
+        <% if(!(usuario.perfil == 'admin' || usuario.perfil == 'superdistribuidor')) { %>
+
+            <!-- Tabla precios -->
+            <li class="nav-item <%= classActive === 'tablaPrecios' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/tablaPrecios"><span class="shape1"></span><span class="shape2"></span><i class="fe fe-clipboard sidemenu-icon"></i><span class="sidemenu-label">Tabla de precios</span></a>
+            </li>
+            <!-- Preguntas Frecuentes -->
+            <li class="nav-item <%= classActive === 'faq' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/faq"><span class="shape1"></span><span class="shape2"></span><i class="fe fe-help-circle sidemenu-icon"></i><span class="sidemenu-label">Preguntas Frecuentes</span></a>
+            </li>
+
+            <!-- Soporte WhatsApp -->
+            <li class="nav-item">
+                <a class="nav-link" href="#"><span class="shape1"></span><span class="shape2"></span><i class="fab fa-whatsapp sidemenu-icon"></i><span class="sidemenu-label">Soporte WhatsApp</span></a>
+            </li>
+        <% } %>
+
+            <!-- mi perfil -->
+            <li class="nav-item <%= classActive === 'mi-perfil' || classActive === 'soporte' ? 'active' : '' %>">
+                <a class="nav-link with-sub" href="#"><span class="shape1"></span><span class="shape2"></span><i class="ti-palette sidemenu-icon"></i><span class="sidemenu-label ">Mi Perfil</span><i class="angle fe fe-chevron-right"></i></a>
+                <ul class="nav-sub">
+                    <li class="nav-sub-item <%= classActive === 'mi-perfil' ? 'active' : '' %>">
+                        <a class="nav-sub-link" href="/dashboard/mi-perfil">Ver Perfil</a>
+                    </li>
+                    <li class="nav-sub-item <%= classActive === 'soporte' ? 'active' : '' %>">
+                        <a class="nav-sub-link" href="/dashboard/soporte">Soporte</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Cerrar Sesión -->
+            <li class="nav-header"><span class="nav-label">Salir</span></li>
+            <li class="nav-item">
+                <a class="nav-link" href="/cerrar-sesion"><span class="shape1"></span><span class="shape2"></span><i class="ti-shift-left sidemenu-icon"></i><span class="sidemenu-label">Cerrar Sesión</span></a>
+            </li>
+
+
+            <!-- <li class="nav-item">
+                <a class="nav-link with-sub" href="#"><span class="shape1"></span><span class="shape2"></span><i class="ti-map-alt sidemenu-icon"></i><span class="sidemenu-label">Maps</span><span class="badge badge-secondary side-badge">2</span></a>
+                <ul class="nav-sub">
+                    <li class="nav-sub-item">
+                        <a class="nav-sub-link" href="map-mapel.html">Mapel Maps</a>
+                    </li>
+                    <li class="nav-sub-item">
+                        <a class="nav-sub-link" href="map-vector.html">Vector Maps</a>
+                    </li>
+                </ul>
+            </li> -->
+            
+        </ul>
+    </div>
+</div>
+<!-- End Sidemenu -->

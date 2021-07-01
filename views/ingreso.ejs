@@ -1,0 +1,99 @@
+<%- include('layauts/header') %>
+
+<body class="main-body leftmenu body-ingreso">
+
+    <%- include('layauts/loader') %> 
+
+    <!-- Page -->
+    <div class="page main-signin-wrapper">
+
+        <!-- Row -->
+        <div class="row signpages sombra-card text-center">
+            <div class="col-md-12 px-0">
+                <div class="card">
+                    <div class="row row-sm">
+                        <div class="col-lg-6 col-xl-5 d-none d-lg-block text-center bg-ingreso">
+                            <div class="mt-5 pt-2 p-2">
+                                <center>
+                                <img src="/assetsInicio/img/logo.png" class="header-brand-img mb-4 logo-ingreso" alt="logo">
+                                </center>
+                            </div>
+                            <img src="/assetsDashboard/img/persona-ingreso.png" class="pos-absolute img-persona-ingreso" alt="logo">
+                        </div>
+                        <div class="col-lg-6 col-xl-7 col-xs-12 col-sm-12 login_form ">
+                            <div class="container-fluid">
+                                <div class="row row-sm">
+                                    <div class="card-body mt-2 mb-2">
+                                        <img src="/assetsInicio/img/black-logo.png" class="text-center d-lg-none header-brand-img mb-5 mt-4" alt="logo">
+                                        <div class="clearfix"></div>
+                                        <form action="/ingreso" method="POST">
+                                            <h5 class="text-left mb-2">INICIAR SESIÓN</h5>
+                                            <p class="mb-4 text-muted tx-13 ml-0 text-left">Inicie sesión para crear, descubrir y conectarse con toda la comunidad <strong>Full Entretenimiento</strong></p>
+                                            <div class="form-group text-left">
+                                                <label>Correo electrónico</label>
+                                                <input class="form-control" name="email" placeholder="Introduce tu correo electrónico" type="text">
+                                            </div>
+                                            <div class="form-group text-left position-relative">
+                                                <label>Contraseña</label>
+                                                <i class="fe fe-eye position-absolute ver-input" onclick="verInput()" id="iconoOjo"></i>
+                                                <input class="form-control" name="password" id="password" placeholder="Ingresa tu contraseña" type="password">
+                                            </div>
+
+                                            <% if(locals.mensajes) { %>
+                                                <% var erroresIngreso = Object.keys(locals.mensajes) %>
+                                                <% if(erroresIngreso.length) { %>
+                                                    <% locals.mensajes[erroresIngreso].forEach(alerta => { %>
+
+                                                        <% if(erroresIngreso == 'error') { %>
+                                                            <% erroresIngreso = 'danger' %> 
+                                                        <% }; %>
+                                                        
+                                                        <div class="alert alert-<%= erroresIngreso %> alert-dismissible fade show" role="alert">
+                                                            <strong>Hola!</strong> <%= alerta %>.
+                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                    <% }); %> 
+
+                                                <% } %> 
+                                            <% } %>  
+
+                                            <input type="submit" class="btn ripple btn-main-primary btn-block" value="Iniciar sesión">
+                                            
+                                        </form>
+                                        <div class="text-left mt-5 ml-0">
+                                            <div class="mb-1"><a href="">¿Se te olvidó tu contraseña?</a></div>
+                                            <div>¿No tienes una cuenta? <a href="/registro">Registrarse aquí</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Row -->
+
+    </div>
+    <!-- End Page -->
+
+<%- include('layauts/footer') %> 
+
+<script>
+    function verInput() {
+        const password = document.getElementById("password");
+        const tipo = password.type;
+        
+        if(tipo == 'text') {
+            $('#iconoOjo').removeClass('fe-eye-off');
+            $('#iconoOjo').addClass('fe-eye');
+            password.type = 'password';
+        } else {
+            $('#iconoOjo').removeClass('fe-eye');
+            $('#iconoOjo').addClass('fe-eye-off');
+            password.type = 'text';
+        }
+    }
+</script>

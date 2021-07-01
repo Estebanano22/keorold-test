@@ -1,0 +1,379 @@
+        <!-- Back-to-top -->
+        <a href="#top" id="back-to-top"><i class="fe fe-arrow-up"></i></a>
+
+       <!-- Jquery js-->
+		<script src="/assetsDashboard/plugins/jquery/jquery.min.js"></script>
+
+		<!-- Bootstrap js-->
+		<script src="/assetsDashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+		<!-- Jquery-Ui js-->
+		<script src="/assetsDashboard/plugins/jquery-ui/ui/widgets/datepicker.js"></script>
+
+        <!-- Internal Jquery-steps js-->
+		<script src="/assetsDashboard/plugins/jquery-steps/jquery.steps.min.js"></script>
+
+        <!-- Internal Accordion-Wizard-Form js-->
+		<script src="/assetsDashboard/plugins/accordion-Wizard-Form/jquery.accordion-wizard.min.js"></script>
+
+        <!-- Internal Form-wizard js-->
+		<script src="/assetsDashboard/js/form-wizard.js"></script>
+
+        <!-- Internal Jquery.maskedinput js-->
+		<script src="/assetsDashboard/plugins/jquery.maskedinput/jquery.maskedinput.js"></script>
+
+        <!-- Internal Specturm-colorpicker js-->
+		<script src="/assetsDashboard/plugins/spectrum-colorpicker/spectrum.js"></script>
+
+        <!-- Internal Ion-rangeslider js-->
+		<script src="/assetsDashboard/plugins/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+
+		<!-- Internal Daternagepicker js-->
+		<script src="/assetsDashboard/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+		<script src="/assetsDashboard/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+        <!-- Internal Sweet-Alert js-->
+		<script src="/assetsDashboard/plugins/sweet-alert/sweetalert.min.js"></script>
+		<script src="/assetsDashboard/plugins/sweet-alert/jquery.sweet-alert.js"></script>
+
+		<!-- Internal Fileuploads js-->
+		<script src="/assetsDashboard/plugins/fileuploads/js/fileupload.js"></script>
+        <script src="/assetsDashboard/plugins/fileuploads/js/file-upload.js"></script>
+
+		<!-- InternalFancy uploader js-->
+		<script src="/assetsDashboard/plugins/fancyuploder/jquery.ui.widget.js"></script>
+        <script src="/assetsDashboard/plugins/fancyuploder/jquery.fileupload.js"></script>
+        <script src="/assetsDashboard/plugins/fancyuploder/jquery.iframe-transport.js"></script>
+        <script src="/assetsDashboard/plugins/fancyuploder/jquery.fancy-fileupload.js"></script>
+        <script src="/assetsDashboard/plugins/fancyuploder/fancy-uploader.js"></script>
+
+		<!-- Internal Form-elements js-->
+		<script src="/assetsDashboard/js/advanced-form-elements.js"></script>
+		<script src="/assetsDashboard/js/select2.js"></script>
+		<script src="/assetsDashboard/js/form-elements.js"></script>
+
+		<!-- Internal TelephoneInput js-->
+		<script src="/assetsDashboard/plugins/telephoneinput/telephoneinput.js"></script>
+		<script src="/assetsDashboard/plugins/telephoneinput/inttelephoneinput.js"></script>
+
+		<!-- Internal Chart.Bundle js-->
+        <script src="/assetsDashboard/plugins/chart.js/Chart.bundle.min.js"></script>
+
+        <!-- Internal Data Table js -->
+		<script src="/assetsDashboard/plugins/datatable/jquery.dataTables.min.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/dataTables.bootstrap4.min.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/dataTables.responsive.min.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/fileexport/dataTables.buttons.min.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/fileexport/buttons.bootstrap4.min.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/fileexport/jszip.min.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/fileexport/pdfmake.min.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/fileexport/vfs_fonts.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/fileexport/buttons.html5.min.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/fileexport/buttons.print.min.js"></script>
+		<script src="/assetsDashboard/plugins/datatable/fileexport/buttons.colVis.min.js"></script>
+        <script src="/assetsDashboard/js/table-data.js"></script>
+
+        <!-- Peity js-->
+        <script src="/assetsDashboard/plugins/peity/jquery.peity.min.js"></script>
+
+        <!-- Select2 js-->
+        <script src="/assetsDashboard/plugins/select2/js/select2.min.js"></script>
+
+        <!-- Perfect-scrollbar js -->
+        <script src="/assetsDashboard/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+        <!-- Sidemenu js -->
+        <script src="/assetsDashboard/plugins/sidemenu/sidemenu1.js"></script>
+
+        <!-- Sidebar js -->
+        <script src="/assetsDashboard/plugins/sidebar/sidebar.js"></script>
+
+        <!-- Internal Morris js -->
+        <script src="/assetsDashboard/plugins/raphael/raphael.min.js"></script>
+        <script src="/assetsDashboard/plugins/morris.js/morris.min.js"></script>
+
+        <!-- Circle Progress js-->
+        <script src="/assetsDashboard/js/circle-progress.min.js"></script>
+        <script src="/assetsDashboard/js/chart-circle.js"></script>
+
+        <!-- Internal Dashboard js-->
+        <script src="/assetsDashboard/js/index.js"></script>
+
+        <!-- Sticky js -->
+        <script src="/assetsDashboard/js/sticky.js"></script>
+
+        <!-- Modal js-->
+		<script src="/assetsDashboard/js/modal.js"></script>
+
+        <!-- Custom js -->
+        <script src="/assetsDashboard/js/custom.js"></script>
+
+        <!-- Icheck -->
+        <script src="/assetsDashboard/js/icheck.js"></script>
+
+        <!-- Copiar a Portapapeles -->
+        <script src="https://cdn.rawgit.com/zenorocha/clipboard.js/v1.5.3/dist/clipboard.min.js"></script>
+
+        <!-- Socket IO -->
+        <!-- <script src="/socket.io/socket.io.js"></script> -->
+
+        <!-- Js -->
+        <script src="/assetsDashboard/js/main.js"></script>
+
+        <script>
+
+        function notificaciones() {
+            fetch('/notificaciones/notificacionesUsuario', {
+                method: 'POST',
+                headers: {'Content-type': 'application/json'},
+                body: JSON.stringify({
+                    solicitud: 'notificaciones'
+                })
+            })
+            .then(res => res.text())
+            .then(data => {
+                const respuesta = JSON.parse(data);
+                const plataformas = respuesta.plataformas;
+                const bajoPedido = respuesta.bajoPedido;
+                const personalizadas = respuesta.personalizadas;
+                const renovaciones = respuesta.renovaciones;
+                const juegos = respuesta.juegos;
+                const iConsignaciones = respuesta.consignaciones;
+
+                const audio = document.getElementById('sonido');
+                audio.load();
+                
+                const spanNotificacionesTotal = document.getElementById('countTotalNotificaciones');
+                const iconoNotificacionesTotal = document.getElementById('iconoTotalNotificaciones');
+
+                const cuentasBajoPedido = document.getElementById('cuentasBajoPedido');
+                const cuentasPersonalizadas = document.getElementById('cuentasPersonalizadas');
+                const cuentasRenovaciones = document.getElementById('cuentasRenovaciones');
+                const cuentasJuegos = document.getElementById('cuentasJuegos');
+                const consignaciones = document.getElementById('consignaciones');
+                
+                if(!(respuesta.countBajoPedido == 0 || respuesta.countPersonalizadas == 0 || respuesta.countRenovaciones == 0 || respuesta.countJuegos == 0 || respuesta.countConsignaciones == 0)) {
+                    
+                    audio.play();
+                    spanNotificacionesTotal.innerHTML = Number(respuesta.countBajoPedido) + Number(respuesta.countPersonalizadas) + Number(respuesta.countRenovaciones) + Number(respuesta.countJuegos);
+
+                    iconoNotificacionesTotal.classList.add('animate__animated');
+                    iconoNotificacionesTotal.classList.add('animate__rubberBand');
+                    iconoNotificacionesTotal.classList.add('animate__infinite');
+
+                } else {
+
+                    if(respuesta.p === 'superdistribuidor') {
+                        spanNotificacionesTotal.innerHTML = ''; 
+
+                        iconoNotificacionesTotal.classList.remove('animate__animated');
+                        iconoNotificacionesTotal.classList.remove('animate__rubberBand');
+                        iconoNotificacionesTotal.classList.remove('animate__infinite');
+                    } else {
+                        spanNotificacionesTotal.innerHTML = 1;
+                        spanNotificacionesTotal.classList.remove('badge-secondary');
+                        spanNotificacionesTotal.classList.add('badge-success');
+
+                        iconoNotificacionesTotal.classList.add('animate__animated');
+                        iconoNotificacionesTotal.classList.add('animate__rubberBand');
+                        iconoNotificacionesTotal.classList.add('animate__infinite');
+                    }
+
+                }
+
+                // bajo pedido
+                if(bajoPedido.length !== 0) {
+                    const countBajoPedido = document.getElementById('countBajoPedido');
+                    countBajoPedido.innerHTML = respuesta.countBajoPedido;
+                    var listaBajoPedido = ``;
+
+                    for(var i = 0; i < bajoPedido.length; i++) {
+
+                        const array = plataformas.filter(function(p1){
+                            return p1.id_plataforma === bajoPedido[i].plataformaIdPlataforma; 
+                        });
+
+                        const plataforma = array[0].plataforma;
+
+                        if(bajoPedido[i].estado === 1) {
+                            var span1 = `<span class="ml-auto text-success">gestionada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                        } else {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
+                        }
+
+                        listaBajoPedido += `<div class="d-flex px-3 py-2 border-top">
+                                                <p class="mb-0 text-capitalize">${plataforma}</p>
+                                                ${span1}
+                                                ${span2}
+                                            </div>`;
+
+                    }
+
+                        cuentasBajoPedido.innerHTML = listaBajoPedido;
+
+                } else {
+                    
+                    cuentasBajoPedido.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin cuentas pendientes</p></div>`;
+                }
+
+                // personalizadas
+                if(personalizadas.length !== 0) {
+                    const countPersonalizadas = document.getElementById('countPersonalizadas');
+                    countPersonalizadas.innerHTML = respuesta.countPersonalizadas;
+                    var listaPersonalizadas = ``;
+
+                    for(var e = 0; e < personalizadas.length; e++) {
+
+                        const array2 = plataformas.filter(function(p2){
+                            return p2.id_plataforma === personalizadas[e].plataformaIdPlataforma; 
+                        });
+
+                        const plataforma = array2[0].plataforma;
+
+                        if(personalizadas[e].estado === 1) {
+                            var span1 = `<span class="ml-auto text-success">gestionada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                        } else {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
+                        }
+
+                        listaPersonalizadas += `<div class="d-flex px-3 py-2 border-top">
+                                                <p class="mb-0 text-capitalize">${plataforma}</p>
+                                                ${span1}
+                                                ${span2}
+                                            </div>`;
+
+                    }
+
+                        cuentasPersonalizadas.innerHTML = listaPersonalizadas;
+
+                } else {
+                    
+                    cuentasPersonalizadas.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin cuentas pendientes</p></div>`;
+                }
+
+                // Renovaciones
+                if(renovaciones.length !== 0) {
+                    const countRenovaciones = document.getElementById('countRenovaciones');
+                    countRenovaciones.innerHTML = respuesta.countRenovaciones;
+                    var listaRenovaciones = ``;
+
+                    for(var a = 0; a < renovaciones.length; a++) {
+
+                        const array2 = plataformas.filter(function(p3){
+                            return p3.id_plataforma === renovaciones[a].plataformaIdPlataforma; 
+                        });
+
+                        const plataforma = array2[0].plataforma;
+
+                        if(renovaciones[a].estado === 1) {
+                            var span1 = `<span class="ml-auto text-success">gestionada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                        } else {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
+                        }
+
+                        listaRenovaciones += `<div class="d-flex px-3 py-2 border-top">
+                                                <p class="mb-0 text-capitalize">${plataforma}</p>
+                                                ${span1}
+                                                ${span2}
+                                            </div>`;
+
+                    }
+
+                        cuentasRenovaciones.innerHTML = listaRenovaciones;
+
+                } else {
+                    
+                    cuentasRenovaciones.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin cuentas pendientes</p></div>`;
+                }
+
+                // Juegos
+                if(juegos.length !== 0) {
+                    const countJuegos = document.getElementById('countJuegos');
+                    countJuegos.innerHTML = respuesta.countJuegos;
+                    var listaJuegos = ``;
+
+                    for(var o = 0; o < juegos.length; o++) {
+
+                        const array2 = plataformas.filter(function(p3){
+                            return p3.id_plataforma === juegos[o].plataformaIdPlataforma; 
+                        });
+
+                        const plataforma = array2[0].plataforma;
+
+                        if(juegos[o].estado === 1) {
+                            var span1 = `<span class="ml-auto text-success">gestionada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                        } else {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
+                        }
+
+                        listaJuegos += `<div class="d-flex px-3 py-2 border-top">
+                                                <p class="mb-0 text-capitalize">${plataforma}</p>
+                                                ${span1}
+                                                ${span2}
+                                            </div>`;
+
+                    }
+
+                        cuentasJuegos.innerHTML = listaJuegos;
+
+                } else {
+                    
+                    cuentasJuegos.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin cuentas pendientes</p></div>`;
+                }
+
+                // Consignaciones
+                if(iConsignaciones.length !== 0) {
+                    const countConsignaciones = document.getElementById('countConsignaciones');
+                    countConsignaciones.innerHTML = respuesta.countConsignaciones;
+                    var listaConsignaciones = ``;
+
+                    for(var u = 0; u < iConsignaciones.length; u++) {
+                        
+                        const val = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(iConsignaciones[u].valor);
+
+                        const referencia = iConsignaciones[u].referencia+' - '+val;
+
+                        if(iConsignaciones[u].estado === 1) {
+                            var span1 = `<span class="ml-auto text-success">aprobada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                        } else if(iConsignaciones[u].estado === 2) {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">rechazada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-danger"></i></span>`;
+                        } else {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
+                        }
+
+                        listaConsignaciones += `<div class="d-flex px-3 py-2 border-top">
+                                                <p class="mb-0 text-capitalize">${referencia}</p>
+                                                ${span1}
+                                                ${span2}
+                                            </div>`;
+
+                    }
+
+                        consignaciones.innerHTML = listaConsignaciones;
+
+                } else {
+                    
+                    consignaciones.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin consignaciones pendientes</p></div>`;
+                }
+
+            })
+        }
+
+        notificaciones();
+
+        setInterval('notificaciones()',20000);
+        </script>
+
+    </body>
+</html>
