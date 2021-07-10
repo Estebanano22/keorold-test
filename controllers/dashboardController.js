@@ -359,3 +359,17 @@ exports.subirFoto = async (req, res, next) => {
     })
     return next();
 }
+
+exports.whatsapp = async (req, res) => {
+
+    const patrocinadores = await Usuarios.findOne({
+        where: {
+            enlace_afiliado: req.user.patrocinador
+        }
+    })
+
+    const whatsapp = patrocinadores.telefono_movil;
+    res.json({ whatsappPatrocinador: whatsapp});
+    return;
+
+}

@@ -9,6 +9,7 @@ const passport = require('./config/passport');
 const axios = require('axios');
 const routes = require('./routes');
 const socketIO = require('socket.io');
+const moment = require('moment');
 
 // crear conexion ala DB
 const db = require('./config/db');
@@ -22,6 +23,8 @@ require('./models/cuentasModelo');
 require('./models/gananciasModelo');
 require('./models/consignacionesModelo');
 require('./models/mediosModelo');
+require('./models/linksPseModelo');
+require('./models/insidenciasModelo');
 
 db.sync()
     .then(() => console.log('Conectado al servidor'))
@@ -70,6 +73,7 @@ app.use( async (req, res, next) => {
     const fecha = new Date();
     res.locals.year = fecha.getFullYear();
     res.locals.fecha = fecha.toLocaleString('es-CO');
+    res.locals.moment = moment;
     next();
 });
 

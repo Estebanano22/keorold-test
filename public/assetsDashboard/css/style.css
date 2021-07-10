@@ -73710,6 +73710,18 @@ table.dataTable>tbody>tr.child span.dtr-title {
     background-color: #2eb159;
 }
 
+.tabla-insidencias th, td {
+    border-left: none !important;
+}
+
+.descripcion-insidencia {
+    height: 250px;
+}
+
+.trix-button-group--file-tools {
+    display: none !important;
+}
+
 @media (max-width: 768px) {
 
     .titulo-modal-asignar {

@@ -111,8 +111,15 @@
         <!-- Icheck -->
         <script src="/assetsDashboard/js/icheck.js"></script>
 
+        <!-- Trix -->
+        <script src="/assetsDashboard/js/trix.js"></script>
+
         <!-- Copiar a Portapapeles -->
         <script src="https://cdn.rawgit.com/zenorocha/clipboard.js/v1.5.3/dist/clipboard.min.js"></script>
+
+        <!-- Moments JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js" integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <!-- Socket IO -->
         <!-- <script src="/socket.io/socket.io.js"></script> -->
@@ -390,6 +397,30 @@
         notificaciones();
 
         setInterval('notificaciones()',20000);
+
+
+        // Whatsapp Patrocinador
+
+        function whatsappPatrocinador(e) {
+
+            fetch('/soporte/whatsapp', {
+                method: 'POST',
+                headers: {'Content-type': 'application/json'},
+                body: JSON.stringify({
+                    data: 1
+                })
+            })
+            .then(res => res.text())
+            .then(data => {
+                const respuesta = JSON.parse(data);
+                const whatsappPatrocinador = document.getElementById('soporteWhatsapp');
+                whatsappPatrocinador.href = 'https://api.whatsapp.com/send?phone='+respuesta.whatsappPatrocinador+'&text=Hola!%2C%20eres%20mi%20distribuidor%20de%20Fullentretenimiento%2C%20necesito%20soporte%20sobre%20la%20plataforma.';
+            })
+
+        }
+
+        whatsappPatrocinador();
+
         </script>
 
     </body>

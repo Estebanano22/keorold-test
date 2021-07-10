@@ -96,7 +96,7 @@
             <!-- Reportar Consignaciones -->
             <li class="nav-header"><span class="nav-label">Consignaciones</span></li>
             <li class="nav-item <%= classActive === 'reportarConsignacion' ? 'active' : '' %>">
-                <a class="nav-link" href="/dashboard/reportarConsignacion"><span class="shape1"></span><span class="shape2"></span><i class="ti-wallet sidemenu-icon"></i><span class="sidemenu-label">Subir</span></a>
+                <a class="nav-link" href="/dashboard/reportarConsignacion"><span class="shape1"></span><span class="shape2"></span><i class="ti-wallet sidemenu-icon"></i><span class="sidemenu-label">Cargar Saldo</span></a>
             </li>
             <li class="nav-item <%= classActive === 'linkPse' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/linkPse"><span class="shape1"></span><span class="shape2"></span><i class="ti-credit-card sidemenu-icon"></i><span class="sidemenu-label">Link PSE</span></a>
@@ -105,7 +105,7 @@
             <!-- Insidencias -->
             <li class="nav-header"><span class="nav-label">Insidencias</span></li>
             <li class="nav-item <%= classActive === 'reportarInsidencia' ? 'active' : '' %>">
-                <a class="nav-link" href="/dashboard/reportarInsidencia"><span class="shape1"></span><span class="shape2"></span><i class="ti-face-sad sidemenu-icon"></i><span class="sidemenu-label">Reportar</span></a>
+                <a class="nav-link" href="/dashboard/reportarInsidencia"><span class="shape1"></span><span class="shape2"></span><i class="ti-email sidemenu-icon"></i><span class="sidemenu-label">Reportar</span></a>
             </li>
 
         <% } else { %>
@@ -131,7 +131,7 @@
             <!-- Reportar Consignaciones -->
             <li class="nav-header"><span class="nav-label">Consignaciones</span></li>
             <li class="nav-item <%= classActive === 'reportarConsignacion' ? 'active' : '' %>">
-                <a class="nav-link" href="/dashboard/reportarConsignacion"><span class="shape1"></span><span class="shape2"></span><i class="ti-wallet sidemenu-icon"></i><span class="sidemenu-label">Subir</span></a>
+                <a class="nav-link" href="/dashboard/reportarConsignacion"><span class="shape1"></span><span class="shape2"></span><i class="ti-wallet sidemenu-icon"></i><span class="sidemenu-label">Cargar Saldo</span></a>
             </li>
             <li class="nav-item <%= classActive === 'linkPse' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/linkPse"><span class="shape1"></span><span class="shape2"></span><i class="ti-credit-card sidemenu-icon"></i><span class="sidemenu-label">Link PSE</span></a>
@@ -140,7 +140,7 @@
             <!-- Insidencias -->
             <li class="nav-header"><span class="nav-label">Insidencias</span></li>
             <li class="nav-item <%= classActive === 'reportarInsidencia' ? 'active' : '' %>">
-                <a class="nav-link" href="/dashboard/reportarInsidencia"><span class="shape1"></span><span class="shape2"></span><i class="ti-face-sad sidemenu-icon"></i><span class="sidemenu-label">Reportar</span></a>
+                <a class="nav-link" href="/dashboard/reportarInsidencia"><span class="shape1"></span><span class="shape2"></span><i class="ti-email sidemenu-icon"></i><span class="sidemenu-label">Reportar</span></a>
             </li>
 
         <% } %>
@@ -169,22 +169,15 @@
 
             <!-- Soporte WhatsApp -->
             <li class="nav-item">
-                <a class="nav-link" href="#"><span class="shape1"></span><span class="shape2"></span><i class="fab fa-whatsapp sidemenu-icon"></i><span class="sidemenu-label">Soporte WhatsApp</span></a>
+                <a class="nav-link" href="#" id="soporteWhatsapp" target="_blank"><span class="shape1"></span><span class="shape2"></span><i class="fab fa-whatsapp sidemenu-icon"></i><span class="sidemenu-label">Soporte WhatsApp</span></a>
             </li>
         <% } %>
 
             <!-- mi perfil -->
-            <li class="nav-item <%= classActive === 'mi-perfil' || classActive === 'soporte' ? 'active' : '' %>">
-                <a class="nav-link with-sub" href="#"><span class="shape1"></span><span class="shape2"></span><i class="ti-palette sidemenu-icon"></i><span class="sidemenu-label ">Mi Perfil</span><i class="angle fe fe-chevron-right"></i></a>
-                <ul class="nav-sub">
-                    <li class="nav-sub-item <%= classActive === 'mi-perfil' ? 'active' : '' %>">
-                        <a class="nav-sub-link" href="/dashboard/mi-perfil">Ver Perfil</a>
-                    </li>
-                    <li class="nav-sub-item <%= classActive === 'soporte' ? 'active' : '' %>">
-                        <a class="nav-sub-link" href="/dashboard/soporte">Soporte</a>
-                    </li>
-                </ul>
+            <li class="nav-item <%= classActive === 'mi-perfil' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/mi-perfil"><span class="shape1"></span><span class="shape2"></span><i class="ti-palette sidemenu-icon"></i><span class="sidemenu-label ">Mi Perfil</span></a>
             </li>
+            
             <!-- Cerrar Sesión -->
             <li class="nav-header"><span class="nav-label">Salir</span></li>
             <li class="nav-item">

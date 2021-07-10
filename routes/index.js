@@ -16,6 +16,8 @@ const cuentasController = require('../controllers/cuentasController');
 const notificacionesController = require('../controllers/notificacionesController');
 const consignacionesController = require('../controllers/consignacionesController');
 const mediosController = require('../controllers/mediosController');
+const linkPseController = require('../controllers/linkPseController');
+const insidenciasController = require('../controllers/insidenciasController');
 
 module.exports = function() {
 
@@ -580,12 +582,79 @@ module.exports = function() {
         mediosController.infoMedio
     );
 
+    // Links PSE
+    router.get('/dashboard/linkPse',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        linkPseController.linkPse
+    );
+
+    router.post('/linkPse/solicitarLink',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        linkPseController.solicitarLink
+    );
+
+    // Insidencias
+    router.get('/dashboard/reportarInsidencia',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        insidenciasController.reportarInsidencia
+    );
+
+    router.post('/reportarInsidencia/crearInsidencia',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        insidenciasController.uploadArchivo,
+        insidenciasController.crearInsidencia
+    );
+
+    router.post('/reportarInsidencia/infoInsidencia',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        insidenciasController.infoInsidencia
+    );
+
+    router.post('/reportarInsidencia/insidencias',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        insidenciasController.insidencias
+    );
+    
+    router.post('/reportarInsidencia/sinResponder',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        insidenciasController.sinResponder
+    );
+
+    router.post('/reportarInsidencia/respondidas',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        insidenciasController.respondidas
+    );
+
     // Notificaciones usuario
     router.post('/notificaciones/notificacionesUsuario',
         authController.usuarioAutenticado,
         authController.verifyToken,
         rolController.permisosPaginaGeneral,
         notificacionesController.notificacionesUsuario
+    );
+
+    // Soporte WhatsApp
+    router.post('/soporte/whatsapp',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaGeneral,
+        dashboardController.whatsapp
     );
 
     return router;
