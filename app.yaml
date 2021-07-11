@@ -1,2 +1,2 @@
-runtime: node
+runtime: nodejs14
 instance_class: f1
