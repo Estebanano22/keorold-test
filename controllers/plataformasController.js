@@ -484,12 +484,6 @@ exports.desplegarPlataformas = async (req, res) => {
             }
         }
 
-        console.log('Nombre Usuario: '+usuarios[i].nombre);
-        console.log('Valor Plataoforma: '+valorUsuario);
-        console.log('Distribuidor: '+distribuidorAsignacion.nombre);
-        console.log('Superdistribuidor: '+req.user.nombre);
-        console.log('-----------------------------------------');
-
         await Asignaciones.create({
             id_asignacion: uuid_v4(),
             valor: valorUsuario,

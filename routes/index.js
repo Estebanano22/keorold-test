@@ -18,6 +18,7 @@ const consignacionesController = require('../controllers/consignacionesControlle
 const mediosController = require('../controllers/mediosController');
 const linkPseController = require('../controllers/linkPseController');
 const insidenciasController = require('../controllers/insidenciasController');
+const preguntasController = require('../controllers/preguntasController');
 
 module.exports = function() {
 
@@ -436,6 +437,284 @@ module.exports = function() {
         mediosController.eliminarMedio
     );
 
+    // Administración de cuentas
+
+    router.get('/dashboard/adminCuentasVendidas',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.adminCuentasVendidas
+    );
+
+    // Administracion cuentas bajo pedido
+
+    router.get('/dashboard/adminCuentasBajoPedido',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.adminCuentasBajoPedido
+    );
+
+    router.post('/adminCuentasBajoPedido/infoCuenta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.infoCuenta
+    );
+
+    router.post('/adminCuentasBajoPedido/subirDatosBajoPedido',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.subirDatosBajoPedido
+    );
+
+    router.post('/adminCuentasBajoPedido/editarDatosBajoPedido',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.editarDatosBajoPedido
+    );
+
+    router.post('/adminCuentasBajoPedido/eliminarCuentaBajoPedido',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.eliminarCuentaBajoPedido
+    );
+
+    // Administracion renovaciones
+
+    router.get('/dashboard/adminCuentasRenovaciones',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.adminCuentasRenovaciones
+    );
+
+    router.post('/adminCuentasRenovaciones/infoCuenta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.infoCuenta
+    );
+
+    router.post('/adminCuentasRenovaciones/subirDatosRenovacion',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.subirDatosRenovacion
+    );
+
+    router.post('/adminCuentasRenovaciones/editarDatosRenovacion',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.editarDatosRenovacion
+    );
+
+    router.post('/adminCuentasRenovaciones/eliminarCuentaRenovacion',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.eliminarCuentaRenovacion
+    );
+
+    // Administracion personalizadas
+
+    router.get('/dashboard/adminCuentasPersonalizadas',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.adminCuentasPersonalizadas
+    );
+
+    router.post('/adminCuentasPersonalizadas/infoCuenta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.infoCuenta
+    );
+
+    router.post('/adminCuentasPersonalizadas/subirDatosPersonalizada',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.subirDatosPersonalizada
+    );
+
+    router.post('/adminCuentasPersonalizadas/editarDatosPersonalizada',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.editarDatosPersonalizada
+    );
+
+    router.post('/adminCuentasPersonalizadas/eliminarCuentaPersonalizada',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.eliminarCuentaPersonalizada
+    );
+
+    // Administracion Juegos
+
+    router.get('/dashboard/adminCuentasJuegos',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.adminCuentasJuegos
+    );
+
+    router.post('/adminCuentasJuegos/infoCuenta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.infoCuenta
+    );
+
+    router.post('/adminCuentasJuegos/subirDatosJuego',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.uploadComprobante,
+        cuentasController.subirDatosJuego
+    );
+
+    router.post('/adminCuentasJuegos/eliminarCuentaJuego',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.eliminarCuentaJuego
+    );
+
+
+    // Administrar Links PSE
+
+    router.get('/dashboard/adminLinksPse',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        linkPseController.adminLinksPse
+    );
+
+    router.post('/adminLinksPse/asignarLink',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        linkPseController.asignarLink
+    );
+
+    router.post('/adminLinksPse/editarLink',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        linkPseController.editarLink
+    );
+
+    router.post('/adminLinksPse/eliminarLink',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        linkPseController.eliminarLink
+    );
+
+    // Administrar consignaciones
+
+    router.get('/dashboard/adminConsignaciones',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        consignacionesController.adminConsignaciones
+    );
+
+    router.post('/adminConsignaciones/aprobarConsignacion',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        consignacionesController.aprobarConsignacion
+    );
+
+    router.post('/adminConsignaciones/rechazarConsignacion',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        consignacionesController.rechazarConsignacion
+    ); 
+
+    // Admin insidencias
+
+    router.get('/dashboard/adminInsidencias',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        insidenciasController.adminInsidencias
+    );
+
+    router.post('/adminInsidencias/infoInsidencia',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        insidenciasController.infoInsidencia
+    );
+
+    router.post('/adminInsidencias/insidenciasSuperdistribuidor',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        insidenciasController.insidenciasSuperdistribuidor
+    );
+    
+    router.post('/adminInsidencias/sinResponderSuperdistribuidor',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        insidenciasController.sinResponderSuperdistribuidor
+    );
+
+    router.post('/adminInsidencias/respondidasSuperdistribuidor',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        insidenciasController.respondidasSuperdistribuidor
+    );
+
+    router.post('/adminInsidencias/responderInsidencia',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        insidenciasController.responderInsidencia
+    );
+
+    // Admin Preguntas Frecuentes
+
+    router.get('/dashboard/adminFaq',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        preguntasController.adminFaq
+    );
+
+    router.post('/adminFaq/subirPregunta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        preguntasController.subirPregunta
+    );
+
+    router.post('/adminFaq/editarPregunta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        preguntasController.editarPregunta
+    );
+
+    router.post('/adminFaq/eliminarPregunta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        preguntasController.eliminarPregunta
+    );
 
     // =======================
     //    Paginas Usuarios

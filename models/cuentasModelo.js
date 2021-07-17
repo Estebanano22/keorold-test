@@ -39,6 +39,10 @@ const Cuentas = db.define('cuentasSubidas', {
         type: Sequelize.STRING(50),
         defaultValue : null
     },
+    comprobanteJuego: {
+        type: Sequelize.STRING(50),
+        defaultValue : null
+    },
     estado: {
         type: Sequelize.INTEGER(1),
         defaultValue : 0,

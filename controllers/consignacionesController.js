@@ -1,6 +1,7 @@
 const Usuarios = require('../models/UsuariosModelo');
 const Consignaciones = require('../models/consignacionesModelo');
 const Medios = require('../models/mediosModelo');
+const Cargas = require('../models/cargasModelo');
 const { Op } = require("sequelize");
 const {body, validationResult} = require('express-validator');
 const multer = require('multer');
@@ -103,6 +104,120 @@ exports.subirConsignacion = async (req, res) => {
     });
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Consignación reportada con éxito.' });
+    return;
+
+}
+
+exports.adminConsignaciones = async (req, res) => {
+
+    const consignaciones = await Consignaciones.findAll({
+        where: {
+            [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+        ],
+        order: [['fecha', 'DESC']]
+    });
+
+    const countConsignaciones = await Consignaciones.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:0}]
+        }
+    })
+
+    res.render('dashboard/adminConsignaciones', {
+        nombrePagina : 'Administración consignaciones',
+        titulo: 'Administración consignaciones',
+        breadcrumb: 'Administración consignaciones',
+        classActive: req.path.split('/')[2],
+        consignaciones,
+        countConsignaciones
+    })
+
+}
+
+exports.aprobarConsignacion = async (req, res) => {
+
+    const idConsignacion = req.body.id;
+
+    const consignacion = await Consignaciones.findOne({
+        where: {
+            [Op.and]:[{idConsignacion:idConsignacion}]
+        }
+    });
+
+    if(!consignacion) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Lo sentimos no es posible aprobar esta consignación debido a que no existe en nuestros servidores.' });
+        return;
+    }
+
+    if(consignacion.estado === 1) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible aprobar esta consignación ya que ha sido aprobada anteriormente.' });
+        return;
+    }
+
+    if(consignacion.estado === 2) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible aprobar esta consignación ya que ha sido rechazada anteriormente.' });
+        return;
+    }
+
+    consignacion.estado = 1;
+    await consignacion.save();
+
+    const usuario = await Usuarios.findOne({
+        where: {
+            [Op.and]:[{id_usuario:consignacion.usuarioIdUsuario}]
+        }
+    });
+
+    const saldoNuevo = Number(usuario.saldo) + Number(consignacion.valor);
+
+    await Cargas.create({
+        idCarga: uuid_v4(),
+        idSuperdistribuidor: req.user.id_usuario,
+        valor: consignacion.valor,
+        accionCarga: 'carga',
+        tipoCarga: 'consignación',
+        saldoAnterior: usuario.saldo,
+        saldoNuevo: saldoNuevo,
+        usuarioIdUsuario: consignacion.usuarioIdUsuario
+    });
+
+    usuario.saldo = saldoNuevo;
+    await usuario.save();
+
+    res.json({titulo: '¡Que bien!', resp: 'success', descripcion: 'Consignación aprobada con éxito.'});
+    return;
+
+}
+
+exports.rechazarConsignacion = async (req, res) => {
+
+    const idConsignacion = req.body.id;
+    const motivo = req.body.motivo;
+
+    const consignacion = await Consignaciones.findOne({
+        where: {
+            [Op.and]:[{idConsignacion:idConsignacion}]
+        }
+    });
+
+    if(!consignacion) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Lo sentimos no es posible rechazar esta consignación debido a que no existe en nuestros servidores.' });
+        return;
+    }
+
+    if(consignacion.estado === 1) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible rechazar esta consignación ya que ha sido aprobada anteriormente.' });
+        return;
+    }
+
+    consignacion.estado = 2;
+    consignacion.observaciones = motivo;
+    await consignacion.save();
+
+    res.json({titulo: '¡Que bien!', resp: 'success', descripcion: 'Consignación rechazada con éxito.'});
     return;
 
 }

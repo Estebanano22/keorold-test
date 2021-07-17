@@ -1,6 +1,8 @@
 const Usuarios = require('../models/UsuariosModelo');
 const Plataformas = require('../models/plataformasModelo');
 const Cuentas = require('../models/cuentasModelo');
+const Asignaciones = require('../models/asignacionesModelo');
+const Ganancias = require('../models/gananciasModelo');
 const { Op } = require("sequelize");
 const {body, validationResult} = require('express-validator');
 const multer = require('multer');
@@ -180,7 +182,7 @@ exports.eliminarCuenta = async (req, res) => {
         return;
     }
 
-    await Cuentas.destroy({ where: { idCuenta: id }});
+    await cuenta.destroy({ where: { idCuenta: id }});
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Cuenta eliminada con éxito.' });
     return;
@@ -222,5 +224,787 @@ exports.cuentasSinTomar = async (req, res)  => {
         cuentas,
         cuentasSinTomar
     })
+
+}
+
+exports.adminCuentasVendidas = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:1}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasNormales = await Cuentas.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:1}, {tipoCuenta: 1}]
+        }
+    })
+
+    const cuentasBajoPedido = await Cuentas.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:1}, {tipoCuenta: 2}]
+        }
+    })
+
+    const cuentasPersonalizadas = await Cuentas.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:1}, {tipoCuenta: 3}]
+        }
+    })
+
+    const cuentasRenovaciones = await Cuentas.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:1}, {tipoCuenta: 4}]
+        }
+    })
+
+    const cuentasJuegos = await Cuentas.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:1}, {tipoCuenta: 5}]
+        }
+    })
+
+    const usuarios = await Usuarios.findAll({
+        where: { super_patrocinador: req.user.enlace_afiliado }
+    })
+
+    
+    res.render('dashboard/adminCuentasVendidas', {
+        nombrePagina : 'Cuentas Vendidas',
+        titulo: 'Cuentas Vendidas',
+        breadcrumb: 'Cuentas Vendidas',
+        classActive: req.path.split('/')[2],
+        cuentasNormales,
+        cuentasBajoPedido,
+        cuentasPersonalizadas,
+        cuentasRenovaciones,
+        cuentasJuegos,
+        cuentas,
+        usuarios
+    })
+
+}
+
+exports.adminCuentasBajoPedido = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {tipoCuenta: 2}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasBajoPedido = await Cuentas.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:0}, {tipoCuenta: 2}]
+        }
+    })
+
+    res.render('dashboard/adminCuentasBajoPedido', {
+        nombrePagina : 'Cuentas Bajo Pedido',
+        titulo: 'Cuentas Bajo Pedido',
+        breadcrumb: 'Cuentas Bajo Pedido',
+        classActive: req.path.split('/')[2],
+        cuentasBajoPedido,
+        cuentas
+    })
+    
+}
+
+exports.infoCuenta = async (req, res) => {
+
+    const id = req.body.id;
+
+    const cuentas = await Cuentas.findOne({
+        where: {
+            [Op.and]:[{idCuenta: id}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ]
+    })
+
+    res.json({ cuentas: cuentas});
+    return;
+
+}
+
+exports.subirDatosBajoPedido = async (req, res) => {
+
+    const id = req.body.id;
+    const user = req.body.usuario;
+    const password = req.body.password;
+    var pantalla = req.body.pantalla;
+    var pin = req.body.pin;
+    
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(user === '' || password === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El usuario y el password son obligatorios.' });
+        return; 
+    }
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible subir datos a esta cuenta.' });
+        return;
+    }
+
+    if(pantalla === '' || pin === '') {
+        var pantalla = 'no aplica';
+        var pin = 'no aplica';
+    }
+
+    const asignacionUsuario = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{plataformaIdPlataforma: cuenta.plataformaIdPlataforma}, {usuarioIdUsuario: cuenta.usuarioIdUsuario}]
+        }
+    });
+
+    const usuario = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{id_usuario: cuenta.usuarioIdUsuario}]
+        }
+    });
+
+    if(Number(asignacionUsuario.valor > Number(usuario.saldo))) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento, debido a que su saldo no es suficiente.' });
+        return;
+    }
+
+    //Generar Ganancia Disitribuidor
+    const distribuidor = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{enlace_afiliado: usuario.patrocinador}]
+        }
+    });
+
+    const asignacionDistribuidor = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{plataformaIdPlataforma: cuenta.plataformaIdPlataforma}, {usuarioIdUsuario: distribuidor.id_usuario}]
+        }
+    });
+
+    const valorDistribuidor = Number(asignacionDistribuidor.valor);
+    const valorUsuario = Number(asignacionUsuario.valor);
+    const gananciaDistribuidor = valorUsuario - valorDistribuidor;
+
+    // Usuarios Saldo
+    usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
+    await usuario.save();
+
+    // Ganancias Distribuidor Saldo
+    distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
+    await distribuidor.save();
+
+    // Crear ganancia en tabla
+    Ganancias.create({
+        idGanancia: uuid_v4(),
+        ganancia: gananciaDistribuidor,
+        usuarioIdUsuario: distribuidor.id_usuario,
+        plataformaIdPlataforma: cuenta.plataformaIdPlataforma
+    });
+
+    // Editar Cuenta
+    cuenta.user = user;
+    cuenta.password = password;
+    cuenta.pantalla = pantalla;
+    cuenta.pin = pin;
+    cuenta.estado = 1;
+    cuenta.valorPagado = valorUsuario;
+    cuenta.fechaCompra = new Date();
+
+    await cuenta.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Los datos han sido subidos a la cuenta con éxito.' });
+    return;
+
+}
+
+exports.editarDatosBajoPedido = async (req, res) => {
+
+    const id = req.body.id;
+    const usuario = req.body.usuario;
+    const password = req.body.password;
+    var pantalla = req.body.pantalla;
+    var pin = req.body.pin;
+    
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(usuario === '' || password === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El usuario y el password son obligatorios.' });
+        return; 
+    }
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible subir datos a esta cuenta.' });
+        return;
+    }
+
+    if(pantalla === '' || pin === '') {
+        var pantalla = 'no aplica';
+        var pin = 'no aplica';
+    }
+
+    cuenta.user = usuario;
+    cuenta.password = password;
+    cuenta.pantalla = pantalla;
+    cuenta.pin = pin;
+
+    await cuenta.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Los datos han sido subidos a la cuenta con éxito.' });
+    return;
+
+}
+
+exports.eliminarCuentaBajoPedido = async (req, res) => {
+
+    const id = req.body.id.trim();
+
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible eliminar la cuenta.' });
+        return;
+    }
+
+    await cuenta.destroy({ where: { idCuenta: id }});
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Cuenta eliminada con éxito.' });
+    return;
+
+}
+
+exports.adminCuentasRenovaciones = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {tipoCuenta: 4}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasRenovaciones = await Cuentas.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:0}, {tipoCuenta: 4}]
+        }
+    })
+
+    res.render('dashboard/adminCuentasRenovaciones', {
+        nombrePagina : 'Cuentas Renovaciones',
+        titulo: 'Cuentas Renovaciones',
+        breadcrumb: 'Cuentas Renovaciones',
+        classActive: req.path.split('/')[2],
+        cuentasRenovaciones,
+        cuentas
+    })
+    
+}
+
+exports.subirDatosRenovacion = async (req, res) => {
+
+    const id = req.body.id;
+    const user = req.body.usuario;
+    const password = req.body.password;
+    var pantalla = req.body.pantalla;
+    var pin = req.body.pin;
+    
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(user === '' || password === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El usuario y el password son obligatorios.' });
+        return; 
+    }
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible subir datos a esta cuenta.' });
+        return;
+    }
+
+    if(pantalla === '' || pin === '') {
+        var pantalla = 'no aplica';
+        var pin = 'no aplica';
+    }
+
+    const asignacionUsuario = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{plataformaIdPlataforma: cuenta.plataformaIdPlataforma}, {usuarioIdUsuario: cuenta.usuarioIdUsuario}]
+        }
+    });
+
+    const usuario = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{id_usuario: cuenta.usuarioIdUsuario}]
+        }
+    });
+
+    if(Number(asignacionUsuario.valor > Number(usuario.saldo))) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento, debido a que su saldo no es suficiente.' });
+        return;
+    }
+
+    //Generar Ganancia Disitribuidor
+    const distribuidor = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{enlace_afiliado: usuario.patrocinador}]
+        }
+    });
+
+    const asignacionDistribuidor = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{plataformaIdPlataforma: cuenta.plataformaIdPlataforma}, {usuarioIdUsuario: distribuidor.id_usuario}]
+        }
+    });
+
+    const valorDistribuidor = Number(asignacionDistribuidor.valor);
+    const valorUsuario = Number(asignacionUsuario.valor);
+    const gananciaDistribuidor = valorUsuario - valorDistribuidor;
+
+    // Usuarios Saldo
+    usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
+    await usuario.save();
+
+    // Ganancias Distribuidor Saldo
+    distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
+    await distribuidor.save();
+
+    // Crear ganancia en tabla
+    Ganancias.create({
+        idGanancia: uuid_v4(),
+        ganancia: gananciaDistribuidor,
+        usuarioIdUsuario: distribuidor.id_usuario,
+        plataformaIdPlataforma: cuenta.plataformaIdPlataforma
+    });
+
+    // Editar Cuenta
+    cuenta.user = user;
+    cuenta.password = password;
+    cuenta.pantalla = pantalla;
+    cuenta.pin = pin;
+    cuenta.estado = 1;
+    cuenta.valorPagado = valorUsuario;
+    cuenta.fechaCompra = new Date();
+
+    await cuenta.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'La renovación ha sido realizada con éxito.' });
+    return;
+
+}
+
+exports.editarDatosRenovacion = async (req, res) => {
+
+    const id = req.body.id;
+    const usuario = req.body.usuario;
+    const password = req.body.password;
+    var pantalla = req.body.pantalla;
+    var pin = req.body.pin;
+    
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(usuario === '' || password === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El usuario y el password son obligatorios.' });
+        return; 
+    }
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible subir datos a esta cuenta.' });
+        return;
+    }
+
+    if(pantalla === '' || pin === '') {
+        var pantalla = 'no aplica';
+        var pin = 'no aplica';
+    }
+
+    cuenta.user = usuario;
+    cuenta.password = password;
+    cuenta.pantalla = pantalla;
+    cuenta.pin = pin;
+
+    await cuenta.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Los datos han sido subidos a la renovación con éxito.' });
+    return;
+
+}
+
+exports.eliminarCuentaRenovacion = async (req, res) => {
+
+    const id = req.body.id.trim();
+
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible eliminar la cuenta.' });
+        return;
+    }
+
+    await cuenta.destroy({ where: { idCuenta: id }});
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Renovación eliminada con éxito.' });
+    return;
+
+}
+
+// Personalizadas
+
+exports.adminCuentasPersonalizadas = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {tipoCuenta: 3}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasPersonalizadas = await Cuentas.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:0}, {tipoCuenta: 3}]
+        }
+    })
+
+    res.render('dashboard/adminCuentasPersonalizadas', {
+        nombrePagina : 'Cuentas Personalizadas',
+        titulo: 'Cuentas Personalizadas',
+        breadcrumb: 'Cuentas Personalizadas',
+        classActive: req.path.split('/')[2],
+        cuentasPersonalizadas,
+        cuentas
+    })
+    
+}
+
+exports.subirDatosPersonalizada = async (req, res) => {
+
+    const id = req.body.id;
+    const user = req.body.usuario;
+    const password = req.body.password;
+    var pantalla = req.body.pantalla;
+    var pin = req.body.pin;
+    
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(user === '' || password === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El usuario y el password son obligatorios.' });
+        return; 
+    }
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible subir datos a esta cuenta.' });
+        return;
+    }
+
+    if(pantalla === '' || pin === '') {
+        var pantalla = 'no aplica';
+        var pin = 'no aplica';
+    }
+
+    const asignacionUsuario = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{plataformaIdPlataforma: cuenta.plataformaIdPlataforma}, {usuarioIdUsuario: cuenta.usuarioIdUsuario}]
+        }
+    });
+
+    const usuario = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{id_usuario: cuenta.usuarioIdUsuario}]
+        }
+    });
+
+    if(Number(asignacionUsuario.valor > Number(usuario.saldo))) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento, debido a que su saldo no es suficiente.' });
+        return;
+    }
+
+    //Generar Ganancia Disitribuidor
+    const distribuidor = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{enlace_afiliado: usuario.patrocinador}]
+        }
+    });
+
+    const asignacionDistribuidor = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{plataformaIdPlataforma: cuenta.plataformaIdPlataforma}, {usuarioIdUsuario: distribuidor.id_usuario}]
+        }
+    });
+
+    const valorDistribuidor = Number(asignacionDistribuidor.valor);
+    const valorUsuario = Number(asignacionUsuario.valor);
+    const gananciaDistribuidor = valorUsuario - valorDistribuidor;
+
+    // Usuarios Saldo
+    usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
+    await usuario.save();
+
+    // Ganancias Distribuidor Saldo
+    distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
+    await distribuidor.save();
+
+    // Crear ganancia en tabla
+    Ganancias.create({
+        idGanancia: uuid_v4(),
+        ganancia: gananciaDistribuidor,
+        usuarioIdUsuario: distribuidor.id_usuario,
+        plataformaIdPlataforma: cuenta.plataformaIdPlataforma
+    });
+
+    // Editar Cuenta
+    cuenta.user = user;
+    cuenta.password = password;
+    cuenta.pantalla = pantalla;
+    cuenta.pin = pin;
+    cuenta.estado = 1;
+    cuenta.valorPagado = valorUsuario;
+    cuenta.fechaCompra = new Date();
+
+    await cuenta.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'La cuenta ha sido personalizada con éxito.' });
+    return;
+
+}
+
+exports.editarDatosPersonalizada = async (req, res) => {
+
+    const id = req.body.id;
+    const usuario = req.body.usuario;
+    const password = req.body.password;
+    var pantalla = req.body.pantalla;
+    var pin = req.body.pin;
+    
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(usuario === '' || password === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El usuario y el password son obligatorios.' });
+        return; 
+    }
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible subir datos a esta cuenta.' });
+        return;
+    }
+
+    if(pantalla === '' || pin === '') {
+        var pantalla = 'no aplica';
+        var pin = 'no aplica';
+    }
+
+    cuenta.user = usuario;
+    cuenta.password = password;
+    cuenta.pantalla = pantalla;
+    cuenta.pin = pin;
+
+    await cuenta.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Los datos han sido subidos a la personalización con éxito.' });
+    return;
+
+}
+
+exports.eliminarCuentaPersonalizada = async (req, res) => {
+
+    const id = req.body.id.trim();
+
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible eliminar la cuenta.' });
+        return;
+    }
+
+    await cuenta.destroy({ where: { idCuenta: id }});
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Cuenta personalizada eliminada con éxito.' });
+    return;
+
+}
+
+// Juegos
+
+exports.adminCuentasJuegos = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {tipoCuenta: 5}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasJuegos = await Cuentas.count({
+        where: {
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado:0}, {tipoCuenta: 5}]
+        }
+    })
+
+    res.render('dashboard/adminCuentasJuegos', {
+        nombrePagina : 'Cuentas Juegos',
+        titulo: 'Cuentas Juegos',
+        breadcrumb: 'Cuentas Juegos',
+        classActive: req.path.split('/')[2],
+        cuentasJuegos,
+        cuentas
+    })
+    
+}
+
+const configuracionMulter2 = {
+    storage: fileStorage = multer.diskStorage({
+        destination: (req, res, next) => {
+            next(null, __dirname+'/../public/uploads/comrpobantesJuegos/');
+        },
+        filename: (req, file, next) => {
+            const extencion = file.mimetype.split('/')[1];
+            next(null, `${shortid.generate()}.${extencion}`);
+        }
+    })
+};
+
+const upload2 = multer(configuracionMulter2).single('comprobante');
+
+exports.uploadComprobante = async (req, res, next) => {
+
+    upload2(req, res, function(error) {
+        if(error){
+            res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Hubo un error con el archivo que desea subir.' });
+            return;
+        } else {
+            next();
+        }
+    })
+}
+
+exports.subirDatosJuego = async (req, res) => {
+
+    const id = req.body.id;
+    const user = req.body.usuario;
+    const password = req.body.password;
+    const idJuego = req.body.idJuego;
+    const comprobante = req.body.comprobante;
+
+    if(comprobante === 'undefined') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir el pantallazo o foto legible del comprobante de carga de esta cuenta.' });
+        return;
+    }
+    
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(user === '' || password === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El usuario y el password son obligatorios.' });
+        return; 
+    }
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible subir datos a esta cuenta.' });
+        return;
+    }
+
+    const asignacionUsuario = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{plataformaIdPlataforma: cuenta.plataformaIdPlataforma}, {usuarioIdUsuario: cuenta.usuarioIdUsuario}]
+        }
+    });
+
+    const usuario = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{id_usuario: cuenta.usuarioIdUsuario}]
+        }
+    });
+
+    if(Number(asignacionUsuario.valor > Number(usuario.saldo))) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento, debido a que su saldo no es suficiente.' });
+        return;
+    }
+
+    //Generar Ganancia Disitribuidor
+    const distribuidor = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{enlace_afiliado: usuario.patrocinador}]
+        }
+    });
+
+    const asignacionDistribuidor = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{plataformaIdPlataforma: cuenta.plataformaIdPlataforma}, {usuarioIdUsuario: distribuidor.id_usuario}]
+        }
+    });
+
+    const valorDistribuidor = Number(asignacionDistribuidor.valor);
+    const valorUsuario = Number(asignacionUsuario.valor);
+    const gananciaDistribuidor = valorUsuario - valorDistribuidor;
+
+    // Usuarios Saldo
+    usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
+    await usuario.save();
+
+    // Ganancias Distribuidor Saldo
+    distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
+    await distribuidor.save();
+
+    // Crear ganancia en tabla
+    Ganancias.create({
+        idGanancia: uuid_v4(),
+        ganancia: gananciaDistribuidor,
+        usuarioIdUsuario: distribuidor.id_usuario,
+        plataformaIdPlataforma: cuenta.plataformaIdPlataforma
+    });
+
+    // Editar Cuenta
+    cuenta.user = user;
+    cuenta.password = password;
+    cuenta.pantalla = 'no aplica';
+    cuenta.pin = 'no aplica';
+    cuenta.idJuego = idJuego;
+    cuenta.estado = 1;
+    cuenta.valorPagado = valorUsuario;
+    cuenta.fechaCompra = new Date();
+    cuenta.comprobanteJuego = req.file.filename;
+
+    await cuenta.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'La cuenta del Juego ha sido gestionada con éxito.' });
+    return;
+
+}
+
+exports.eliminarCuentaJuego = async (req, res) => {
+
+    const id = req.body.id.trim();
+
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
+
+    if(!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible eliminar la cuenta.' });
+        return;
+    }
+
+    await cuenta.destroy({ where: { idCuenta: id }});
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Cuenta de Juego ha sido eliminada con éxito.' });
+    return;
 
 }

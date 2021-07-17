@@ -130,7 +130,7 @@ exports.infoInsidencia = async (req, res) => {
         var foto = '/uploads/usuarios/'+valFoto;
     }
 
-    res.json({ asunto: insidencia.asunto, descripcion: insidencia.descripcion, imagen: insidencia.imagen, fecha: insidencia.fecha, usuario: usuario.nombre, plataforma: plataforma.plataforma, perfil: usuario.perfil, foto: foto});
+    res.json({ asunto: insidencia.asunto, descripcion: insidencia.descripcion, imagen: insidencia.imagen, fecha: insidencia.fecha, usuario: usuario.nombre, plataforma: plataforma.plataforma, perfil: usuario.perfil, foto: foto, idInsidencia: idInsidencia, respuesta: insidencia.respuesta});
     return;
 
 }
@@ -199,4 +199,141 @@ exports.respondidas = async (req, res) => {
     res.json({ insidencias: insidenciaNoRespondidas, plataformas: plataformas, nombre: req.user.nombre});
     return;
 
+}
+
+exports.adminInsidencias = async (req, res) => {
+
+    const insidencias = await Insidencias.findAll({ 
+        where: { idSuperdistribuidor: req.user.id_usuario },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fecha', 'DESC']]
+    });
+
+    const countInsidenciasRespondidas = await Insidencias.count({ 
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, {estado: 1}]
+        }
+    });
+
+    const countInsidenciasNoRespondidas = await Insidencias.count({ 
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, {estado: 0}]
+        }
+    });
+
+    res.render('dashboard/adminInsidencias', {
+        nombrePagina : 'Administración de Insidencias',
+        titulo: 'Administración de Insidencias',
+        breadcrumb: 'Administración de Insidencias',
+        classActive: req.path.split('/')[2],
+        insidencias,
+        countInsidenciasRespondidas,
+        countInsidenciasNoRespondidas,
+    })
+
+}
+
+exports.insidenciasSuperdistribuidor = async (req, res) => {
+
+    const insidenciaNoRespondidas = await Insidencias.findAll({
+        where: {
+            [Op.and]:[{ idSuperdistribuidor: req.user.id_usuario }]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fecha', 'DESC']]
+    });
+    
+    const plataformas = await Plataformas.findAll({ 
+        where: {
+            [Op.and]:[{id_superdistribuidor: req.user.id_usuario}, {estado:1}]
+        }
+    });
+
+    res.json({ insidencias: insidenciaNoRespondidas, plataformas: plataformas});
+    return;
+
+}
+
+exports.sinResponderSuperdistribuidor = async (req, res) => {
+
+    const insidenciaNoRespondidas = await Insidencias.findAll({
+        where: {
+            [Op.and]:[{ idSuperdistribuidor: req.user.id_usuario }, {estado:0}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fecha', 'DESC']]
+    });
+    
+    const plataformas = await Plataformas.findAll({ 
+        where: {
+            [Op.and]:[{id_superdistribuidor: req.user.id_usuario}, {estado:1}]
+        }
+    });
+
+    res.json({ insidencias: insidenciaNoRespondidas, plataformas: plataformas});
+    return;
+
+}
+
+exports.respondidasSuperdistribuidor = async (req, res) => {
+
+    const insidenciaNoRespondidas = await Insidencias.findAll({
+        where: {
+            [Op.and]:[{ idSuperdistribuidor: req.user.id_usuario }, {estado:1}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fecha', 'DESC']]
+    });
+    
+    const plataformas = await Plataformas.findAll({ 
+        where: {
+            [Op.and]:[{id_superdistribuidor: req.user.id_usuario}, {estado:1}]
+        }
+    });
+
+    res.json({ insidencias: insidenciaNoRespondidas, plataformas: plataformas});
+    return;
+
+}
+
+exports.responderInsidencia = async (req, res) => {
+
+    const idInsidencia = req.body.id;
+    const respuesta = req.body.respuesta;
+
+    if(respuesta === ''){
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No puede enviar una respuesta vacia' });
+        return;
+    }
+
+    const insidencia = await Insidencias.findOne({
+        where: {
+            [Op.and]:[{idInsidencia: idInsidencia}]
+        }
+    })
+
+    if(!insidencia){
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible responder esta insidencia debido a que ya no existe en nuestros servidores.' });
+        return;
+    }
+
+    insidencia.estado = 1;
+    insidencia.respuesta = respuesta;
+    await insidencia.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Insidencia respondida con éxito.'});
+    return;
+    
 }

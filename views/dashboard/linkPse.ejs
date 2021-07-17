@@ -180,7 +180,9 @@
 
 <script>
 
-    function solicitar(e, valor) {
+    function solicitar(e) {
+		
+		const valor = document.getElementById('valor').value;
 
         fetch('/linkPse/solicitarLink', {
             method: 'POST',

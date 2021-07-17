@@ -47,12 +47,42 @@
             </li>
 
             <!-- Cuentas -->
-            <li class="nav-header"><span class="nav-label">Cuentas</span></li>
+            <li class="nav-header"><span class="nav-label">Gestión Cuentas</span></li>
             <li class="nav-item <%= classActive === 'subirCuentas' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/subirCuentas"><span class="shape1"></span><span class="shape2"></span><i class="far fa-file-excel-o sidemenu-icon"></i><span class="sidemenu-label">Subir</span></a>
             </li>
             <li class="nav-item <%= classActive === 'cuentasSinTomar' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/cuentasSinTomar"><span class="shape1"></span><span class="shape2"></span><i class="fe fe-folder-minus sidemenu-icon"></i><span class="sidemenu-label">Sin tomar</span></a>
+            </li>
+
+            <!-- Cuentas -->
+            <li class="nav-header"><span class="nav-label">Cuentas</span></li>
+            <li class="nav-item <%= classActive === 'adminCuentasVendidas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminCuentasVendidas"><span class="shape1"></span><span class="shape2"></span><i class="ti-angle-double-right sidemenu-icon"></i><span class="sidemenu-label">Vendidas</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'adminCuentasBajoPedido' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminCuentasBajoPedido"><span class="shape1"></span><span class="shape2"></span><i class="ti-back-left sidemenu-icon"></i><span class="sidemenu-label">Bajo Pedido</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'adminCuentasRenovaciones' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminCuentasRenovaciones"><span class="shape1"></span><span class="shape2"></span><i class="ti-loop sidemenu-icon"></i><span class="sidemenu-label">Renovaciones</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'adminCuentasPersonalizadas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminCuentasPersonalizadas"><span class="shape1"></span><span class="shape2"></span><i class="ti-split-h sidemenu-icon"></i><span class="sidemenu-label">Personalizadas</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'adminCuentasJuegos' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminCuentasJuegos"><span class="shape1"></span><span class="shape2"></span><i class="ti-game sidemenu-icon"></i><span class="sidemenu-label">Juegos</span></a>
+            </li>
+
+            <!-- Gestionar -->
+            <li class="nav-header"><span class="nav-label">Gestionar</span></li>
+            <li class="nav-item <%= classActive === 'adminLinksPse' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminLinksPse"><span class="shape1"></span><span class="shape2"></span><i class="ti-credit-card sidemenu-icon"></i><span class="sidemenu-label">Links PSE</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'adminConsignaciones' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminConsignaciones"><span class="shape1"></span><span class="shape2"></span><i class="far fa-money-bill-alt sidemenu-icon"></i><span class="sidemenu-label">Consignaciones</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'adminInsidencias' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminInsidencias"><span class="shape1"></span><span class="shape2"></span><i class="fas fa-exclamation-triangle sidemenu-icon"></i><span class="sidemenu-label">Insidencias</span></a>
             </li>
 
             <!-- Ganancias Red -->
@@ -65,6 +95,9 @@
             <li class="nav-header"><span class="nav-label">Herramientas</span></li>
             <li class="nav-item <%= classActive === 'mediosConsignacion' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/mediosConsignacion"><span class="shape1"></span><span class="shape2"></span><i class="fe fe-inbox sidemenu-icon"></i><span class="sidemenu-label">Medios de consignación</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'adminFaq' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminFaq"><span class="shape1"></span><span class="shape2"></span><i class="far fa-question-circle sidemenu-icon"></i><span class="sidemenu-label">Preguntas frecuentes</span></a>
             </li>
 
         <% } else if(usuario.perfil === 'distribuidor') {  %>
@@ -86,11 +119,17 @@
             <li class="nav-item <%= classActive === 'cuentasVendidas' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/cuentasVendidas"><span class="shape1"></span><span class="shape2"></span><i class="ti-angle-double-right sidemenu-icon"></i><span class="sidemenu-label">Vendidas</span></a>
             </li>
+            <li class="nav-item <%= classActive === 'cuentasBajoPedido' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasBajoPedido"><span class="shape1"></span><span class="shape2"></span><i class="ti-back-left sidemenu-icon"></i><span class="sidemenu-label">Bajo Pedido</span></a>
+            </li>
             <li class="nav-item <%= classActive === 'cuentasRenovaciones' ? 'active' : '' %>">
-                <a class="nav-link" href="/dashboard/cuentasRenovaciones"><span class="shape1"></span><span class="shape2"></span><i class="ti-back-left sidemenu-icon"></i><span class="sidemenu-label">Renovaciones</span></a>
+                <a class="nav-link" href="/dashboard/cuentasRenovaciones"><span class="shape1"></span><span class="shape2"></span><i class="ti-loop sidemenu-icon"></i><span class="sidemenu-label">Renovaciones</span></a>
             </li>
             <li class="nav-item <%= classActive === 'cuentasPersonalizadas' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/cuentasPersonalizadas"><span class="shape1"></span><span class="shape2"></span><i class="ti-split-h sidemenu-icon"></i><span class="sidemenu-label">Personalizadas</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'cuentasJuegos' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasJuegos"><span class="shape1"></span><span class="shape2"></span><i class="ti-game sidemenu-icon"></i><span class="sidemenu-label">Juegos</span></a>
             </li>
 
             <!-- Reportar Consignaciones -->
@@ -121,11 +160,17 @@
             <li class="nav-item <%= classActive === 'cuentasVendidas' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/cuentasVendidas"><span class="shape1"></span><span class="shape2"></span><i class="ti-angle-double-right sidemenu-icon"></i><span class="sidemenu-label">Vendidas</span></a>
             </li>
+            <li class="nav-item <%= classActive === 'cuentasBajoPedido' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasBajoPedido"><span class="shape1"></span><span class="shape2"></span><i class="ti-back-left sidemenu-icon"></i><span class="sidemenu-label">Bajo Pedido</span></a>
+            </li>
             <li class="nav-item <%= classActive === 'cuentasRenovaciones' ? 'active' : '' %>">
-                <a class="nav-link" href="/dashboard/cuentasRenovaciones"><span class="shape1"></span><span class="shape2"></span><i class="ti-back-left sidemenu-icon"></i><span class="sidemenu-label">Renovaciones</span></a>
+                <a class="nav-link" href="/dashboard/cuentasRenovaciones"><span class="shape1"></span><span class="shape2"></span><i class="ti-loop sidemenu-icon"></i><span class="sidemenu-label">Renovaciones</span></a>
             </li>
             <li class="nav-item <%= classActive === 'cuentasPersonalizadas' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/cuentasPersonalizadas"><span class="shape1"></span><span class="shape2"></span><i class="ti-split-h sidemenu-icon"></i><span class="sidemenu-label">Personalizadas</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'cuentasJuegos' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/cuentasJuegos"><span class="shape1"></span><span class="shape2"></span><i class="ti-game sidemenu-icon"></i><span class="sidemenu-label">Juegos</span></a>
             </li>
 
             <!-- Reportar Consignaciones -->

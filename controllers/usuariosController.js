@@ -1,6 +1,7 @@
 const Usuarios = require('../models/UsuariosModelo');
 const Plataformas = require('../models/plataformasModelo');
 const Asignaciones = require('../models/asignacionesModelo');
+const Cargas = require('../models/cargasModelo');
 const { Op } = require("sequelize");
 const {body, validationResult} = require('express-validator');
 const multer = require('multer');
@@ -264,7 +265,20 @@ exports.cargarSaldo = async (req, res) => {
         return;
     }
 
-    usuario.saldo = valorCargar;
+    const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: usuario.super_patrocinador }});
+
+    await Cargas.create({
+        idCarga: uuid_v4(),
+        idSuperdistribuidor: superdistribuidor.id_usuario,
+        valor: valorCargar,
+        accionCarga: 'carga',
+        tipoCarga: 'carga directa',
+        saldoAnterior: usuario.saldo,
+        saldoNuevo: Number(usuario.saldo) + Number(valorCargar),
+        usuarioIdUsuario: idUsuario
+    });
+
+    usuario.saldo = Number(usuario.saldo) + Number(valorCargar);
     await usuario.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'El saldo fue cargado con éxito.' });
@@ -289,7 +303,20 @@ exports.restarSaldo = async (req, res) => {
         return;
     }
 
-    usuario.saldo = valorCargar;
+    const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: usuario.super_patrocinador }});
+
+    await Cargas.create({
+        idCarga: uuid_v4(),
+        idSuperdistribuidor: superdistribuidor.id_usuario,
+        valor: valorCargar,
+        accionCarga: 'restar',
+        tipoCarga: 'carga directa',
+        saldoAnterior: usuario.saldo,
+        saldoNuevo: Number(usuario.saldo) - Number(valorCargar),
+        usuarioIdUsuario: idUsuario
+    });
+
+    usuario.saldo = Number(usuario.saldo) - Number(valorCargar);
     await usuario.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'El saldo fue restado con éxito.' });
@@ -346,7 +373,7 @@ exports.cargarSaldoUsuario = async (req, res) => {
         return;
     }
 
-    usuario.saldo = valorCargar;
+    usuario.saldo = Number(usuario.saldo) + Number(valorCargar);
     await usuario.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'El saldo fue cargado con éxito.' });
@@ -371,7 +398,7 @@ exports.restarSaldoUsuario = async (req, res) => {
         return;
     }
 
-    usuario.saldo = valorCargar;
+    usuario.saldo = Number(usuario.saldo) - Number(valorCargar);
     await usuario.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'El saldo fue restado con éxito.' });

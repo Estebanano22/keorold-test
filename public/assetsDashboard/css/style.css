@@ -73718,8 +73718,21 @@ table.dataTable>tbody>tr.child span.dtr-title {
     height: 250px;
 }
 
+.border-img {
+    border: 3px solid #cacaca;
+    padding: 3px;
+}
+
 .trix-button-group--file-tools {
     display: none !important;
+}
+
+.background-primary {
+    background-color: #f2f1ff;
+}
+
+.background-warning {
+    background-color: #eaeaea;
 }
 
 @media (max-width: 768px) {

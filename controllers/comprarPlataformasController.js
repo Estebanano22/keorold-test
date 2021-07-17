@@ -159,6 +159,10 @@ exports.compraCuentaNormal = async (req, res) => {
     const valorUsuario = Number(asignacionUsuario.valor);
     const gananciaDistribuidor = valorUsuario - valorDistribuidor;
 
+    // Ganancias Distribuidor Saldo
+    distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
+    await distribuidor.save();
+
     // Crear ganancia en tabla
     Ganancias.create({
         idGanancia: uuid_v4(),

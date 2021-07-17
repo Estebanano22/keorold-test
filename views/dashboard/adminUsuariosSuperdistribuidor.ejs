@@ -104,7 +104,12 @@
 												</thead>
 												<tbody>
 													<% if(usuarios.length) { %> 
-														<% usuarios.forEach(listaUsuario => { %>  
+														<% usuarios.forEach(listaUsuario => { %>
+														<% if(listaUsuario.pais === 'Colombia') { %>
+															<% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaUsuario.saldo); %>
+														<% } else { %>
+															<% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaUsuario.saldo); %>
+														<% } %>  
 															<tr>
 																<td class="text-center">
 																	<img src="<%= listaUsuario.foto === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/usuarios/' + listaUsuario.foto %>" alt="" class="img-circle">
@@ -130,7 +135,7 @@
 																		<option class="text-capitalize" value="reseller">Reseller</option>
 																	</select>
 																</td>
-																<td class="text-capitalize">$ <%= listaUsuario.saldo %></td>
+																<td class="text-capitalize"><%= valorFormateado %></td>
 																<td class="text-capitalize">
 																	<button class="btn ripple btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCargar" onclick="modalCargar(event, '<%= listaUsuario.id_usuario %>', '<%= listaUsuario.nombre %>')"><i class="ti ti-wallet"></i><span class="ml-2">Cargar saldo</span></button>
 																</td>
