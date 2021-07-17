@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
-const db = new Sequelize('fullentretenimiento_2021_ok', 'root', 'rootroot', {
-    host: '127.0.0.1',
+const db = new Sequelize('fullentretenimiento_2021_ok', 'fullesteban2021', 'NewFullentretenimiento123*', {
+    host: '35.222.235.76',
     dialect: 'mysql',
     port: 3306,
     dialectOptions: {
