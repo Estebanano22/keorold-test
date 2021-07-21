@@ -6,10 +6,19 @@ const Ganancias = require('../models/gananciasModelo');
 const { Op } = require("sequelize");
 const {body, validationResult} = require('express-validator');
 const multer = require('multer');
+const multerGoogleStorage = require("multer-google-storage");
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
 const fs = require('fs');
 const xlsx = require('node-xlsx');
+const path = require('path');
+const dotenv = require('dotenv');
+
+if(process.env.NODE_ENV !== 'production') {
+    dotenv.config({
+        path: path.resolve(__dirname, '../'+process.env.NODE_ENV+'.env')
+    });
+}
 
 // Inicio
 exports.subirCuentas = async (req, res) => {
@@ -61,10 +70,21 @@ exports.subirCuentas = async (req, res) => {
     })
 }
 
+// const configuracionMulter = {
+//     storage: fileStorage = multer.diskStorage({
+//         destination: (req, res, next) => {
+//             next(null, __dirname+'/../public/uploads/assets/');
+//         },
+//         filename: (req, file, next) => {
+//             const extencion = file.mimetype.split('/')[1];
+//             next(null, `${shortid.generate()}.xlsx`);
+//         }
+//     })
+// };
 const configuracionMulter = {
-    storage: fileStorage = multer.diskStorage({
+    storage: fileStorage = multerGoogleStorage.storageEngine({
         destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/assets/');
+            next('/uploads/assets/');
         },
         filename: (req, file, next) => {
             const extencion = file.mimetype.split('/')[1];

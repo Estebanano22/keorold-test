@@ -10,6 +10,7 @@ const axios = require('axios');
 const routes = require('./routes');
 const socketIO = require('socket.io');
 const moment = require('moment');
+const dotenv = require('dotenv');
 
 // crear conexion ala DB
 const db = require('./config/db');
@@ -33,7 +34,11 @@ db.sync()
     .catch(error => console.log('error al conectar'));
 
 // Variables de entorno
-require('dotenv').config({path: 'variables.env'});
+if(process.env.NODE_ENV !== 'production') {
+    dotenv.config({
+        path: path.resolve(__dirname, process.env.NODE_ENV+'.env')
+    });
+}
 
 // crear el servidor
 const app = express();
@@ -94,8 +99,9 @@ res.status(404).render('404', {
 });
 
 // puerto
-const server = app.listen(process.env.PORT, () => {
-    console.log('Corriendo en el puerto 5000');
+const puerto = process.env.PORT || 5000;
+const server = app.listen(puerto, () => {
+    console.log('Corriendo correctamente');
 });
 
 // // Socket
