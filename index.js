@@ -1,6 +1,7 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
+const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -10,7 +11,6 @@ const axios = require('axios');
 const routes = require('./routes');
 const socketIO = require('socket.io');
 const moment = require('moment');
-const dotenv = require('dotenv');
 
 // crear conexion ala DB
 const db = require('./config/db');
@@ -34,11 +34,9 @@ db.sync()
     .catch(error => console.log('error al conectar'));
 
 // Variables de entorno
-if(process.env.NODE_ENV !== 'production') {
-    dotenv.config({
-        path: path.resolve(__dirname, process.env.NODE_ENV+'.env')
-    });
-}
+dotenv.config({
+    path: path.resolve(__dirname, 'development.env')
+});
 
 // crear el servidor
 const app = express();
