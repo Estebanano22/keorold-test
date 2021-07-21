@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "export NODE_ENV=development && nodemon index.js",
-    "prod": "export NODE_ENV=production && nodemon index.js",
+    "start": "set NODE_ENV=production && node index.js",
+    "dev": "set NODE_ENV=development && nodemon index.js",
+    "prod": "set NODE_ENV=production && nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
