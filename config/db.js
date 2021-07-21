@@ -8,10 +8,11 @@ if(process.env.NODE_ENV !== 'production') {
     });
 }
 
-const db = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASS, {
-    host: process.env.DB_HOST,
+const db = new Sequelize('fullentretenimiento_2021_ok', 'fullesteban2021', 'NewFullentretenimiento123*', {
+    host: '/cloudsql/fullentretenimiento:us-central1:fullbasegoogle',
     dialect: 'mysql',
     port: 3306,
+    socketPath: '/cloudsql/fullentretenimiento:us-central1:fullbasegoogle'
     dialectOptions: {
         charset: 'utf8_general_ci',
         socketPath: '/cloudsql/fullentretenimiento:us-central1:fullbasegoogle'
@@ -27,5 +28,4 @@ const db = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.e
     // },
     logging: false
 });
-
 module.exports = db;
