@@ -12,7 +12,6 @@ const db = new Sequelize('fullentretenimiento_2021_ok', 'fullesteban2021', 'NewF
     host: '/cloudsql/fullentretenimiento:us-central1:fullbasegoogle',
     dialect: 'mysql',
     port: 3306,
-    socketPath: '/cloudsql/fullentretenimiento:us-central1:fullbasegoogle'
     dialectOptions: {
         charset: 'utf8_general_ci',
         socketPath: '/cloudsql/fullentretenimiento:us-central1:fullbasegoogle'
