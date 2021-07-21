@@ -13,7 +13,8 @@ const db = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.e
     dialect: 'mysql',
     port: 3306,
     dialectOptions: {
-        charset: 'utf8_general_ci'
+        charset: 'utf8_general_ci',
+        socketPath: '/cloudsql/fullentretenimiento:us-central1:fullbasegoogle'
     },
     define: {
         timestamps: false
