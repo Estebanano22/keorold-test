@@ -3,14 +3,15 @@ const path = require('path');
 const dotenv = require('dotenv');
 
 dotenv.config({
-    path: path.resolve(__dirname, '../development.env')
+    path: path.resolve(__dirname, '../production.env')
 });
 
 const db = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASS, {
-    host: process.env.DB_HOST,
+    host: '/cloudsql/'+process.env.DB_HOST,
     dialect: 'mysql',
     port: 3306,
     dialectOptions: {
+        socketPath: '/cloudsql/'+process.env.SOCKETPATH),
         charset: 'utf8_general_ci'
     },
     define: {
