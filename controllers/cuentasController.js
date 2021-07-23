@@ -68,15 +68,18 @@ exports.subirCuentas = async (req, res) => {
 }
 
 const configuracionMulter = {
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/assets/');
-        },
+    destination: (req, res, next) => {
+        next(null, __dirname+'/../public/uploads/assets/');
+    },
+    storage: fileStorage = multer.memoryStorage({
         filename: (req, file, next) => {
             const extencion = file.mimetype.split('/')[1];
             next(null, `${shortid.generate()}.xlsx`);
         }
-    })
+    }),
+    limits: {
+        fileSize: 15*24*24
+    }
 };
 
 const upload = multer(configuracionMulter).single('files');
