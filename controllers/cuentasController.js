@@ -1014,3 +1014,185 @@ exports.eliminarCuentaJuego = async (req, res) => {
     return;
 
 }
+
+// ============================================
+//             Usuarios Controlador
+// ============================================
+
+exports.cuentasVendidas = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:1}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasNormales = await Cuentas.count({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:1}, {tipoCuenta: 1}]
+        }
+    })
+
+    const cuentasBajoPedido = await Cuentas.count({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:1}, {tipoCuenta: 2}]
+        }
+    })
+
+    const cuentasPersonalizadas = await Cuentas.count({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:1}, {tipoCuenta: 3}]
+        }
+    })
+
+    const cuentasRenovaciones = await Cuentas.count({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:1}, {tipoCuenta: 4}]
+        }
+    })
+
+    const cuentasJuegos = await Cuentas.count({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:1}, {tipoCuenta: 5}]
+        }
+    })
+    
+    res.render('dashboard/cuentasVendidas', {
+        nombrePagina : 'Cuentas Vendidas',
+        titulo: 'Cuentas Vendidas',
+        breadcrumb: 'Cuentas Vendidas',
+        classActive: req.path.split('/')[2],
+        cuentasNormales,
+        cuentasBajoPedido,
+        cuentasPersonalizadas,
+        cuentasRenovaciones,
+        cuentasJuegos,
+        cuentas,
+    })
+
+}
+
+exports.cuentasBajoPedido = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {tipoCuenta: 2}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasBajoPedido = await Cuentas.count({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:0}, {tipoCuenta: 2}]
+        }
+    })
+
+    res.render('dashboard/cuentasBajoPedido', {
+        nombrePagina : 'Cuentas Bajo Pedido',
+        titulo: 'Cuentas Bajo Pedido',
+        breadcrumb: 'Cuentas Bajo Pedido',
+        classActive: req.path.split('/')[2],
+        cuentasBajoPedido,
+        cuentas
+    })
+    
+}
+
+exports.cuentasRenovaciones = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {tipoCuenta: 4}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasRenovaciones = await Cuentas.count({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:0}, {tipoCuenta: 4}]
+        }
+    })
+
+    res.render('dashboard/cuentasRenovaciones', {
+        nombrePagina : 'Cuentas Renovaciones',
+        titulo: 'Cuentas Renovaciones',
+        breadcrumb: 'Cuentas Renovaciones',
+        classActive: req.path.split('/')[2],
+        cuentasRenovaciones,
+        cuentas
+    })
+    
+}
+
+exports.cuentasPersonalizadas = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {tipoCuenta: 3}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasPersonalizadas = await Cuentas.count({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:0}, {tipoCuenta: 3}]
+        }
+    })
+
+    res.render('dashboard/cuentasPersonalizadas', {
+        nombrePagina : 'Cuentas Personalizadas',
+        titulo: 'Cuentas Personalizadas',
+        breadcrumb: 'Cuentas Personalizadas',
+        classActive: req.path.split('/')[2],
+        cuentasPersonalizadas,
+        cuentas
+    })
+    
+}
+
+exports.cuentasJuegos = async (req, res) => {
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {tipoCuenta: 5}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ],
+        order: [['fechaSubida', 'DESC']]
+    })
+
+    const cuentasJuegos = await Cuentas.count({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado:0}, {tipoCuenta: 5}]
+        }
+    })
+
+    res.render('dashboard/cuentasJuegos', {
+        nombrePagina : 'Cuentas Juegos',
+        titulo: 'Cuentas Juegos',
+        breadcrumb: 'Cuentas Juegos',
+        classActive: req.path.split('/')[2],
+        cuentasJuegos,
+        cuentas
+    })
+    
+}

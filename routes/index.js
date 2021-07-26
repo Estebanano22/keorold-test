@@ -920,6 +920,47 @@ module.exports = function() {
         insidenciasController.respondidas
     );
 
+    // Administración de cuentas
+
+    router.get('/dashboard/cuentasVendidas',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        cuentasController.cuentasVendidas
+    );
+
+    router.get('/dashboard/cuentasBajoPedido',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        cuentasController.cuentasBajoPedido
+    );
+
+    router.get('/dashboard/cuentasRenovaciones',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        cuentasController.cuentasRenovaciones
+    );
+
+    router.get('/dashboard/cuentasPersonalizadas',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        cuentasController.cuentasPersonalizadas
+    );
+
+    router.get('/dashboard/cuentasJuegos',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        cuentasController.cuentasJuegos
+    );
+
+    // =================
+    // Accesos generales
+    // =================
+
     // Notificaciones usuario
     router.post('/notificaciones/notificacionesUsuario',
         authController.usuarioAutenticado,
