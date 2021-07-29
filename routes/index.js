@@ -19,6 +19,7 @@ const mediosController = require('../controllers/mediosController');
 const linkPseController = require('../controllers/linkPseController');
 const insidenciasController = require('../controllers/insidenciasController');
 const preguntasController = require('../controllers/preguntasController');
+const reportesController = require('../controllers/reportesController');
 
 module.exports = function() {
 
@@ -586,6 +587,15 @@ module.exports = function() {
         authController.verifyToken,
         rolController.permisosPaginaSuperdistribuidor,
         cuentasController.eliminarCuentaJuego
+    );
+
+    // Reportes
+
+    router.get('/dashboard/adminReporteCargas',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        reportesController.adminReporteCargas
     );
 
 
