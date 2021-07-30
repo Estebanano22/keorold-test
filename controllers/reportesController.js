@@ -253,8 +253,8 @@ exports.reporteConsignaciones = async (req, res) => {
     }
 
     const idTemporal = shortid.generate();
-    const nameTemp = `/uploads/temp/${idTemporal}.xlsx`;
-    const url = `${__dirname}/../public/uploads/temp/${idTemporal}.xlsx`;
+    const nameTemp = `/uploads/temporal/${idTemporal}.xlsx`;
+    const url = `${__dirname}/../public/uploads/temporal/${idTemporal}.xlsx`;
         workbook.write(url);
     // workbook.write(url, function(err, stats) {
     //     if (err) {
