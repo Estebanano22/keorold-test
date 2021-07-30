@@ -126,13 +126,20 @@ exports.adminConsignaciones = async (req, res) => {
         }
     })
 
+    const usuarios = await Usuarios.findAll({
+        where: {
+            [Op.and]:[{super_patrocinador: req.user.enlace_afiliado}]
+        }
+    })
+
     res.render('dashboard/adminConsignaciones', {
         nombrePagina : 'Administración consignaciones',
         titulo: 'Administración consignaciones',
         breadcrumb: 'Administración consignaciones',
         classActive: req.path.split('/')[2],
         consignaciones,
-        countConsignaciones
+        countConsignaciones,
+        usuarios
     })
 
 }

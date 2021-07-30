@@ -38,18 +38,31 @@
 
                         <!-- Row -->
 						<div class="row row-sm">
-							<div class="col-sm-12 col-md-12 col-xl-12">
+							<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
 								<div class="card custom-card">
-									<div class="card-body text-center">
-										<div class="icon-service bg-success-transparent rounded-circle text-success">
-                                            <i class="far fa-money-bill-alt"></i>
+									<div class="card-body">
+										<div class="card-order-success">
+											<label class="main-content-label mb-3 pt-1">Consignaciones pendientes</label>
+											<h2 class="text-right card-item-icon card-icon">
+											<i class="far fa-money-bill-alt icon-size float-left text-success"></i>
+											<span class="font-weight-bold"><%= countConsignaciones %></span></h2>
 										</div>
-										<p class="mb-1 text-muted">Consignaciones pendientes<br>por validar</p>
-										<h3 class="mb-0"><%= countConsignaciones %></h3>
 									</div>
 								</div>
 							</div>
-                            
+							<div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+								<a data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalReporte">
+									<div class="card custom-card background-secondary">
+										<div class="card-body">
+											<div class="card-order ">
+												<label class="main-content-label mb-3 pt-1 text-white">Generar</label>
+												<h2 class="text-right card-item-icon card-icon">
+												<i class="fe fe-download icon-size float-left text-primary"></i><span class="font-weight-bold">Reporte Consignaciones</span></h2>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
 						</div>
 						<!-- End Row -->
 
@@ -147,6 +160,52 @@
 		</div>
 		<!-- End Page -->
 
+<!-- Modal Reporte -->
+<div class="modal" id="modalReporte" style="z-index: 1999 !important;">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">Generar reporte consignaciones</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+				<div class="row row-sm">
+					<label class="form-label">Seleccionar Usuario</label>
+					<select class="form-control select2" name="usuarios" id="usuarios">
+						<option value="0">
+							Todos
+						</option> 
+						<% usuarios.forEach(usuario => { %>
+							<option value="<%= usuario.id_usuario %>">
+								<%= usuario.nombre %>
+							</option>
+						<% }) %>
+
+					</select>
+				</div>
+                <div class="row row-sm mt-2">
+					<label class="form-label">Seleccione un rango de fecha</label>
+					<div class="input-group p-0">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<i class="fe fe-calendar  lh--9 op-6"></i>
+							</div>
+						</div>
+						<input type="text" class="form-control pull-right" id="reservation">
+					</div>
+				</div>
+				<div class="alert alert-danger mg-b-0 display-none" role="alert" id="alertaDescarga">
+					Hola
+				</div>
+            </div>
+            <div class="modal-footer">
+				<a class="btn ripple btn-success display-none" href="" download="" id="btnDescargar"><i class="fas fa-file-excel"></i> Descargar Reporte</a>
+                <button class="btn ripple btn-primary" type="button" onclick="generarReporte(event)">Generar Reporte</button>
+                <button class="btn ripple btn-secondary" data-dismiss="modal" type="button" onclick="archivoDescargado(event)">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Rechazar -->
 <div class="modal" id="modalRechazar">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -170,7 +229,7 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button class="btn ripple btn-primary" type="button" onclick="rechazarConsignacion(event)">Rechazar Consignación</button>
+				<button class="btn ripple btn-primary" type="button" onclick="rechazarConsignacion(event)">Rechazar Consignación</button>
                 <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
             </div>
         </div>
@@ -230,6 +289,63 @@
 
 
 <script>
+
+	function archivoDescargado(e) {
+		
+		const btnDescargar = document.getElementById('btnDescargar');
+		
+		fetch('/adminConsignaciones/reporteConsignacionesStep', {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                data: btnDescargar.href,
+            })
+        })
+
+		btnDescargar.href = '';
+		btnDescargar.setAttribute("download", "");
+		btnDescargar.classList.add('display-none');
+
+	}
+
+	function generarReporte (e) {
+
+		const fechas = document.getElementById('reservation').value;
+		console.log(fechas);
+		const user = document.getElementById('usuarios').value;
+		const btnDescargar = document.getElementById('btnDescargar');
+		
+		fetch('/adminConsignaciones/reporteConsignaciones', {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                user: user,
+				fecha: fechas
+            })
+        })
+        .then(res => res.text())
+        .then(data => {
+            const respuesta = JSON.parse(data);
+            if(respuesta.resp === 'success'){
+				console.log(respuesta.url);
+                btnDescargar.href = respuesta.url;
+                btnDescargar.setAttribute("download", respuesta.url);
+				btnDescargar.classList.remove('display-none');
+
+            } else {
+
+				btnDescargar.href = '';
+                btnDescargar.setAttribute("download", "");
+				btnDescargar.classList.add('display-none');
+
+                $('#alertaDescarga').fadeIn();
+				const error = '<button aria-label="Close" class="close" data-dismiss="alert" type="button"> <span aria-hidden="true" class="text-danger">×</span> </button> <strong>Oh no!</strong> Error realizar la descarga del archivo.';
+				$('#alertaDescarga').html(error);
+				$('#alertaDescarga').delay(2000).fadeOut();
+            }
+        })
+
+	}
 
     function aprobarConsignacion (e, i) {
 

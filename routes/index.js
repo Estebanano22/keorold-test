@@ -598,6 +598,20 @@ module.exports = function() {
         reportesController.adminReporteCargas
     );
 
+    router.post('/adminConsignaciones/reporteConsignaciones',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        reportesController.reporteConsignaciones
+    );
+
+    router.post('/adminConsignaciones/reporteConsignacionesStep',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        reportesController.reporteConsignaciones
+    );
+
 
     // Administrar Links PSE
 
