@@ -14,7 +14,7 @@ const fs = require('fs');
 const xlsx = require('node-xlsx');
 const path = require('path');
 const dotenv = require('dotenv');
-const Excel = require('Excel4node');
+const Excel = require('excel4node');
 const moment = require('moment');
 
 exports.adminReporteCargas = async (req, res) => {
