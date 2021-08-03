@@ -13,10 +13,6 @@ const xlsx = require('node-xlsx');
 const path = require('path');
 const dotenv = require('dotenv');
 
-dotenv.config({
-    path: path.resolve(__dirname, '../development.env')
-});
-
 // Inicio
 exports.subirCuentas = async (req, res) => {
     const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});

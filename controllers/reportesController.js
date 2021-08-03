@@ -17,10 +17,6 @@ const dotenv = require('dotenv');
 const Excel = require('Excel4node');
 const moment = require('moment');
 
-dotenv.config({
-    path: path.resolve(__dirname, '../development.env')
-});
-
 exports.adminReporteCargas = async (req, res) => {
 
     const cargas = await Cargas.findAll({
