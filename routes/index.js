@@ -598,6 +598,20 @@ module.exports = function() {
         reportesController.adminReporteCargas
     );
 
+    router.post('/adminReporteCargas/reporteCargasSuperdistribuidor',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        reportesController.reporteCargasSuperdistribuidor
+    );
+
+    router.post('/adminReporteCargas/eliminarArchivo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        reportesController.eliminarArchivo
+    );
+
     router.post('/adminConsignaciones/reporteConsignaciones',
         authController.usuarioAutenticado,
         authController.verifyToken,
@@ -605,11 +619,25 @@ module.exports = function() {
         reportesController.reporteConsignaciones
     );
 
-    router.post('/adminConsignaciones/reporteConsignacionesStep',
+    router.post('/adminConsignaciones/eliminarArchivo',
         authController.usuarioAutenticado,
         authController.verifyToken,
         rolController.permisosPaginaSuperdistribuidor,
-        reportesController.reporteConsignaciones
+        reportesController.eliminarArchivo
+    );
+
+    router.post('/adminCuentasVendidas/reporteCuentasSuperdistribuidor',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        reportesController.reporteCuentasSuperdistribuidor
+    );
+
+    router.post('/adminCuentasVendidas/eliminarArchivo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        reportesController.eliminarArchivo
     );
 
 
@@ -979,6 +1007,78 @@ module.exports = function() {
         authController.verifyToken,
         rolController.permisosPaginaUsuario,
         cuentasController.cuentasJuegos
+    );
+
+    // Repotes
+
+    router.get('/dashboard/reporteCompras',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.reporteCompras
+    );
+
+    router.post('/reporteCompras/reporteComprasSaldo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.reporteComprasSaldo
+    );
+
+    router.post('/reporteCompras/eliminarArchivo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.eliminarArchivo
+    );
+
+    router.get('/dashboard/reporteVentas',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.reporteVentas
+    );
+
+    router.post('/reporteVentas/reporteVentasSaldo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.reporteVentasSaldo
+    );
+
+    router.post('/reporteVentas/eliminarArchivo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.eliminarArchivo
+    );
+
+    router.post('/cuentasVendidas/reporteCuentas',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.reporteCuentas
+    );
+
+    router.post('/cuentasVendidas/eliminarArchivo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.eliminarArchivo
+    );
+
+    router.post('/reportarConsignacion/reporteConsignacionesUser',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.reporteConsignacionesUser
+    );
+
+    router.post('/reportarConsignacion/eliminarArchivo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.eliminarArchivo
     );
 
     // =================

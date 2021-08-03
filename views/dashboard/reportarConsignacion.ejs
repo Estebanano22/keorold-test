@@ -29,6 +29,13 @@
 									<li class="breadcrumb-item active" aria-current="page"><%- breadcrumb %></li>
 								</ol>
 							</div>
+							<div class="d-flex">
+								<div class="justify-content-center">
+									<a class="btn btn-primary my-2 btn-icon-text" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalReporte">
+									  <i class="fe fe-download  mr-2"></i> Generar Reporte Consignaciones
+									</a>
+								</div>
+							</div>
 						</div>
 						<!-- End Page Header -->
 
@@ -138,6 +145,35 @@
 
 		</div>
 		<!-- End Page -->
+
+<!-- Modal Reporte -->
+<div class="modal" id="modalReporte" style="z-index: 1999 !important;">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">Generar reporte consignaciones</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row row-sm mt-2">
+					<label class="form-label">Seleccione un rango de fecha</label>
+					<div class="input-group p-0">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<i class="fe fe-calendar  lh--9 op-6"></i>
+							</div>
+						</div>
+						<input type="text" class="form-control pull-right" id="reservation">
+					</div>
+				</div>
+            </div>
+            <div class="modal-footer">
+				<a class="btn ripple btn-success display-none" href="" download="" id="btnDescargar" onclick="archivoDescargado(event)"><i class="fas fa-file-excel"></i> Descargar Reporte</a>
+                <button class="btn ripple btn-primary" type="button" onclick="generarReporte(event)">Generar Reporte</button>
+                <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal Consignaciones -->
 <div class="modal" id="modalConsignacion">
@@ -289,6 +325,60 @@
 
 
 <script>
+
+	function archivoDescargado(e) {
+		
+		const btnDescargar = document.getElementById('btnDescargar');
+		fetch('/reportarConsignacion/eliminarArchivo', {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                data: btnDescargar.dataset.file,
+            })
+        })
+
+		btnDescargar.dataset.file = '';
+		btnDescargar.setAttribute("download", "");
+		btnDescargar.classList.add('display-none');
+
+	}
+
+	function generarReporte (e) {
+
+		const fechas = document.getElementById('reservation').value;
+		console.log(fechas);
+		const btnDescargar = document.getElementById('btnDescargar');
+		
+		fetch('/reportarConsignacion/reporteConsignacionesUser', {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+				fecha: fechas
+            })
+        })
+        .then(res => res.text())
+        .then(data => {
+            const respuesta = JSON.parse(data);
+            if(respuesta.resp === 'success'){
+				btnDescargar.setAttribute('data-file', respuesta.url);
+                btnDescargar.href = respuesta.url;
+                btnDescargar.setAttribute("download", respuesta.url);
+				btnDescargar.classList.remove('display-none');
+				
+            } else {
+				btnDescargar.setAttribute('data-file', respuesta.url);
+				btnDescargar.href = '';
+                btnDescargar.setAttribute("download", "");
+				btnDescargar.classList.add('display-none');
+
+                $('#alertaDescarga').fadeIn();
+				const error = '<button aria-label="Close" class="close" data-dismiss="alert" type="button"> <span aria-hidden="true" class="text-danger">×</span> </button> <strong>Oh no!</strong> Error realizar la descarga del archivo.';
+				$('#alertaDescarga').html(error);
+				$('#alertaDescarga').delay(2000).fadeOut();
+            }
+        })
+
+	}
 
 	function modalComprobante (e, img) {
 

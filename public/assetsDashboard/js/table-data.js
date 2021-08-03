@@ -27,6 +27,57 @@ $(function() {
 	table.buttons().container()
 	.appendTo( '#exportexample_wrapper .col-md-6:eq(0)' );
 	
+   var table = $('#exportexamplecargas').DataTable( {
+      responsive: true,
+      order: [[ 6, "asc" ]],
+      language: {
+			searchPlaceholder: 'Buscar...',
+			sSearch: '',
+			lengthMenu: '_MENU_ filas/pagina',
+         buttons: {
+            'copy': 'Copiar',
+            'excel': 'Excel',
+            'pdf': 'PDF',
+            'colvis': 'Ocultar columnas'
+         },
+         paginate: {
+            'first': 'Primero',
+            'last': 'Último',
+            'next': 'Siguiente',
+            'previous': 'Anterior'
+        },
+		},
+		lengthChange: false,
+		buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+	} );
+	table.buttons().container()
+	.appendTo( '#exportexamplecargas_wrapper .col-md-6:eq(0)' );
+
+   var table = $('#exportexamplecuentas').DataTable( {
+      responsive: true,
+      order: [[ 11, "asc" ]],
+      language: {
+			searchPlaceholder: 'Buscar...',
+			sSearch: '',
+			lengthMenu: '_MENU_ filas/pagina',
+         buttons: {
+            'copy': 'Copiar',
+            'excel': 'Excel',
+            'pdf': 'PDF',
+            'colvis': 'Ocultar columnas'
+         },
+         paginate: {
+            'first': 'Primero',
+            'last': 'Último',
+            'next': 'Siguiente',
+            'previous': 'Anterior'
+        },
+		},
+		lengthChange: false,
+		buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+	} );
+	table.buttons().container()
+	.appendTo( '#exportexamplecuentas_wrapper .col-md-6:eq(0)' );
 	
 	$('#example1').DataTable({
 		language: {

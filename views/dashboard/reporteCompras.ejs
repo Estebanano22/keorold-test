@@ -61,7 +61,7 @@
 									<div class="card-body">
 										<div>
 											<h6 class="main-content-label mb-1">Total Cargas en plataforma</h6>
-											<p class="text-muted card-sub-title">A continuación encontrara un reporte detallado de todas cargas de saldo realizadas en su red.</p>
+											<p class="text-muted card-sub-title">A continuación encontrara un reporte detallado de todas compras de saldo realizadas por usted.</p>
 										</div>
 										<div class="table-responsive">
 											<table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexamplecargas">
@@ -74,7 +74,6 @@
                                                         <th>Tipo de carga</th>
                                                         <th>Acción realizada</th>
                                                         <th>Fecha de carga</th>
-														<th>Responsable Gestión</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -98,7 +97,6 @@
                                                                 <td class="text-capitalize"><%= listaCargas.tipoCarga %></td>
                                                                 <td class="text-capitalize"><%= listaCargas.accionCarga %></td>
                                                                 <td class="text-center <%= listaCargas.fechaCarga === null ? 'text-warning' : '' %>"><%= listaCargas.fechaCarga === null ? 'Sin fecha de carga' : moment(listaCargas.fechaCarga).format('MMMM Do YYYY, h:mm:ss a') %></td>
-																<td class="text-capitalize"><%= listaCargas.responsableGestion %></td>
 															</tr>
 														<% }) %> 
 													<% } %> 
@@ -137,20 +135,6 @@
                 <h6 class="modal-title">Generar reporte cargas</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-				<div class="row row-sm">
-					<label class="form-label">Seleccionar Usuario</label>
-					<select class="form-control select2" name="usuarios" id="usuarios">
-						<option value="0">
-							Todos
-						</option> 
-						<% usuarios.forEach(usuario => { %>
-							<option value="<%= usuario.id_usuario %>">
-								<%= usuario.nombre %>
-							</option>
-						<% }) %>
-
-					</select>
-				</div>
                 <div class="row row-sm mt-2">
 					<label class="form-label">Seleccione un rango de fecha</label>
 					<div class="input-group p-0">
@@ -228,7 +212,7 @@
 	function archivoDescargado(e) {
 		
 		const btnDescargar = document.getElementById('btnDescargar');
-		fetch('/adminReporteCargas/eliminarArchivo', {
+		fetch('/reporteCompras/eliminarArchivo', {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({
@@ -246,14 +230,12 @@
 
 		const fechas = document.getElementById('reservation').value;
 		console.log(fechas);
-		const user = document.getElementById('usuarios').value;
 		const btnDescargar = document.getElementById('btnDescargar');
 		
-		fetch('/adminReporteCargas/reporteCargasSuperdistribuidor', {
+		fetch('/reporteCompras/reporteComprasSaldo', {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({
-                user: user,
 				fecha: fechas
             })
         })

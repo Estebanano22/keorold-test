@@ -18,6 +18,10 @@ const Consignaciones = db.define('consignaciones', {
         type: Sequelize.DECIMAL(20, 2),
         defaultValue : 0.00
     },
+    responsableGestion: {
+        type: Sequelize.STRING(90),
+        defaultValue : null
+    },
     estado: {
         type: Sequelize.INTEGER(1),
         defaultValue : 0,

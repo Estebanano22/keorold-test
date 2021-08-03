@@ -26,6 +26,10 @@ const Cargas = db.define('cargasSaldo', {
         type: Sequelize.STRING(30),
         defaultValue : null
     },
+    responsableGestion: {
+        type: Sequelize.STRING(90),
+        defaultValue : null
+    },
     saldoAnterior: {
         type: Sequelize.DECIMAL(20, 2),
         defaultValue : 0.00

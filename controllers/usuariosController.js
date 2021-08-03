@@ -259,6 +259,12 @@ exports.cargarSaldo = async (req, res) => {
     const idUsuario = req.body.id;
     const valorCargar = req.body.valor;
     const usuario = await Usuarios.findOne({ where: { id_usuario: idUsuario }});
+    const responsable = req.body.responsable;
+
+    if(responsable === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe llenar todos los campos.' });
+        return; 
+    }
 
     if(!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible cargar saldo a este usuario.' });
@@ -275,7 +281,8 @@ exports.cargarSaldo = async (req, res) => {
         tipoCarga: 'carga directa',
         saldoAnterior: usuario.saldo,
         saldoNuevo: Number(usuario.saldo) + Number(valorCargar),
-        usuarioIdUsuario: idUsuario
+        usuarioIdUsuario: idUsuario,
+        responsableGestion: responsable
     });
 
     usuario.saldo = Number(usuario.saldo) + Number(valorCargar);
@@ -292,13 +299,19 @@ exports.restarSaldo = async (req, res) => {
     const idUsuario = req.body.id;
     const valorCargar = req.body.valor;
     const usuario = await Usuarios.findOne({ where: { id_usuario: idUsuario }});
+    const responsable = req.body.responsable;
+
+    if(responsable === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe llenar todos los campos.' });
+        return; 
+    }
 
     if(!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible restar saldo a este usuario.' });
         return;
     }
 
-    if(usuario.saldo < valorCargar) {
+    if(Number(usuario.saldo) < Number(valorCargar)) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible restar saldo a este usuario, debido a que el saldo que desea restar es mayor al saldo actual del usuario. El saldo actual del usuario es '+usuario.saldo });
         return;
     }
@@ -313,7 +326,8 @@ exports.restarSaldo = async (req, res) => {
         tipoCarga: 'carga directa',
         saldoAnterior: usuario.saldo,
         saldoNuevo: Number(usuario.saldo) - Number(valorCargar),
-        usuarioIdUsuario: idUsuario
+        usuarioIdUsuario: idUsuario,
+        responsableGestion: responsable
     });
 
     usuario.saldo = Number(usuario.saldo) - Number(valorCargar);
@@ -360,10 +374,11 @@ exports.cargarSaldoUsuario = async (req, res) => {
     const valorCargar = req.body.valor;
     const usuario = await Usuarios.findOne({ where: { id_usuario: idUsuario }});
     const distribuidor = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
+    const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador }});
 
     const saldoDistribuidor = distribuidor.saldo;
-
-    if(saldoDistribuidor < valorCargar) {
+    // Cuadrar quien aprueba la carga de saldo que basicamente es el patrocinador, arreglar las cargas en superdistribuidor
+    if(Number(saldoDistribuidor) < Number(valorCargar)) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible cargar saldo a este usuario, debido a que tu saldo es inferior al saldo que deseas cargar' });
         return;
     }
@@ -373,8 +388,24 @@ exports.cargarSaldoUsuario = async (req, res) => {
         return;
     }
 
+    distribuidor.saldo = Number(distribuidor.saldo) - Number(valorCargar);
+    await distribuidor.save();
+    
+    await Cargas.create({
+        idCarga: uuid_v4(),
+        idSuperdistribuidor: superdistribuidor.id_usuario,
+        valor: valorCargar,
+        accionCarga: 'carga',
+        tipoCarga: 'carga distribuidor',
+        saldoAnterior: usuario.saldo,
+        saldoNuevo: Number(usuario.saldo) + Number(valorCargar),
+        usuarioIdUsuario: idUsuario,
+        responsableGestion: req.user.nombre
+    });
+    
     usuario.saldo = Number(usuario.saldo) + Number(valorCargar);
     await usuario.save();
+
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'El saldo fue cargado con éxito.' });
     return;
@@ -387,16 +418,33 @@ exports.restarSaldoUsuario = async (req, res) => {
     const idUsuario = req.body.id;
     const valorCargar = req.body.valor;
     const usuario = await Usuarios.findOne({ where: { id_usuario: idUsuario }});
+    const distribuidor = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
+    const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador }});
 
     if(!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible restar saldo a este usuario.' });
         return;
     }
 
-    if(usuario.saldo < valorCargar) {
+    if(Number(usuario.saldo) < Number(valorCargar)) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible restar saldo a este usuario, debido a que el saldo que desea restar es mayor al saldo actual del usuario. El saldo actual del usuario es '+usuario.saldo });
         return;
     }
+
+    distribuidor.saldo = Number(distribuidor.saldo) + Number(valorCargar);
+    await distribuidor.save();
+
+    await Cargas.create({
+        idCarga: uuid_v4(),
+        idSuperdistribuidor: superdistribuidor.id_usuario,
+        valor: valorCargar,
+        accionCarga: 'resta',
+        tipoCarga: 'carga distribuidor',
+        saldoAnterior: usuario.saldo,
+        saldoNuevo: Number(usuario.saldo) - Number(valorCargar),
+        usuarioIdUsuario: idUsuario,
+        responsableGestion: req.user.nombre
+    });
 
     usuario.saldo = Number(usuario.saldo) - Number(valorCargar);
     await usuario.save();

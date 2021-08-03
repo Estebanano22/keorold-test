@@ -45,7 +45,7 @@
 											<div class="card-order ">
 												<label class="main-content-label mb-3 pt-1 text-white">Generar</label>
 												<h2 class="text-right card-item-icon card-icon">
-												<i class="fe fe-download icon-size float-left text-primary"></i><span class="font-weight-bold">Reporte Cargas</span></h2>
+												<i class="fe fe-download icon-size float-left text-primary"></i><span class="font-weight-bold">Reporte Ventas</span></h2>
 											</div>
 										</div>
 									</div>
@@ -60,8 +60,8 @@
 								<div class="card custom-card">
 									<div class="card-body">
 										<div>
-											<h6 class="main-content-label mb-1">Total Cargas en plataforma</h6>
-											<p class="text-muted card-sub-title">A continuación encontrara un reporte detallado de todas cargas de saldo realizadas en su red.</p>
+											<h6 class="main-content-label mb-1">Total ventas saldo</h6>
+											<p class="text-muted card-sub-title">A continuación encontrara un reporte detallado de todas ventas de saldo realizadas en usted.</p>
 										</div>
 										<div class="table-responsive">
 											<table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexamplecargas">
@@ -228,7 +228,7 @@
 	function archivoDescargado(e) {
 		
 		const btnDescargar = document.getElementById('btnDescargar');
-		fetch('/adminReporteCargas/eliminarArchivo', {
+		fetch('/reporteVentas/eliminarArchivo', {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({
@@ -249,7 +249,7 @@
 		const user = document.getElementById('usuarios').value;
 		const btnDescargar = document.getElementById('btnDescargar');
 		
-		fetch('/adminReporteCargas/reporteCargasSuperdistribuidor', {
+		fetch('/reporteVentas/reporteVentasSaldo', {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({

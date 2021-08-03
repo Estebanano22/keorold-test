@@ -88,7 +88,7 @@
             <!-- Reportes -->
             <li class="nav-header"><span class="nav-label">Reportes</span></li>
             <li class="nav-item <%= classActive === 'adminReporteCargas' ? 'active' : '' %>">
-                <a class="nav-link" href="/dashboard/adminReporteCargas"><span class="shape1"></span><span class="shape2"></span><i class="ti-credit-card sidemenu-icon"></i><span class="sidemenu-label">Reporte Cargas</span></a>
+                <a class="nav-link" href="/dashboard/adminReporteCargas"><span class="shape1"></span><span class="shape2"></span><i class="far fa-file-excel sidemenu-icon"></i><span class="sidemenu-label">Reporte Cargas</span></a>
             </li>
 
             <!-- Ganancias Red -->
@@ -153,6 +153,15 @@
                 <a class="nav-link" href="/dashboard/reportarInsidencia"><span class="shape1"></span><span class="shape2"></span><i class="ti-email sidemenu-icon"></i><span class="sidemenu-label">Reportar</span></a>
             </li>
 
+            <!-- Reportes -->
+            <li class="nav-header"><span class="nav-label">Reportes</span></li>
+            <li class="nav-item <%= classActive === 'reporteCompras' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/reporteCompras"><span class="shape1"></span><span class="shape2"></span><i class="far fa-file-excel sidemenu-icon"></i><span class="sidemenu-label">Reporte Compras</span></a>
+            </li>
+            <li class="nav-item <%= classActive === 'reporteVentas' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/reporteVentas"><span class="shape1"></span><span class="shape2"></span><i class="far fa-file-excel sidemenu-icon"></i><span class="sidemenu-label">Reporte Ventas</span></a>
+            </li>
+
         <% } else { %>
 
             <!-- Comprar Plataformas -->
@@ -192,6 +201,12 @@
             <li class="nav-header"><span class="nav-label">Insidencias</span></li>
             <li class="nav-item <%= classActive === 'reportarInsidencia' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/reportarInsidencia"><span class="shape1"></span><span class="shape2"></span><i class="ti-email sidemenu-icon"></i><span class="sidemenu-label">Reportar</span></a>
+            </li>
+
+            <!-- Reportes -->
+            <li class="nav-header"><span class="nav-label">Reportes</span></li>
+            <li class="nav-item <%= classActive === 'reporteCompras' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/reporteCompras"><span class="shape1"></span><span class="shape2"></span><i class="far fa-file-excel sidemenu-icon"></i><span class="sidemenu-label">Reporte Compras</span></a>
             </li>
 
         <% } %>

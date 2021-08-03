@@ -147,12 +147,18 @@ exports.adminConsignaciones = async (req, res) => {
 exports.aprobarConsignacion = async (req, res) => {
 
     const idConsignacion = req.body.id;
+    const responsable = req.body.responsable.trim();
 
     const consignacion = await Consignaciones.findOne({
         where: {
             [Op.and]:[{idConsignacion:idConsignacion}]
         }
     });
+
+    if(responsable === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Lo sentimos, debe ingresar su nombre en la casilla de responable de aprobación.' });
+        return;
+    }
 
     if(!consignacion) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Lo sentimos no es posible aprobar esta consignación debido a que no existe en nuestros servidores.' });
@@ -170,6 +176,7 @@ exports.aprobarConsignacion = async (req, res) => {
     }
 
     consignacion.estado = 1;
+    consignacion.responsableGestion = responsable;
     await consignacion.save();
 
     const usuario = await Usuarios.findOne({
@@ -188,7 +195,8 @@ exports.aprobarConsignacion = async (req, res) => {
         tipoCarga: 'consignación',
         saldoAnterior: usuario.saldo,
         saldoNuevo: saldoNuevo,
-        usuarioIdUsuario: consignacion.usuarioIdUsuario
+        usuarioIdUsuario: consignacion.usuarioIdUsuario,
+        responsableGestion: responsable
     });
 
     usuario.saldo = saldoNuevo;
@@ -202,13 +210,19 @@ exports.aprobarConsignacion = async (req, res) => {
 exports.rechazarConsignacion = async (req, res) => {
 
     const idConsignacion = req.body.id;
-    const motivo = req.body.motivo;
+    const motivo = req.body.motivo.trim();
+    const responsable = req.body.responsable.trim();
 
     const consignacion = await Consignaciones.findOne({
         where: {
             [Op.and]:[{idConsignacion:idConsignacion}]
         }
     });
+
+    if(responsable === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Lo sentimos, debe ingresar su nombre en la casilla de responable de rechazo.' });
+        return;
+    }
 
     if(!consignacion) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Lo sentimos no es posible rechazar esta consignación debido a que no existe en nuestros servidores.' });
@@ -222,6 +236,7 @@ exports.rechazarConsignacion = async (req, res) => {
 
     consignacion.estado = 2;
     consignacion.observaciones = motivo;
+    consignacion.responsableGestion = responsable;
     await consignacion.save();
 
     res.json({titulo: '¡Que bien!', resp: 'success', descripcion: 'Consignación rechazada con éxito.'});
