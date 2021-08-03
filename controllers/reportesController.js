@@ -14,7 +14,7 @@ const fs = require('fs');
 const xlsx = require('node-xlsx');
 const path = require('path');
 const dotenv = require('dotenv');
-const Excel = require('excel4node');
+const xl = require('excel4node');
 const moment = require('moment');
 
 exports.adminReporteCargas = async (req, res) => {
@@ -76,7 +76,7 @@ exports.reporteConsignaciones = async (req, res) => {
     }
 
     // Create a new instance of a Workbook class
-    const workbook = new Excel.Workbook();
+    const workbook = new xl.Workbook();
     // Add Worksheets to the workbook
     const worksheet = workbook.addWorksheet('Reporte Consignaciones Superdistribuidor');
     // Create a reusable style
@@ -328,7 +328,7 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
     }
 
     // Create a new instance of a Workbook class
-    const workbook = new Excel.Workbook();
+    const workbook = new xl.Workbook();
     // Add Worksheets to the workbook
     const worksheet = workbook.addWorksheet('Reporte Consignaciones Superdistribuidor');
     // Create a reusable style
@@ -577,7 +577,7 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
     })
 
     // Create a new instance of a Workbook class
-    const workbook = new Excel.Workbook();
+    const workbook = new xl.Workbook();
     // Add Worksheets to the workbook
     const worksheet = workbook.addWorksheet('Reporte Cuentas Vendidas Superdistribuidor');
     // Create a reusable style
@@ -840,7 +840,7 @@ exports.reporteCuentas = async (req, res) => {
     });
 
     // Create a new instance of a Workbook class
-    const workbook = new Excel.Workbook();
+    const workbook = new xl.Workbook();
     // Add Worksheets to the workbook
     const worksheet = workbook.addWorksheet('Reporte Cuentas Vendidas');
     // Create a reusable style
@@ -1085,7 +1085,7 @@ exports.reporteConsignacionesUser = async (req, res) => {
     });
 
     // Create a new instance of a Workbook class
-    const workbook = new Excel.Workbook();
+    const workbook = new xl.Workbook();
     // Add Worksheets to the workbook
     const worksheet = workbook.addWorksheet('Reporte Consignaciones');
     // Create a reusable style
@@ -1339,7 +1339,7 @@ exports.reporteComprasSaldo = async (req, res) => {
     });
 
     // Create a new instance of a Workbook class
-    const workbook = new Excel.Workbook();
+    const workbook = new xl.Workbook();
     // Add Worksheets to the workbook
     const worksheet = workbook.addWorksheet('Reporte compras de saldo');
     // Create a reusable style
@@ -1606,7 +1606,7 @@ exports.reporteVentasSaldo = async (req, res) => {
     }
 
     // Create a new instance of a Workbook class
-    const workbook = new Excel.Workbook();
+    const workbook = new xl.Workbook();
     // Add Worksheets to the workbook
     const worksheet = workbook.addWorksheet('Reporte Ventas Saldo');
     // Create a reusable style
