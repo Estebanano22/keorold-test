@@ -714,8 +714,12 @@
 						text: respuesta.descripcion,
 						type: respuesta.resp,
 						confirmButtonColor: '#fd6074'
+					},
+					function(isConfirm) {
+					if (isConfirm) {
+						location.reload();
 					}
-				)
+				});
 			}
 		})
 

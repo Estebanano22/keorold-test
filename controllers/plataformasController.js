@@ -100,7 +100,7 @@ exports.crearPlataforma = async (req, res) => {
         return;
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.json({ titulo: '¡Lo sentimos!', resp: 'error', descripcion: error.message });
         return; 
     }
@@ -146,7 +146,7 @@ exports.eliminarPlataforma = async (req, res) => {
 
     // Eliminar imagenes
     fs.unlink(__dirname + '/../public/uploads/plataformas/' + plataforma.logo, () => {
-        console.log('Icono Removido')
+        // console.log('Icono Removido')
     })
 
     await Plataformas.destroy({ where: { id_plataforma: id_plataforma }});
@@ -268,8 +268,8 @@ exports.subirValor = async (req, res) => {
             where: {id_asignacion: asignacion[i].id_asignacion}
         });
 
-        console.log('Nuevo valor: ' + (Number(asignaciones.valor) + Number(valor)));
-        console.log(asignaciones.id_asignacion);
+        // console.log('Nuevo valor: ' + (Number(asignaciones.valor) + Number(valor)));
+        // console.log(asignaciones.id_asignacion);
 
         asignaciones.valor = Number(asignaciones.valor) + Number(valor);
         await asignaciones.save();
@@ -301,8 +301,8 @@ exports.bajarValor = async (req, res) => {
             where: {id_asignacion: asignacion[i].id_asignacion}
         });
 
-        console.log('Nuevo valor: ' + (Number(asignaciones.valor) - Number(valor)));
-        console.log(asignaciones.id_asignacion);
+        // console.log('Nuevo valor: ' + (Number(asignaciones.valor) - Number(valor)));
+        // console.log(asignaciones.id_asignacion);
 
         asignaciones.valor = Number(asignaciones.valor) - Number(valor);
         await asignaciones.save();
@@ -390,7 +390,7 @@ exports.crearPlataformaSuperdistribuidor = async (req, res) => {
         return;
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.json({ titulo: '¡Que bien!', resp: 'error', descripcion: error.message });
         return; 
     }
@@ -411,7 +411,7 @@ exports.eliminarPlataformaSuperdistribuidor = async (req, res) => {
 
     // Eliminar imagenes
     fs.unlink(__dirname + '/../public/uploads/plataformas/' + plataforma.logo, () => {
-        console.log('Logo Removido')
+        // console.log('Logo Removido')
     })
 
     await Asignaciones.destroy({ 

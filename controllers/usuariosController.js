@@ -174,6 +174,19 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
     for(var i = 0; i < objetoAsignaciones.length; i++) {
         const idPlataforma = objetoAsignaciones[i][0].id;
         const valorPlataforma = objetoAsignaciones[i][0].valor;
+
+        const asignacionDistribuidor = await Asignaciones.findOne({ 
+            where: { 
+                [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }, { plataformaIdPlataforma: idPlataforma }],  
+            },
+            attributes: ['valor'],
+        });
+        
+        if(Number(asignacionDistribuidor.valor) > Number(valorPlataforma)) {
+            res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar el valor a esta plataforma ya es que menor o igual a su valor asignado.' });
+            
+            return;
+        };
         
         if(valorPlataforma !== '') {
             const asignacion = await Asignaciones.findOne({ 
@@ -506,9 +519,9 @@ exports.asignarPlataformaUsuario = async (req, res) => {
             attributes: ['valor'],
         });
         
-        if(Number(asignacionDistribuidor.valor) >= Number(valorPlataforma)) {
+        if(Number(asignacionDistribuidor.valor) > Number(valorPlataforma)) {
             res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar el valor a esta plataforma ya es que menor o igual a su valor asignado.' });
-            console.log(asignacionDistribuidor.valor);
+            
             return;
         }
 

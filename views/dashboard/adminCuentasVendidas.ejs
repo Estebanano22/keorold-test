@@ -139,6 +139,7 @@
                                                         <th>Password</th>
                                                         <th>Pantalla</th>
                                                         <th>Pin</th>
+														<th>ID Jugador</th>
                                                         <th>Fecha Compra</th>
 														<th>Fecha Subida</th>
 													</tr>
@@ -156,6 +157,21 @@
 															<% } else { %>
 																<% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaCuentas.valorPagado); %>
 															<% } %>
+															<% if(listaCuentas.plataforma.tipo_plataforma === 5) { %>
+																<% if(listaCuentas.user !== null || listaCuentas.password !== null) { %>
+																	<% var nuevo_email_user = listaCuentas.user; %>
+																	<% var nuevo_password = listaCuentas.password; %>
+																	<% var idJuego = 'no aplica' %> 
+																<% } else { %>
+																	<% var nuevo_email_user = 'no aplica' %>
+																	<% var nuevo_password = 'no aplica' %>
+																	<% var idJuego = listaCuentas.idJuego %> 
+																<% } %>   
+															<% } else { %>
+																<% var nuevo_email_user = listaCuentas.user; %>
+																<% var nuevo_password = listaCuentas.password; %>
+																<% var idJuego = 'no aplica' %> 
+															<% } %>
 															<tr>
                                                                 <td class="text-left text-capitalize"><%= nombre %></td>
                                                                 <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
@@ -170,10 +186,11 @@
                                                                         <%= listaCuentas.plataforma.tipo_plataforma === 1 ? 'Normal' : listaCuentas.plataforma.tipo_plataforma === 2 ? 'Bajo Pedido' : listaCuentas.plataforma.tipo_plataforma === 3 ? 'Personalizada' : listaCuentas.plataforma.tipo_plataforma === 4 ? 'Renovaciones' : listaCuentas.plataforma.tipo_plataforma === 5 ? 'Juegos' : 'N/A' %>
                                                                     </span>
                                                                 </td>
-                                                                <td class="text-left"><%= listaCuentas.user %></td>
-                                                                <td class="text-left"><%= listaCuentas.password %></td>
+                                                                <td class="text-left"><%= nuevo_email_user %></td>
+                                                                <td class="text-left"><%= nuevo_password %></td>
                                                                 <td class="text-left"><%= listaCuentas.pantalla %></td>
                                                                 <td class="text-left"><%= listaCuentas.pin %></td>
+																<td class="text-left"><%= idJuego %></td>
                                                                 <td class="text-center"><%= moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
                                                                 <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
 															</tr>

@@ -742,8 +742,9 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
     worksheet.column(11).setWidth(20);
     worksheet.column(12).setWidth(20);
     worksheet.column(13).setWidth(20);
+    worksheet.column(14).setWidth(20);
 
-    worksheet.cell(1, 1, 1, 13, true).string('Reporte Cuentas Vendidas Superdistribuidor - Fullentretenimiento').style(style4);
+    worksheet.cell(1, 1, 1, 14, true).string('Reporte Cuentas Vendidas Superdistribuidor - Fullentretenimiento').style(style4);
 
     worksheet.cell(2, 1).string('Id cuenta').style(style1);
     worksheet.cell(2, 2).string('Distribuidor').style(style1);
@@ -756,8 +757,9 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
     worksheet.cell(2, 9).string('Password').style(style1);
     worksheet.cell(2, 10).string('Pantalla').style(style1);
     worksheet.cell(2, 11).string('Pin').style(style1);
-    worksheet.cell(2, 12).string('Fecha de compra').style(style1);
-    worksheet.cell(2, 13).string('Fecha de subida').style(style1);
+    worksheet.cell(2, 12).string('ID Jugador').style(style1);
+    worksheet.cell(2, 13).string('Fecha de compra').style(style1);
+    worksheet.cell(2, 14).string('Fecha de subida').style(style1);
 
     for (let i = 0; i < cuentas.length; i += 1) {
     
@@ -808,8 +810,9 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
         worksheet.cell(i + 3, 9).string(cuentas[i].password).style(style2);
         worksheet.cell(i + 3, 10).string(cuentas[i].pantalla).style(style2);
         worksheet.cell(i + 3, 11).string(cuentas[i].pin).style(style2);
-        worksheet.cell(i + 3, 12).date(cuentas[i].fechaCompra).style(style5);
-        worksheet.cell(i + 3, 13).date(cuentas[i].fechaSubida).style(style5);
+        worksheet.cell(i + 3, 12).string(cuentas[i].idJuego).style(style2);
+        worksheet.cell(i + 3, 13).date(cuentas[i].fechaCompra).style(style5);
+        worksheet.cell(i + 3, 14).date(cuentas[i].fechaSubida).style(style5);
     }
 
     const nombreArchivo = `temp-${shortid.generate()}.xlsx`;
@@ -1002,8 +1005,9 @@ exports.reporteCuentas = async (req, res) => {
     worksheet.column(8).setWidth(20);
     worksheet.column(9).setWidth(20);
     worksheet.column(10).setWidth(20);
+    worksheet.column(11).setWidth(20);
 
-    worksheet.cell(1, 1, 1, 10, true).string('Reporte Cuentas Vendidas - Fullentretenimiento').style(style4);
+    worksheet.cell(1, 1, 1, 11, true).string('Reporte Cuentas Vendidas - Fullentretenimiento').style(style4);
 
     worksheet.cell(2, 1).string('Id cuenta').style(style1);
     worksheet.cell(2, 2).string('Plataforma').style(style1);
@@ -1013,8 +1017,9 @@ exports.reporteCuentas = async (req, res) => {
     worksheet.cell(2, 6).string('Password').style(style1);
     worksheet.cell(2, 7).string('Pantalla').style(style1);
     worksheet.cell(2, 8).string('Pin').style(style1);
-    worksheet.cell(2, 9).string('Fecha de compra').style(style1);
-    worksheet.cell(2, 10).string('Fecha de subida').style(style1);
+    worksheet.cell(2, 9).string('ID Juegador').style(style1);
+    worksheet.cell(2, 10).string('Fecha de compra').style(style1);
+    worksheet.cell(2, 11).string('Fecha de subida').style(style1);
 
     for (let i = 0; i < cuentas.length; i += 1) {
     
@@ -1046,16 +1051,36 @@ exports.reporteCuentas = async (req, res) => {
             var tipoPlataforma = 'N/A';
         }
 
+       if(cuentas[i].plataforma.tipo_plataforma === 5) {
+           if(cuentas[i].user !== null || cuentas[i].password !== null) {
+               const user_analizado = /^([^]+)@(\w+).(\w+)$/.exec(cuentas[i].user);
+               const [,prefijo,servidor,dominio] = user_analizado;
+               const reemplazo = prefijo.replace(/./g,"*");
+               var nuevo_email_user = `${reemplazo}@${servidor}.${dominio}`;
+               var nuevo_password = cuentas[i].password.replace(/./g,"*");
+               var idJuego = 'no aplica' 
+           } else {
+               var nuevo_email_user = 'no aplica'
+               var nuevo_password = 'no aplica'
+               var idJuego = cuentas[i].idJuego 
+           }   
+       } else {
+           var nuevo_email_user = cuentas[i].user;
+           var nuevo_password = cuentas[i].password;
+           var idJuego = 'no aplica' 
+       }
+
         worksheet.cell(i + 3, 1).string(cuentas[i].idCuenta).style(style2);
         worksheet.cell(i + 3, 2).string(cuentas[i].plataforma.plataforma).style(style2);
         worksheet.cell(i + 3, 3).number(Number(cuentas[i].valorPagado)).style(style3);
         worksheet.cell(i + 3, 4).string(tipoPlataforma).style(style2);
-        worksheet.cell(i + 3, 5).string(cuentas[i].user).style(style2);
-        worksheet.cell(i + 3, 6).string(cuentas[i].password).style(style2);
+        worksheet.cell(i + 3, 5).string(nuevo_email_user).style(style2);
+        worksheet.cell(i + 3, 6).string(nuevo_password).style(style2);
         worksheet.cell(i + 3, 7).string(cuentas[i].pantalla).style(style2);
         worksheet.cell(i + 3, 8).string(cuentas[i].pin).style(style2);
-        worksheet.cell(i + 3, 9).date(cuentas[i].fechaCompra).style(style5);
-        worksheet.cell(i + 3, 10).date(cuentas[i].fechaSubida).style(style5);
+        worksheet.cell(i + 3, 9).string(idJuego).style(style2);
+        worksheet.cell(i + 3, 10).date(cuentas[i].fechaCompra).style(style5);
+        worksheet.cell(i + 3, 11).date(cuentas[i].fechaSubida).style(style5);
     }
 
     const nombreArchivo = `temp-${shortid.generate()}.xlsx`;

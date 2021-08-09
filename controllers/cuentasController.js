@@ -903,9 +903,9 @@ exports.uploadComprobante = async (req, res, next) => {
 exports.subirDatosJuego = async (req, res) => {
 
     const id = req.body.id;
-    const user = req.body.usuario;
-    const password = req.body.password;
-    const idJuego = req.body.idJuego;
+    var user = req.body.usuario;
+    var password = req.body.password;
+    var idJuego = req.body.idJuego;
     const comprobante = req.body.comprobante;
 
     if(comprobante === 'undefined') {
@@ -915,9 +915,15 @@ exports.subirDatosJuego = async (req, res) => {
     
     const cuenta = await Cuentas.findOne({ where: { idCuenta: id }});
 
-    if(user === '' || password === '') {
-        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El usuario y el password son obligatorios.' });
-        return; 
+    if(idJuego === '') {
+        if(user === '' || password === '') {
+            res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El usuario y el password son obligatorios.' });
+            return; 
+        }
+        var idJuego = null;
+    } else {
+        var user = null;
+        var password = null;
     }
 
     if(!cuenta) {
