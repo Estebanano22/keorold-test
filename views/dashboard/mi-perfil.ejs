@@ -139,14 +139,25 @@
 												</div>
 												<div class="border-top"></div>
 												<div class="p-4">
-													<h4 class="tx-15 text-uppercase mb-3">Copiar enlace afiliado</h4>
+													<h4 class="tx-15 text-uppercase mb-3">Copiar enlace afiliado distribuidor</h4>
 													<div class="row row-sm">
                                                         <div class="col-lg-6 col-md-6 display-flex">
 															<div class="col-6 px-0">
-																<input class="form-control input-md text-left" type="text" id="enlaceAfiliado" value="<%= usuario.enlace_afiliado %>" readonly>
+																<input class="form-control input-md text-left" type="text" id="enlaceAfiliado" value="<%= usuario.enlace_afiliado %>-okdist21m" readonly>
 															</div>
 															<div class="col-6">
 																<a class="btn btn-secondary ml-1 text-white copiarPortapapeles" data-clipboard-target="#enlaceAfiliado"><i class="fe fe-copy"></i> Copiar</a>
+															</div>			
+														</div>
+													</div>
+													<h4 class="tx-15 text-uppercase mb-3 mt-4">Copiar enlace afiliado reseller</h4>
+													<div class="row row-sm">
+                                                        <div class="col-lg-6 col-md-6 display-flex">
+															<div class="col-6 px-0">
+																<input class="form-control input-md text-left" type="text" id="enlaceAfiliado2" value="<%= usuario.enlace_afiliado %>-res21ok7" readonly>
+															</div>
+															<div class="col-6">
+																<a class="btn btn-secondary ml-1 text-white copiarPortapapeles" data-clipboard-target="#enlaceAfiliado2"><i class="fe fe-copy"></i> Copiar</a>
 															</div>			
 														</div>
 													</div>

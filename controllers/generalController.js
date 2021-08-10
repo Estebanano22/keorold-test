@@ -20,8 +20,11 @@ exports.validarRegistro = async (req, res, next) => {
     // leer datos
     const usuario = req.body;
 
+    const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split('-');
+    const enlPat = validacionEnlacePatrocinador[0]+'-'+validacionEnlacePatrocinador[1]+'-'+validacionEnlacePatrocinador[2];
+
     // validar distribuidor
-    const validarDistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.body.enlacePatrocinador, bloqueo: 0 }});
+    const validarDistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: enlPat, bloqueo: 0 }});
     
     if(validarDistribuidor) {
         var validacionDist = validarDistribuidor.enlace_afiliado;
@@ -34,7 +37,7 @@ exports.validarRegistro = async (req, res, next) => {
 
     const rules = [
         body('nombre').not().isEmpty().withMessage('El nombre es obligatorio').escape(),
-        body('perfil').not().isEmpty().withMessage('Debe seleccionar un perfil').escape(),
+        // body('perfil').not().isEmpty().withMessage('Debe seleccionar un perfil').escape(),
         body('direccion').not().isEmpty().withMessage('La dirección es obligatorio').escape(),
         body('telefono').not().isEmpty().withMessage('El teléfono es obligatorio').escape(),
         body('pais').not().isEmpty().withMessage('El pais es obligatorio').escape(),
@@ -42,7 +45,7 @@ exports.validarRegistro = async (req, res, next) => {
         body('email').isEmail().withMessage('El email es obligatorio').normalizeEmail(),
         body('password').not().isEmpty().withMessage('El password es obligatorio').escape(),
         body('password').not().isEmpty().isLength({min: 10}).withMessage('El password debe ser mayor a 10 caracteres').escape(),
-        body('enlacePatrocinador').equals(validacionDist).withMessage('El código de afiliación no es valido')
+        body('enlacePatrocinador').equals(validacionDist+'-'+validacionEnlacePatrocinador[3]).withMessage('El código de afiliación no es valido')
     ];
  
     await Promise.all(rules.map(validation => validation.run(req)));
@@ -65,7 +68,10 @@ exports.validarRegistro = async (req, res, next) => {
 
 exports.crearRegistro = async (req, res) => {
 
-    const datosRed = await Usuarios.findOne({ where: { enlace_afiliado: req.body.enlacePatrocinador, bloqueo: 0 }});
+    const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split('-');
+    const enlPat = validacionEnlacePatrocinador[0]+'-'+validacionEnlacePatrocinador[1]+'-'+validacionEnlacePatrocinador[2];
+
+    const datosRed = await Usuarios.findOne({ where: { enlace_afiliado: enlPat, bloqueo: 0 }});
 
     const usuario = req.body;
     const superPatrocinador = datosRed.super_patrocinador;
@@ -76,7 +82,15 @@ exports.crearRegistro = async (req, res) => {
     const response = await axios.get('https://api.ipify.org?format=json');
     const ip = response.data.ip;
     const observaciones = 'Usuario creado desde codigo afiliado';
+
+    const valPerfil = req.body.enlacePatrocinador.split('-');
     
+    if(valPerfil[3] === 'res21ok7') {
+        var perfil = 'reseller';
+    } else {
+        var perfil = 'distribuidor';
+    }
+
     try {
 
         await Usuarios.create({
@@ -88,9 +102,9 @@ exports.crearRegistro = async (req, res) => {
             direccion: usuario.direccion,
             telefono_movil: usuario.telefono,
             ip: ip,
-            perfil: usuario.perfil,
+            perfil: perfil,
             observaciones: observaciones,
-            patrocinador: usuario.enlacePatrocinador,
+            patrocinador: enlPat,
             super_patrocinador: superPatrocinador
         });
 
