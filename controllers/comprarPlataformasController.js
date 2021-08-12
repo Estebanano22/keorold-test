@@ -167,7 +167,8 @@ exports.compraCuentaNormal = async (req, res) => {
     Ganancias.create({
         idGanancia: uuid_v4(),
         ganancia: gananciaDistribuidor,
-        usuarioIdUsuario: distribuidor.id_usuario,
+        distribuidor: distribuidor.id_usuario,
+        usuarioIdUsuario: req.user.id_usuario,
         plataformaIdPlataforma: req.body.id
     });
     

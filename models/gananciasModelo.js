@@ -19,6 +19,10 @@ const Ganancias = db.define('gananciasVentas', {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
     },
+    distribuidor: {
+        type: Sequelize.CHAR(36),
+        defaultValue : null
+    },
 
 });
 

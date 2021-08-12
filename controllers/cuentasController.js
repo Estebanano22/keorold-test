@@ -401,6 +401,11 @@ exports.subirDatosBajoPedido = async (req, res) => {
     const valorUsuario = Number(asignacionUsuario.valor);
     const gananciaDistribuidor = valorUsuario - valorDistribuidor;
 
+    if(cuenta.estado === 1 || cuenta.estado === '1'){
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'La cuenta ya habia sido gestionanda anteiormente por la tanto no es posible realizar la gestión'});
+        return;
+    }
+
     // Usuarios Saldo
     usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
     await usuario.save();
@@ -408,12 +413,13 @@ exports.subirDatosBajoPedido = async (req, res) => {
     // Ganancias Distribuidor Saldo
     distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
     await distribuidor.save();
-
+    
     // Crear ganancia en tabla
     Ganancias.create({
         idGanancia: uuid_v4(),
         ganancia: gananciaDistribuidor,
-        usuarioIdUsuario: distribuidor.id_usuario,
+        distribuidor: distribuidor.id_usuario,
+        usuarioIdUsuario: usuario.id_usuario,
         plataformaIdPlataforma: cuenta.plataformaIdPlataforma
     });
 
@@ -577,6 +583,11 @@ exports.subirDatosRenovacion = async (req, res) => {
     const valorUsuario = Number(asignacionUsuario.valor);
     const gananciaDistribuidor = valorUsuario - valorDistribuidor;
 
+    if(cuenta.estado === 1 || cuenta.estado === '1'){
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'La cuenta ya habia sido gestionanda anteiormente por la tanto no es posible realizar la gestión'});
+        return;
+    }
+
     // Usuarios Saldo
     usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
     await usuario.save();
@@ -584,12 +595,13 @@ exports.subirDatosRenovacion = async (req, res) => {
     // Ganancias Distribuidor Saldo
     distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
     await distribuidor.save();
-
+    
     // Crear ganancia en tabla
     Ganancias.create({
         idGanancia: uuid_v4(),
         ganancia: gananciaDistribuidor,
-        usuarioIdUsuario: distribuidor.id_usuario,
+        distribuidor: distribuidor.id_usuario,
+        usuarioIdUsuario: usuario.id_usuario,
         plataformaIdPlataforma: cuenta.plataformaIdPlataforma
     });
 
@@ -755,6 +767,11 @@ exports.subirDatosPersonalizada = async (req, res) => {
     const valorUsuario = Number(asignacionUsuario.valor);
     const gananciaDistribuidor = valorUsuario - valorDistribuidor;
 
+    if(cuenta.estado === 1 || cuenta.estado === '1'){
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'La cuenta ya habia sido gestionanda anteiormente por la tanto no es posible realizar la gestión'});
+        return;
+    }
+
     // Usuarios Saldo
     usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
     await usuario.save();
@@ -762,12 +779,13 @@ exports.subirDatosPersonalizada = async (req, res) => {
     // Ganancias Distribuidor Saldo
     distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
     await distribuidor.save();
-
+    
     // Crear ganancia en tabla
     Ganancias.create({
         idGanancia: uuid_v4(),
         ganancia: gananciaDistribuidor,
-        usuarioIdUsuario: distribuidor.id_usuario,
+        distribuidor: distribuidor.id_usuario,
+        usuarioIdUsuario: usuario.id_usuario,
         plataformaIdPlataforma: cuenta.plataformaIdPlataforma
     });
 
@@ -965,6 +983,11 @@ exports.subirDatosJuego = async (req, res) => {
     const valorUsuario = Number(asignacionUsuario.valor);
     const gananciaDistribuidor = valorUsuario - valorDistribuidor;
 
+    if(cuenta.estado === 1 || cuenta.estado === '1'){
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'La cuenta ya habia sido gestionanda anteiormente por la tanto no es posible realizar la gestión'});
+        return;
+    }
+
     // Usuarios Saldo
     usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
     await usuario.save();
@@ -972,12 +995,13 @@ exports.subirDatosJuego = async (req, res) => {
     // Ganancias Distribuidor Saldo
     distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
     await distribuidor.save();
-
+    
     // Crear ganancia en tabla
     Ganancias.create({
         idGanancia: uuid_v4(),
         ganancia: gananciaDistribuidor,
-        usuarioIdUsuario: distribuidor.id_usuario,
+        distribuidor: distribuidor.id_usuario,
+        usuarioIdUsuario: usuario.id_usuario,
         plataformaIdPlataforma: cuenta.plataformaIdPlataforma
     });
 

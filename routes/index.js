@@ -20,6 +20,7 @@ const linkPseController = require('../controllers/linkPseController');
 const insidenciasController = require('../controllers/insidenciasController');
 const preguntasController = require('../controllers/preguntasController');
 const reportesController = require('../controllers/reportesController');
+const gananciasController = require('../controllers/gananciasController');
 
 module.exports = function() {
 
@@ -589,6 +590,15 @@ module.exports = function() {
         cuentasController.eliminarCuentaJuego
     );
 
+    // Tabla ganancias
+
+    router.get('/dashboard/ganancias',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        gananciasController.ganancias
+    );
+
     // Reportes
 
     router.get('/dashboard/adminReporteCargas',
@@ -640,6 +650,19 @@ module.exports = function() {
         reportesController.eliminarArchivo
     );
 
+    router.post('/ganancias/reporteGanancias',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        reportesController.reporteGanancias
+    );
+
+    router.post('/ganancias/eliminarArchivo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        reportesController.eliminarArchivo
+    );
 
     // Administrar Links PSE
 
