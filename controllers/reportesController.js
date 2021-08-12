@@ -1848,11 +1848,11 @@ exports.reporteGanancias = async (req, res) => {
     const idUsuarioReporte = req.body.user;
     const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
     const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
-    
+
     if(idUsuarioReporte === '0' || idUsuarioReporte === 0) {
         var ganancias = await Ganancias.findAll({
             where: {
-                [Op.and]: [{fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}]
+                [Op.and]: [{fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}, {distribuidor: req.user.id_usuario}]
             },
             include: [
                 {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
@@ -1863,7 +1863,7 @@ exports.reporteGanancias = async (req, res) => {
     } else {
         var ganancias = await Ganancias.findAll({
             where: {
-                [Op.and]: [{usuarioIdUsuario: idUsuarioReporte}, {fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}]
+                [Op.and]: [{usuarioIdUsuario: idUsuarioReporte}, {fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}, {distribuidor: req.user.id_usuario}]
             },
             include: [
                 {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
@@ -2058,6 +2058,223 @@ exports.reporteGanancias = async (req, res) => {
         worksheet.cell(i + 3, 4).string(ganancias[i].plataforma.plataforma).style(style2);
         worksheet.cell(i + 3, 5).number(Number(ganancias[i].ganancia)).style(style3);
         worksheet.cell(i + 3, 6).date(ganancias[i].fecha).style(style5);
+    }
+
+    const nombreArchivo = `temp-${shortid.generate()}.xlsx`;
+    const nameTemp = `/uploads/temporal/${nombreArchivo}`;
+    const url = `${__dirname}/../public${nameTemp}`;
+    workbook.write(url);
+
+    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    return;
+
+}
+
+exports.reporteConsignacionesDistribuidor = async (req, res) => {
+
+    const fecha = req.body.fecha.split(' - ');
+    const idUsuarioReporte = req.body.user;
+    const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
+    const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
+
+    if(idUsuarioReporte === '0' || idUsuarioReporte === 0) {
+        var ganancias = await Ganancias.findAll({
+            where: {
+                [Op.and]: [{fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}, {distribuidor: req.user.id_usuario}]
+            },
+            include: [
+                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'},
+            ],
+            order: [['fecha', 'DESC']]
+        });
+    } else {
+        var ganancias = await Ganancias.findAll({
+            where: {
+                [Op.and]: [{usuarioIdUsuario: idUsuarioReporte}, {fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}, {distribuidor: req.user.id_usuario}]
+            },
+            include: [
+                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'},
+            ],
+            order: [['fecha', 'DESC']]
+        });
+    }
+
+    // Create a new instance of a Workbook class
+    const workbook = new xl.Workbook();
+    // Add Worksheets to the workbook
+    const worksheet = workbook.addWorksheet('Reporte ganancias');
+    // Create a reusable style
+    const style1 = workbook.createStyle({
+        font: {
+            color: '#6259ca',
+            bold: true,
+            size: 12
+        },
+        fill: {
+            type: 'pattern',
+            patternType: 'solid',
+            fgColor: 'eaedf7', 
+        },
+        border: {
+            left: {
+                style: 'thin',
+                color: 'black',
+            },
+            right: {
+                style: 'thin',
+                color: 'black',
+            },
+            top: {
+                style: 'thin',
+                color: 'black',
+            },
+            bottom: {
+                style: 'thin',
+                color: 'black',
+            },
+            outline: false,
+        },
+    });
+
+    const style2 = workbook.createStyle({
+        font: {
+            color: '#000000',
+            size: 12
+        },
+        border: {
+            left: {
+                style: 'thin',
+                color: 'black',
+            },
+            right: {
+                style: 'thin',
+                color: 'black',
+            },
+            top: {
+                style: 'thin',
+                color: 'black',
+            },
+            bottom: {
+                style: 'thin',
+                color: 'black',
+            },
+            outline: false,
+        },
+    });
+
+    const style3 = workbook.createStyle({
+        font: {
+          color: '#000000',
+          size: 12
+        },
+        numberFormat: '$#,##0.00; ($#,##0.00); -',
+        border: {
+            left: {
+                style: 'thin',
+                color: 'black',
+            },
+            right: {
+                style: 'thin',
+                color: 'black',
+            },
+            top: {
+                style: 'thin',
+                color: 'black',
+            },
+            bottom: {
+                style: 'thin',
+                color: 'black',
+            },
+            outline: false,
+        },
+    });
+
+    const style4 = workbook.createStyle({
+        font: {
+            color: '#ffffff',
+            bold: true,
+            size: 12
+        },
+        fill: {
+            type: 'pattern',
+            patternType: 'solid',
+            fgColor: '6259ca', 
+        },
+        alignment: {
+            wrapText: true,
+            horizontal: 'center',
+        },
+        border: {
+            left: {
+                style: 'thin',
+                color: 'black',
+            },
+            right: {
+                style: 'thin',
+                color: 'black',
+            },
+            top: {
+                style: 'thin',
+                color: 'black',
+            },
+            bottom: {
+                style: 'thin',
+                color: 'black',
+            },
+            outline: false,
+        },
+    });
+
+    const style5 = workbook.createStyle({
+        font: {
+            color: '#000000',
+            size: 12
+        },
+        border: {
+            left: {
+                style: 'thin',
+                color: 'black',
+            },
+            right: {
+                style: 'thin',
+                color: 'black',
+            },
+            top: {
+                style: 'thin',
+                color: 'black',
+            },
+            bottom: {
+                style: 'thin',
+                color: 'black',
+            },
+            outline: false,
+        },
+        numberFormat: 'm/d/yy hh:mm:ss'
+    });
+
+    worksheet.column(1).setWidth(45);
+    worksheet.column(2).setWidth(20);
+    worksheet.column(3).setWidth(20);
+    worksheet.column(4).setWidth(25);
+    worksheet.column(5).setWidth(20);
+
+    worksheet.cell(1, 1, 1, 5, true).string('Reporte ganancias - Fullentretenimiento').style(style4);
+
+    worksheet.cell(2, 1).string('Nombre vendedor').style(style1);
+    worksheet.cell(2, 2).string('Perfil vendedor').style(style1);
+    worksheet.cell(2, 3).string('Plataforma').style(style1);
+    worksheet.cell(2, 4).string('Ganancia carga').style(style1);
+    worksheet.cell(2, 5).string('Fecha').style(style1);
+
+    for (let i = 0; i < ganancias.length; i += 1) {
+
+        worksheet.cell(i + 3, 1).string(ganancias[i].usuario.nombre).style(style2);
+        worksheet.cell(i + 3, 2).string(ganancias[i].usuario.perfil).style(style2);
+        worksheet.cell(i + 3, 3).string(ganancias[i].plataforma.plataforma).style(style2);
+        worksheet.cell(i + 3, 4).number(Number(ganancias[i].ganancia)).style(style3);
+        worksheet.cell(i + 3, 5).date(ganancias[i].fecha).style(style5);
     }
 
     const nombreArchivo = `temp-${shortid.generate()}.xlsx`;

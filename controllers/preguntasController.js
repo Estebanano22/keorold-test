@@ -96,3 +96,25 @@ exports.eliminarPregunta = async (req, res) => {
     return;
 
 }
+
+
+exports.faq = async (req, res) => {
+
+    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
+    const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador }});
+    const preguntas = await Preguntas.findAll({
+        where: {
+            [Op.and]: [{idSuperdistribuidor: superdistribuidor.id_usuario}]
+        }
+    });
+
+    res.render('dashboard/faq', {
+        nombrePagina : 'Peguntas Fecuentes',
+        titulo: 'Peguntas Fecuentes',
+        breadcrumb: 'Peguntas Fecuentes',
+        classActive: req.path.split('/')[2],
+        usuario,
+        preguntas
+    })
+
+}

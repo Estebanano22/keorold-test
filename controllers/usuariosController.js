@@ -557,3 +557,27 @@ exports.asignarPlataformaUsuario = async (req, res) => {
     return;
 
 }
+
+exports.tablaPrecios = async (req, res) => {
+
+    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
+    const asignaciones = await Asignaciones.findAll({
+        where: {
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}]
+        },
+        include: [
+            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+        ]
+    })
+
+    res.render('dashboard/tablaPrecios', {
+        nombrePagina : 'Tabla de precios',
+        titulo: 'Tabla de precios',
+        breadcrumb: 'Tabla de precios',
+        classActive: req.path.split('/')[2],
+        usuario,
+        asignaciones
+    })
+
+}

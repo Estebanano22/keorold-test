@@ -861,6 +861,12 @@ module.exports = function() {
         usuariosController.asignarPlataformaUsuario
     );
 
+    router.get('/dashboard/gananciasRed',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaDistribuidor,
+        gananciasController.gananciasRed
+    );
 
     // Compra plataformas (Distribuidores y resellers)
     router.get('/dashboard/plataformas',
@@ -1032,6 +1038,20 @@ module.exports = function() {
         cuentasController.cuentasJuegos
     );
 
+    router.get('/dashboard/tablaPrecios',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        usuariosController.tablaPrecios
+    );
+
+    router.get('/dashboard/faq',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        preguntasController.faq
+    );
+
     // Repotes
 
     router.get('/dashboard/reporteCompras',
@@ -1098,6 +1118,21 @@ module.exports = function() {
     );
 
     router.post('/reportarConsignacion/eliminarArchivo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        reportesController.eliminarArchivo
+    );
+
+    // reporte ganancias distribuidor
+    router.post('/gananciasRed/reporteConsignacionesDistribuidor',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaDistribuidor,
+        reportesController.reporteConsignacionesDistribuidor
+    );
+
+    router.post('/gananciasRed/eliminarArchivo',
         authController.usuarioAutenticado,
         authController.verifyToken,
         rolController.permisosPaginaUsuario,

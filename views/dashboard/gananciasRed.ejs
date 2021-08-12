@@ -62,9 +62,8 @@
 											<table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexamplecuentas">
 												<thead>
 													<tr>
-                                                        <th>Distribuidor</th>
-                                                        <th>Vendedor</th>
-                                                        <th>Perfil vendedor</th>
+                                                        <th>Usuario</th>
+                                                        <th>Perfil</th>
 														<th>Logo</th>
                                                         <th>Plataforma</th>
 														<th>Ganancia</th>
@@ -76,17 +75,12 @@
                                                     <% moment.locale('es'); %>
 													<% if(ganancias.length) { %> 
 														<% ganancias.forEach(listaGanancias => { %>
-                                                            <% const distribuidor = usuarios.filter(function(element){ %>
-																<% return element.id_usuario == listaGanancias.distribuidor; %> 
-															<% }); %>
-                                                            <% const nombre = distribuidor[0].nombre; %>
 															<% if(listaGanancias.usuario.pais === 'Colombia') { %>
 																<% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaGanancias.ganancia); %>
 															<% } else { %>
 																<% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaGanancias.ganancia); %>
 															<% } %>
 															<tr>
-                                                                <td class="text-left text-capitalize"><%= nombre %></td>
                                                                 <td class="text-left text-capitalize"><%= listaGanancias.usuario.nombre %></td>
                                                                 <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaGanancias.usuario.perfil %></td>
 																<td class="text-center">
@@ -138,7 +132,7 @@
                 <h6 class="modal-title">Generar reporte ganancias</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-				<div class="row row-sm">
+                <div class="row row-sm">
 					<label class="form-label">Seleccionar Usuario</label>
 					<select class="form-control select2" name="usuarios" id="usuarios">
 						<option value="0">
@@ -212,7 +206,7 @@
 	function archivoDescargado(e) {
 		
 		const btnDescargar = document.getElementById('btnDescargar');
-		fetch('/ganancias/eliminarArchivo', {
+		fetch('/gananciasRed/eliminarArchivo', {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({
@@ -233,7 +227,7 @@
 		const user = document.getElementById('usuarios').value;
 		const btnDescargar = document.getElementById('btnDescargar');
 		
-		fetch('/ganancias/reporteGanancias', {
+		fetch('/gananciasRed/reporteConsignacionesDistribuidor', {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({
