@@ -11,6 +11,9 @@
             </div>
         </div>
         <div class="main-header-right">
+            <div class="dropdown d-md-flex header-settings" data-placement="bottom" data-toggle="tooltip" title="Saldo actual">
+                <button class="btn btn-primary mr-3" style="cursor: no-drop;">Saldo: $ <%- usuario.saldo %></button>
+            </div>
             <div class="dropdown main-header-notification flag-dropdown" title="<%- usuario.pais %>">
                 <% paises.data.forEach(pais => { %>
                     <% if(pais.name === usuario.pais) { %> 
