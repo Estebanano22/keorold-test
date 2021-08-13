@@ -15,8 +15,8 @@ exports.inicio = async (req, res) => {
 
     res.render('dashboard/inicio', {
         nombrePagina : 'Inicio',
-        titulo: 'Dashboard',
-        breadcrumb: 'Dashboard',
+        titulo: 'Inicio',
+        breadcrumb: 'Inicio',
         classActive: req.path.split('/')[2],
         usuario,
         asignaciones
