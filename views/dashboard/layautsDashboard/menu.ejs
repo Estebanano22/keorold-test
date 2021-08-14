@@ -213,11 +213,21 @@
 
             <!-- Mi Cuenta -->
             <li class="nav-header"><span class="nav-label">Mi Cuenta</span></li>
+
         <% if(usuario.perfil === 'distribuidor') { %>
 
             <!-- Ganancias Red -->
             <li class="nav-item <%= classActive === 'gananciasRed' ? 'active' : '' %>">
                 <a class="nav-link" href="/dashboard/gananciasRed"><span class="shape1"></span><span class="shape2"></span><i class="ti-gift sidemenu-icon"></i><span class="sidemenu-label">Mis Ganancias</span></a>
+            </li>
+
+        <% } %>
+
+        <% if(usuario.perfil == 'superdistribuidor') { %>
+
+            <!-- Publicidad -->
+            <li class="nav-item <%= classActive === 'adminPublicidad' ? 'active' : '' %>">
+                <a class="nav-link" href="/dashboard/adminPublicidad"><span class="shape1"></span><span class="shape2"></span><i class="far fa-image sidemenu-icon"></i><span class="sidemenu-label">Admin publicidad</span></a>
             </li>
 
         <% } %>

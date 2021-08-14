@@ -1,6 +1,7 @@
 const Usuarios = require('../models/UsuariosModelo');
 const Asignaciones = require('../models/asignacionesModelo');
 const Plataformas = require('../models/plataformasModelo');
+const Publicidad = require('../models/publicidadModelo');
 const { Op } = require("sequelize");
 const {body, validationResult} = require('express-validator');
 const multer = require('multer');
@@ -12,6 +13,23 @@ const bcrypt = require('bcrypt-nodejs');
 exports.inicio = async (req, res) => {
     const usuario = await Usuarios.findOne({ where: { email: req.user.email }});
     const asignaciones = await Asignaciones.findAll({ where: { usuarioIdUsuario: req.user.id_usuario }});
+    if(req.user.perfil === 'superdistribuidor'){
+
+        var publicidad = await Publicidad.findAll({
+            where: {
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}]
+            }
+        });
+
+    } else {
+        
+        var superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador }});
+        var publicidad = await Publicidad.findAll({
+            where: {
+                [Op.and]: [{idSuperdistribuidor: superdistribuidor.id_usuario}]
+            }
+        });
+    }
 
     res.render('dashboard/inicio', {
         nombrePagina : 'Inicio',
@@ -19,7 +37,8 @@ exports.inicio = async (req, res) => {
         breadcrumb: 'Inicio',
         classActive: req.path.split('/')[2],
         usuario,
-        asignaciones
+        asignaciones,
+        publicidad
     })
 }
 

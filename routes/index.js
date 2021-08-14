@@ -21,6 +21,7 @@ const insidenciasController = require('../controllers/insidenciasController');
 const preguntasController = require('../controllers/preguntasController');
 const reportesController = require('../controllers/reportesController');
 const gananciasController = require('../controllers/gananciasController');
+const publicidadController = require('../controllers/publicidadController');
 
 module.exports = function() {
 
@@ -789,6 +790,30 @@ module.exports = function() {
         authController.verifyToken,
         rolController.permisosPaginaSuperdistribuidor,
         preguntasController.eliminarPregunta
+    );
+
+    // Subir pautas
+
+    router.get('/dashboard/adminPublicidad',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        publicidadController.adminPublicidad
+    );
+
+    router.post('/adminPublicidad/subirPauta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        publicidadController.uploadPauta,
+        publicidadController.subirPauta
+    );
+
+    router.post('/adminPublicidad/eliminarPauta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        publicidadController.eliminarPauta
     );
 
     // =======================

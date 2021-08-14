@@ -28,6 +28,7 @@ require('./models/linksPseModelo');
 require('./models/insidenciasModelo');
 require('./models/cargasModelo');
 require('./models/preguntasModelo');
+require('./models/publicidadModelo');
 
 db.sync()
     .then(() => console.log('Conectado al servidor'))
