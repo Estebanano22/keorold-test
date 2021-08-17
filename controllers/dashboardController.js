@@ -2,7 +2,8 @@ const Usuarios = require('../models/UsuariosModelo');
 const Asignaciones = require('../models/asignacionesModelo');
 const Plataformas = require('../models/plataformasModelo');
 const Publicidad = require('../models/publicidadModelo');
-const { Op } = require("sequelize");
+const Cuentas = require('../models/cuentasModelo');
+const { Op, and } = require("sequelize");
 const {body, validationResult} = require('express-validator');
 const multer = require('multer');
 const shortid = require('shortid');
@@ -12,23 +13,58 @@ const bcrypt = require('bcrypt-nodejs');
 // Inicio
 exports.inicio = async (req, res) => {
     const usuario = await Usuarios.findOne({ where: { email: req.user.email }});
-    const asignaciones = await Asignaciones.findAll({ where: { usuarioIdUsuario: req.user.id_usuario }});
+    
     if(req.user.perfil === 'superdistribuidor'){
 
+        var asignaciones = await Asignaciones.findAll({ where: { id_superDistribuidor: req.user.id_usuario }});
+        var cuentas = await Cuentas.findAll({ 
+            where: { 
+            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado: 1}]
+            },
+            include: [
+                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+            ],
+            order: [['fechaCompra', 'DESC']],
+            limit: 5
+        });
         var publicidad = await Publicidad.findAll({
             where: {
                 [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}]
             }
         });
 
+        var saldoRed = await Usuarios.sum('saldox', {
+            where: {
+                [Op.and]:[{super_patrocinador: req.user.enlace_afiliado}]
+            }
+        })
+
     } else {
         
+        var asignaciones = await Asignaciones.findAll({ where: { usuarioIdUsuario: req.user.id_usuario }});
+        var cuentas = await Cuentas.findAll({ 
+            where: { 
+            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado: 1}]
+            },
+            include: [
+                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+            ],
+            order: [['fechaCompra', 'DESC']],
+            limit: 5
+        });
         var superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador }});
         var publicidad = await Publicidad.findAll({
             where: {
                 [Op.and]: [{idSuperdistribuidor: superdistribuidor.id_usuario}]
             }
         });
+        var saldoRed = await Usuarios.sum('saldox', {
+            where: {
+                [Op.and]:[{super_patrocinador: req.user.enlace_afiliado}]
+            }
+        })
     }
 
     res.render('dashboard/inicio', {
@@ -38,7 +74,9 @@ exports.inicio = async (req, res) => {
         classActive: req.path.split('/')[2],
         usuario,
         asignaciones,
-        publicidad
+        publicidad,
+        cuentas,
+        saldoRed
     })
 }
 

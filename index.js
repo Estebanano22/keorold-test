@@ -36,7 +36,7 @@ db.sync()
 
 // Variables de entorno
 dotenv.config({
-    path: path.resolve(__dirname, 'production.env')
+    path: path.resolve(__dirname, 'development.env')
 });
 
 // crear el servidor
