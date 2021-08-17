@@ -34,7 +34,7 @@ exports.inicio = async (req, res) => {
             }
         });
 
-        var saldoRed = await Usuarios.sum('saldox', {
+        var saldoRed = await Usuarios.sum('saldo', {
             where: {
                 [Op.and]:[{super_patrocinador: req.user.enlace_afiliado}]
             }
@@ -60,7 +60,7 @@ exports.inicio = async (req, res) => {
                 [Op.and]: [{idSuperdistribuidor: superdistribuidor.id_usuario}]
             }
         });
-        var saldoRed = await Usuarios.sum('saldox', {
+        var saldoRed = await Usuarios.sum('saldo', {
             where: {
                 [Op.and]:[{super_patrocinador: req.user.enlace_afiliado}]
             }
