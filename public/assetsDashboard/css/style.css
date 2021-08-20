@@ -73735,6 +73735,20 @@ table.dataTable>tbody>tr.child span.dtr-title {
     background-color: #eaeaea;
 }
 
+.carousel-indicators {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1 !important;
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    margin-right: 15%;
+    margin-left: 15%;
+    list-style: none;
+}
+
 @media (max-width: 768px) {
 
     .titulo-modal-asignar {
