@@ -7,6 +7,7 @@ const ejs = require('ejs');
 let transport = nodemailer.createTransport({
     host: emailConfig.host,
     port: emailConfig.port,
+    secure: true,
     auth: {
         user: emailConfig.user,
         pass: emailConfig.pass

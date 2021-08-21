@@ -70,7 +70,7 @@ const Usuarios = db.define('usuarios', {
         defaultValue : null
     },
     enlace_afiliado: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(50),
         defaultValue : null,
         unique: {
             args: true,

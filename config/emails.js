@@ -1,6 +1,13 @@
+const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({
+    path: path.resolve(__dirname, '../production.env')
+});
+
 module.exports = {
-    user: 'f39523f8e20fa4',
-    pass: '861893122afd6b',
-    host: 'smtp.mailtrap.io',
-    port: '2525'
+    user: process.env.USER_EMAIL,
+    pass: process.env.PASSWORD_EMAIL,
+    host: process.env.HOST_EMAIL,
+    port: process.env.PORT_EMAIL
 }
