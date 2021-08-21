@@ -236,8 +236,9 @@ exports.reporteConsignaciones = async (req, res) => {
     worksheet.column(6).setWidth(50);
     worksheet.column(7).setWidth(20);
     worksheet.column(8).setWidth(20);
+    worksheet.column(9).setWidth(20);
 
-    worksheet.cell(1, 1, 1, 8, true).string('Reporte Consignaciones Superdistribuidor - Fullentretenimiento').style(style4);
+    worksheet.cell(1, 1, 1, 9, true).string('Reporte Consignaciones Superdistribuidor - Fullentretenimiento').style(style4);
 
     worksheet.cell(2, 1).string('Id consignación').style(style1);
     worksheet.cell(2, 2).string('Usuario cargado').style(style1);
@@ -246,7 +247,8 @@ exports.reporteConsignaciones = async (req, res) => {
     worksheet.cell(2, 5).string('No. Referencia').style(style1);
     worksheet.cell(2, 6).string('Observaciones').style(style1);
     worksheet.cell(2, 7).string('Estado').style(style1);
-    worksheet.cell(2, 8).string('Fecha de consignación').style(style1);
+    worksheet.cell(2, 8).string('Fecha reporte').style(style1);
+    worksheet.cell(2, 9).string('Fecha de consignación').style(style1);
 
     for (let i = 0; i < consignaciones.length; i += 1) {
     
@@ -272,6 +274,7 @@ exports.reporteConsignaciones = async (req, res) => {
         worksheet.cell(i + 3, 6).string(observaciones).style(style2);
         worksheet.cell(i + 3, 7).string(estados).style(style2);
         worksheet.cell(i + 3, 8).date(consignaciones[i].fecha).style(style5);
+        worksheet.cell(i + 3, 9).date(consignaciones[i].fechaHoraConsignacion).style(style5);
     }
 
     const nombreArchivo = `temp-${shortid.generate()}.xlsx`;
@@ -1270,8 +1273,9 @@ exports.reporteConsignacionesUser = async (req, res) => {
     worksheet.column(6).setWidth(50);
     worksheet.column(7).setWidth(20);
     worksheet.column(8).setWidth(20);
+    worksheet.column(9).setWidth(20);
 
-    worksheet.cell(1, 1, 1, 8, true).string('Reporte Consignaciones - Fullentretenimiento').style(style4);
+    worksheet.cell(1, 1, 1, 9, true).string('Reporte Consignaciones - Fullentretenimiento').style(style4);
 
     worksheet.cell(2, 1).string('Id consignación').style(style1);
     worksheet.cell(2, 2).string('Usuario cargado').style(style1);
@@ -1280,7 +1284,8 @@ exports.reporteConsignacionesUser = async (req, res) => {
     worksheet.cell(2, 5).string('No. Referencia').style(style1);
     worksheet.cell(2, 6).string('Observaciones').style(style1);
     worksheet.cell(2, 7).string('Estado').style(style1);
-    worksheet.cell(2, 8).string('Fecha de consignación').style(style1);
+    worksheet.cell(2, 8).string('Fecha reporte').style(style1);
+    worksheet.cell(2, 9).string('Fecha de consignación').style(style1);
 
     for (let i = 0; i < consignaciones.length; i += 1) {
     
@@ -1306,6 +1311,7 @@ exports.reporteConsignacionesUser = async (req, res) => {
         worksheet.cell(i + 3, 6).string(observaciones).style(style2);
         worksheet.cell(i + 3, 7).string(estados).style(style2);
         worksheet.cell(i + 3, 8).date(consignaciones[i].fecha).style(style5);
+        worksheet.cell(i + 3, 9).date(consignaciones[i].fechaHoraConsignacion).style(style5);
     }
 
     const nombreArchivo = `temp-${shortid.generate()}.xlsx`;

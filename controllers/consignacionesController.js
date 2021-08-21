@@ -69,9 +69,37 @@ exports.subirConsignacion = async (req, res) => {
 
     const valorConsignado = req.body.valorConsignado;
     const tipoConsignacion = req.body.tipoConsignacion;
-    const referencia = req.body.referencia; 
+    const referencia = req.body.referencia.toLowerCase(); 
     const telefonoCuenta = req.body.telefonoCuenta;
     const comprobante = req.body.comprobante;
+    const fechaHoraConsignacion = req.body.fechaHoraConsignacion;
+
+    const consignaciones = await Consignaciones.findOne({
+        where: {
+            [Op.and]:[{referencia:referencia}, {estado:1}]
+        }
+    });
+
+    if(consignaciones) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El numero de referencia ingresado ya se encuentra en nuestro sistema, por favor verifique e intente nuevamente.' });
+        return;
+    }
+
+    const consignacionesEnProceso = await Consignaciones.findOne({
+        where: {
+            [Op.and]:[{referencia:referencia}, {estado:0}]
+        }
+    });
+
+    if(consignacionesEnProceso) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Ya existe una consignación en proceso de revisión con este nuemero de referencia, por favor vuelva a intentarlo más tarde.' });
+        return;
+    }
+
+    if(fechaHoraConsignacion === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Por favor ingrese la fecha y hora en la que realizo la consignación ó transferencia.' });
+        return;
+    }
 
     if(comprobante === 'undefined') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir el pantallazo o foto legible del comprobante de consignación ó transferencia.' });
@@ -100,7 +128,8 @@ exports.subirConsignacion = async (req, res) => {
         referencia: referencia,
         comprobante: req.file.filename,
         usuarioIdUsuario: req.user.id_usuario,
-        celularConsignacion: telefono
+        celularConsignacion: telefono,
+        fechaHoraConsignacion: fechaHoraConsignacion
     });
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Consignación reportada con éxito.' });

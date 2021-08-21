@@ -80,12 +80,13 @@
 												<thead>
 													<tr>
 														<th>Usuario</th>
-                                                        <th>Fecha Consignación</th>
+                                                        <th>Fecha Reporte</th>
 														<th>Banco (Tipo Consignación)</th>
                                                         <th>Valor</th>
 														<th>Referencia</th>
                                                         <th>Estado</th>
                                                         <th>Comprobante</th>
+														<th>Fecha Consignación</th>
                                                         <th>Observaciones</th>
                                                         <th>Acciones</th>
 													</tr>
@@ -120,6 +121,9 @@
 																</td>
 																<td class="text-left">
 																	<a data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalComprobante" onclick="modalComprobante(event, '<%= listaConsignaciones.comprobante %>')"><%- listaConsignaciones.comprobante %></a>
+																</td>
+																<td class="text-center">
+																	<%= listaConsignaciones.fechaHoraConsignacion === null ? 'Sin fecha' : listaConsignaciones.fechaHoraConsignacion.toLocaleString('es-CO');%>
 																</td>
 																<td class="text-left">
 																	<%- listaConsignaciones.observaciones === null ? '<span class="text-muted">Sin observaciones</span>' : listaConsignaciones.observaciones %>

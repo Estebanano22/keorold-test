@@ -186,6 +186,16 @@
                 <p class="mb-3">
                     La siguientes casillas son obligatorias para poder realizar un proceso efectivo de carga de saldo, por lo tanto deben coincidir en el comprobante tanto el monto consignado, como la referencia y el tipo de consignación por el que se haya realizado la transaccion.
                 </p>
+				<div class="form-group">
+					<label class="form-label">Ingrese fecha y hora en la que realizo la consignación</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<i class="fe fe-calendar lh--9 op-6"></i>
+							</div>
+						</div><input class="form-control" id="datetimepicker" placeholder="MM/DD/YYYY hh:mm:ss" type="text">
+					</div>
+				</div>
 				<div class="px-2">
 					<div class="form-group ">
 						<div class="row row-sm">
@@ -209,12 +219,13 @@
 							</select>
 						</div>
 					</div>
-					<div class="form-group ">
+					<div class="form-group">
 						<div class="row row-sm">
 							<label class="form-label">Referencia Consignación</label>
 							<input type="text" class="form-control" placeholder="Referencia de la consignación" value="" id="referencia">
 						</div>
 					</div>
+					
 					<div class="form-group" id="noCelular">
 						<div class="row row-sm">
 							<label class="form-label">No. de celular <br>
@@ -457,6 +468,7 @@
 
 	function subirConsignacion(e) {
 
+		const datetimepicker = document.getElementById("datetimepicker").value.trim();
 		const valorConsignado = document.getElementById("valorConsignado").value.trim();
 		const tipoConsignacion = document.getElementById("tipoConsignacion").value.trim();
 		const referencia = document.getElementById("referencia").value.trim();
@@ -468,6 +480,7 @@
 		data.append('tipoConsignacion', tipoConsignacion);
 		data.append('referencia', referencia);
 		data.append('telefonoCuenta', telefonoCuenta);
+		data.append('fechaHoraConsignacion', datetimepicker);
 		data.append('comprobante', comprobante.files[0]);
 
 		fetch('/reportarConsignacion/subirConsignacion', {

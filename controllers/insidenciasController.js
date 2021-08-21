@@ -310,8 +310,11 @@ exports.respondidasSuperdistribuidor = async (req, res) => {
 
 exports.responderInsidencia = async (req, res) => {
 
-    const idInsidencia = req.body.id;
+    const idInsidencia = req.body.idInsidencia;
     const respuesta = req.body.respuesta;
+    const archivo = req.body.files;
+
+    console.log(req.body);
 
     if(respuesta === ''){
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No puede enviar una respuesta vacia' });
@@ -329,8 +332,15 @@ exports.responderInsidencia = async (req, res) => {
         return;
     }
 
+    if(archivo === 'undefined') {
+        var nombreArchivo = null;
+    } else {
+        var nombreArchivo = req.file.filename;
+    }
+
     insidencia.estado = 1;
     insidencia.respuesta = respuesta;
+    insidencia.imgRespuesta = nombreArchivo;
     await insidencia.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Insidencia respondida con éxito.'});

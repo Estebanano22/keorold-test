@@ -187,6 +187,10 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="border-top" id="divRespuesta">
+                                                <h4 class="mb-3 mt-4">Respuesta</h4>
+                                                <div class="mb-3" id="contenidoRespuesta"></div>
+                                            </div>
                                             <div class="modal-footer px-0">
                                                 <button class="btn ripple btn-secondary" data-dismiss="modal" type="button" onclick="volver1(event)">volver</button>
                                             </div>
@@ -431,12 +435,21 @@
             const adjuntosInsidencia = document.getElementById('adjuntosInsidencia');
             const imagenInsidencia = document.getElementById('imagenInsidencia');
             const nombreImagenInsidencia = document.getElementById('nombreImagenInsidencia');
+            const contenidoRespuesta = document.getElementById('contenidoRespuesta');
 
             const divInformacion = document.getElementById('informacionInsidencia');
             const divTodas = document.getElementById('todas');
 
             divInformacion.classList.remove('display-none');
             divTodas.classList.add('display-none');
+
+            if(respuesta.respuesta === null) {
+                divRespuesta.classList.add('display-none');
+                contenidoRespuesta.innerHTML = respuesta.respuesta;
+            } else {
+                divRespuesta.classList.remove('display-none');
+                contenidoRespuesta.innerHTML = respuesta.respuesta;
+            }
 
             asuntoInsidencia.innerHTML = respuesta.asunto;
             descripcionInsidencia.innerHTML = respuesta.descripcion;

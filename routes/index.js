@@ -1016,6 +1016,7 @@ module.exports = function() {
         authController.usuarioAutenticado,
         authController.verifyToken,
         rolController.permisosPaginaUsuario,
+        insidenciasController.uploadArchivo,
         insidenciasController.sinResponder
     );
 

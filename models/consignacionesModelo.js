@@ -27,6 +27,10 @@ const Consignaciones = db.define('consignaciones', {
         defaultValue : 0,
         allowNull: true
     },
+    fechaHoraConsignacion: {
+        type: Sequelize.DATE,
+        defaultValue: null
+    },
     tipoConsignacion: {
         type: Sequelize.STRING(30),
         defaultValue : null

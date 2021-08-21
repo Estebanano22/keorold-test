@@ -127,6 +127,12 @@
         <!-- Socket IO -->
         <!-- <script src="/socket.io/socket.io.js"></script> -->
 
+        <!--Bootstrap-datepicker js-->
+		<script src="/assetsDashboard/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+
+        <!-- Internal jquery-simple-datetimepicker js -->
+		<script src="/assetsDashboard/plugins/amazeui-datetimepicker/js/amazeui.datetimepicker.min.js"></script>
+
         <!-- Js -->
         <script src="/assetsDashboard/js/main.js"></script>
 
@@ -401,7 +407,11 @@
 
         setInterval('notificaciones()',20000);
 
+        </script>
 
+        <% if(!(usuario.perfil == 'superdistribuidor' || usuario.perfil == 'admin')) { %> 
+
+        <script>
         // Whatsapp Patrocinador
 
         function whatsappPatrocinador(e) {
@@ -423,8 +433,9 @@
         }
 
         whatsappPatrocinador();
-
         </script>
+
+        <% } %> 
 
     </body>
 </html>
