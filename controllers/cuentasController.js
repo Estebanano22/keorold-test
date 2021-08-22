@@ -312,13 +312,18 @@ exports.adminCuentasBajoPedido = async (req, res) => {
         }
     })
 
+    const usuarios = await Usuarios.findAll({
+        where: { super_patrocinador: req.user.enlace_afiliado }
+    })
+
     res.render('dashboard/adminCuentasBajoPedido', {
         nombrePagina : 'Cuentas Bajo Pedido',
         titulo: 'Cuentas Bajo Pedido',
         breadcrumb: 'Cuentas Bajo Pedido',
         classActive: req.path.split('/')[2],
         cuentasBajoPedido,
-        cuentas
+        cuentas,
+        usuarios
     })
     
 }
@@ -513,13 +518,18 @@ exports.adminCuentasRenovaciones = async (req, res) => {
         }
     })
 
+    const usuarios = await Usuarios.findAll({
+        where: { super_patrocinador: req.user.enlace_afiliado }
+    })
+
     res.render('dashboard/adminCuentasRenovaciones', {
         nombrePagina : 'Cuentas Renovaciones',
         titulo: 'Cuentas Renovaciones',
         breadcrumb: 'Cuentas Renovaciones',
         classActive: req.path.split('/')[2],
         cuentasRenovaciones,
-        cuentas
+        cuentas,
+        usuarios
     })
     
 }
@@ -697,13 +707,18 @@ exports.adminCuentasPersonalizadas = async (req, res) => {
         }
     })
 
+    const usuarios = await Usuarios.findAll({
+        where: { super_patrocinador: req.user.enlace_afiliado }
+    })
+
     res.render('dashboard/adminCuentasPersonalizadas', {
         nombrePagina : 'Cuentas Personalizadas',
         titulo: 'Cuentas Personalizadas',
         breadcrumb: 'Cuentas Personalizadas',
         classActive: req.path.split('/')[2],
         cuentasPersonalizadas,
-        cuentas
+        cuentas,
+        usuarios
     })
     
 }
@@ -881,13 +896,18 @@ exports.adminCuentasJuegos = async (req, res) => {
         }
     })
 
+    const usuarios = await Usuarios.findAll({
+        where: { super_patrocinador: req.user.enlace_afiliado }
+    })
+
     res.render('dashboard/adminCuentasJuegos', {
         nombrePagina : 'Cuentas Juegos',
         titulo: 'Cuentas Juegos',
         breadcrumb: 'Cuentas Juegos',
         classActive: req.path.split('/')[2],
         cuentasJuegos,
-        cuentas
+        cuentas,
+        usuarios
     })
     
 }

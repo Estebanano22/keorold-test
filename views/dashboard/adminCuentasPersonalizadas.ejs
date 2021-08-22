@@ -66,6 +66,7 @@
 											<table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexample">
 												<thead>
 													<tr>
+                                                        <th>Distribuidor</th>
                                                         <th>Vendedor</th>
                                                         <th>Perfil vendedor</th>
 														<th>Logo</th>
@@ -85,7 +86,12 @@
                                                     <% moment.locale('es'); %>
 													<% if(cuentas.length) { %> 
 														<% cuentas.forEach(listaCuentas => { %>
+															<% const distribuidor = usuarios.filter(function(element){ %>
+																<% return element.id_usuario == listaCuentas.idDistribuidor; %> 
+															<% }); %>
+                                                            <% const nombre = distribuidor[0].nombre; %>
 															<tr>
+                                                                <td class="text-left text-capitalize"><%= nombre %></td>
                                                                 <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
                                                                 <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaCuentas.usuario.perfil %></td>
 																<td class="text-center">
