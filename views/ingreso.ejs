@@ -63,7 +63,7 @@
                                             
                                         </form>
                                         <div class="text-left mt-5 ml-0">
-                                            <div class="mb-1"><a href="">¿Se te olvidó tu contraseña?</a></div>
+                                            <div class="mb-1"><a data-effect="effect-flip-horizontal" data-toggle="modal" href="#recuperarPassword">¿Se te olvidó tu contraseña?</a></div>
                                             <div>¿No tienes una cuenta? <a href="/registro">Registrarse aquí</a></div>
                                         </div>
                                     </div>
@@ -78,6 +78,33 @@
 
     </div>
     <!-- End Page -->
+
+<!-- Modal Cambiar valor en red -->
+<div class="modal" id="recuperarPassword">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">Recuperar Contraseña</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                    <div class="form-group ">
+                        <div class="row row-sm">
+                            <label class="form-label">
+                                Ingrese su correo electronico
+                            </label>
+                            <input type="email" class="form-control" placeholder="Ingrese su Email" value="" id="emailRecuperar" name="emailRecuperar">
+                        </div>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn ripple btn-primary" type="button" onclick="recuperarPassword(event)">Recuperar</button>
+                <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <%- include('layauts/footer') %> 
 
@@ -96,4 +123,50 @@
             password.type = 'text';
         }
     }
+
+    function recuperarPassword (e) {
+
+        const emailRecuperar = document.getElementById('emailRecuperar').value;
+
+        fetch('/ingreso/recuperarPassword', {
+			method: 'POST',
+			headers: {'Content-type': 'application/json'},
+			body: JSON.stringify({
+				emailRecuperar: emailRecuperar
+			})
+		})
+		.then(res => res.text())
+		.then(data => {
+			const respuesta = JSON.parse(data);
+			if(respuesta.resp === 'success'){
+
+				swal(
+					{
+						title: respuesta.titulo,
+						text: respuesta.descripcion,
+						type: respuesta.resp,
+						confirmButtonColor: '#57a94f',
+						closeOnClickOutside: false
+					},
+					function(isConfirm) {
+					if (isConfirm) {
+						location.reload();
+					}
+				});
+
+			} else {
+
+				swal(
+					{
+						title: respuesta.titulo,
+						text: respuesta.descripcion,
+						type: respuesta.resp,
+						confirmButtonColor: '#fd6074'
+					}
+				)
+			}
+		})
+
+    }
+
 </script>

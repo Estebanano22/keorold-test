@@ -3,6 +3,9 @@ const { Op } = require("sequelize");
 const {body, validationResult} = require('express-validator');
 const enviarEmails = require('../handlers/emails');
 const axios = require('axios');
+const { v4: uuid_v4 } = require('uuid');
+const generator = require('generate-password');
+const bcrypt = require('bcrypt-nodejs');
 
 exports.inicio = (req, res) => {
     res.render('inicio', {
@@ -133,6 +136,40 @@ exports.crearRegistro = async (req, res) => {
         res.redirect('/registro');
     }
 
+}
+
+exports.recuperarPasswords = async (req, res) => {
+
+    const email = req.body.emailRecuperar.trim();
+
+    const usuario = await Usuarios.findOne({ where: { email: email }});
+
+    if(!usuario) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El email ingresado no existe en nuestra base de datos.' });
+        return; 
+    }
+
+    // NewPassword
+    const newPassword = generator.generate({
+        length: 12,
+        numbers: true
+    });
+
+    const hashPassword = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10), null);
+
+    usuario.password = hashPassword;
+    await usuario.save();
+
+    // Enviar email
+    await enviarEmails.enviarEmailPassword({
+        usuario: email,
+        newPassword,
+        subject: 'Recuperar contraseña Full Entretenimiento',
+        archivo: 'recuperar-password'
+    });
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Te hemos enviado un E-mail para resstablecer tu contraseña.' });
+    return;
 }
 
 // confirmar la cuenta del ususario
