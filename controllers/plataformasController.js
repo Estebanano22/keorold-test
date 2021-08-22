@@ -314,6 +314,34 @@ exports.bajarValor = async (req, res) => {
 
 }
 
+exports.editarLogo = async (req, res) => {
+
+    if(req.body.files === 'undefined') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen para el logo de la plataforma.' });
+        return;
+    }
+
+    const idPlataforma = req.body.id.trim();
+
+    const plataforma = await Plataformas.findOne({
+        where: {
+            [Op.and]:[{id_plataforma:idPlataforma}]
+        }
+    })
+
+    if(!plataforma){
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No existe la plataforma a la cual dese editar el logo.' });
+        return;
+    }
+
+    plataforma.logo = req.file.filename;
+    plataforma.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Logo actualizado con éxito.' });
+    return;
+
+}
+
 exports.crearPlataformaSuperdistribuidor = async (req, res) => {
 
     if(req.body.files === 'undefined') {

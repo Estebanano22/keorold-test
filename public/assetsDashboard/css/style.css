@@ -73735,6 +73735,24 @@ table.dataTable>tbody>tr.child span.dtr-title {
     background-color: #eaeaea;
 }
 
+.circle-edit {
+    color: #fff;
+    background-color: #6259ca;
+    width: 25px;
+    height: 25px;
+    padding: 3px;
+    border-radius: 100%;
+    position: absolute;
+    bottom: 3%;
+    right: 3%;
+    transition: .5s;
+}
+
+.circle-edit:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
 .carousel-indicators {
     position: absolute;
     right: 0;

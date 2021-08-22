@@ -307,6 +307,14 @@ module.exports = function() {
         plataformasController.adminPlataformasSuperdistribuidor
     );
 
+    router.post('/adminPlataformasSuperdistribuidor/editarLogo',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        plataformasController.uploadFoto,
+        plataformasController.editarLogo
+    );
+
     router.post('/adminPlataformasSuperdistribuidor/crearPlataformaSuperdistribuidor',
         authController.usuarioAutenticado,
         authController.verifyToken,
