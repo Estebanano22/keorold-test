@@ -82,6 +82,7 @@
 														<th>Usuario</th>
                                                         <th>Fecha Reporte</th>
 														<th>Banco (Tipo Consignación)</th>
+														<th>Celular</th>
                                                         <th>Valor</th>
 														<th>Referencia</th>
                                                         <th>Estado</th>
@@ -104,6 +105,9 @@
 																</td>
 																<td class="text-left text-capitalize">
 																	<%- listaConsignaciones.tipoConsignacion %>
+																</td>
+																<td class="text-left text-capitalize">
+																	<%- listaConsignaciones.celularConsignacion %>
 																</td>
 																<td class="text-left text-capitalize">
 																	<% if(usuario.pais === 'Colombia') { %>
