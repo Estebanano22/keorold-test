@@ -310,7 +310,7 @@ exports.respondidasSuperdistribuidor = async (req, res) => {
 
 exports.responderInsidencia = async (req, res) => {
 
-    const idInsidencia = req.body.idInsidencia;
+    const idInsidencia = req.body.id;
     const respuesta = req.body.respuesta;
     const archivo = req.body.files;
 
