@@ -117,9 +117,9 @@ exports.asignarPlataformasUsuarios = async (req, res) => {
                 }
             } else {
                 if(usuario.perfil === 'distribuidor') {
-                    var valorUsuario = Number(valorDistribuidor) + 1;
+                    var valorUsuario = Number(valorDistribuidor) + 0.28;
                 } else if (usuario.perfil === 'reseller') {
-                    var valorUsuario = Number(valorDistribuidor) + 2;
+                    var valorUsuario = Number(valorDistribuidor) + 0.56;
                 }
             }
         }
