@@ -332,15 +332,8 @@ exports.responderInsidencia = async (req, res) => {
         return;
     }
 
-    if(archivo === 'undefined') {
-        var nombreArchivo = null;
-    } else {
-        var nombreArchivo = req.file.filename;
-    }
-
     insidencia.estado = 1;
     insidencia.respuesta = respuesta;
-    insidencia.imgRespuesta = nombreArchivo;
     await insidencia.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Insidencia respondida con éxito.'});
