@@ -4,6 +4,9 @@ const Asignaciones = require('../models/asignacionesModelo');
 const Cuentas = require('../models/cuentasModelo');
 const Ganancias = require('../models/gananciasModelo');
 const Consignaciones = require('../models/consignacionesModelo');
+const LinksPse = require('../models/linksPseModelo');
+const Incidencias = require('../models/insidenciasModelo');
+
 const { Op } = require("sequelize");
 const {body, validationResult} = require('express-validator');
 const multer = require('multer');
@@ -21,7 +24,7 @@ exports.notificacionesUsuario = async (req, res) => {
             order: [['fechaSubida', 'DESC']],
             limit: 2,
         });
-    
+
         const cuentasPersonalizadas = await Cuentas.findAll({
             where: {
                 [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 3 }]
@@ -50,6 +53,21 @@ exports.notificacionesUsuario = async (req, res) => {
             where: {
                 [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }]
             },
+            limit: 2,
+        });
+
+        const linksPse = await LinksPse.findAll({
+            where: {
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }]
+            },
+            limit: 2,
+        });
+
+        const incidencias = await Incidencias.findAll({
+            where: {
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }]
+            },
+            limit: 2,
         });
 
         // Counts
@@ -83,6 +101,18 @@ exports.notificacionesUsuario = async (req, res) => {
                 [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }]
             },
         });
+
+        const countLinksPse = await LinksPse.count({
+            where: {
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }]
+            },
+        });
+
+        const countIncidencias = await Incidencias.count({
+            where: {
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }]
+            },
+        });
     
         const plataformas = await Plataformas.findAll({
             where: {
@@ -90,7 +120,7 @@ exports.notificacionesUsuario = async (req, res) => {
             }
         });
 
-        res.json({bajoPedido: cuentasBajoPedido, personalizadas: cuentasPersonalizadas, renovaciones: cuentasRenovaciones, juegos: cuentasJuegos, consignaciones: consignaciones, plataformas: plataformas, countBajoPedido: countBajoPedido, countPersonalizadas: countPersonalizadas, countRenovaciones: countRenovaciones, countJuegos: countJuegos, p: req.user.perfil, countConsignaciones: countConsignaciones});
+        res.json({incidencias: incidencias, pse: linksPse, bajoPedido: cuentasBajoPedido, personalizadas: cuentasPersonalizadas, renovaciones: cuentasRenovaciones, juegos: cuentasJuegos, consignaciones: consignaciones, plataformas: plataformas, countBajoPedido: countBajoPedido, countPersonalizadas: countPersonalizadas, countRenovaciones: countRenovaciones, countJuegos: countJuegos, p: req.user.perfil, countConsignaciones: countConsignaciones, countIncidencias: countIncidencias, countLinksPse: countLinksPse});
         return;
 
     } else {
@@ -137,6 +167,21 @@ exports.notificacionesUsuario = async (req, res) => {
             where: {
                 [Op.and]: [{usuarioIdUsuario: req.user.id_usuario}]
             },
+            limit: 2,
+        });
+
+        const linksPse = await LinksPse.findAll({
+            where: {
+                [Op.and]: [{usuarioIdUsuario: req.user.id_usuario}]
+            },
+            limit: 2,
+        });
+
+        const incidencias = await Incidencias.findAll({
+            where: {
+                [Op.and]: [{usuarioIdUsuario: req.user.id_usuario}]
+            },
+            limit: 2,
         });
 
         // Counts
@@ -170,6 +215,18 @@ exports.notificacionesUsuario = async (req, res) => {
                 [Op.and]: [{usuarioIdUsuario: req.user.id_usuario}, { estado: 0 }]
             },
         });
+
+        const countLinksPse = await LinksPse.count({
+            where: {
+                [Op.and]: [{usuarioIdUsuario: req.user.id_usuario}, { estado: 0 }]
+            },
+        });
+
+        const countIncidencias = await Incidencias.count({
+            where: {
+                [Op.and]: [{usuarioIdUsuario: req.user.id_usuario}, { estado: 0 }]
+            },
+        });
     
         const plataformas = await Plataformas.findAll({
             where: {
@@ -177,7 +234,7 @@ exports.notificacionesUsuario = async (req, res) => {
             }
         });
 
-        res.json({bajoPedido: cuentasBajoPedido, personalizadas: cuentasPersonalizadas, renovaciones: cuentasRenovaciones, juegos: cuentasJuegos, consignaciones: consignaciones, plataformas: plataformas, countBajoPedido: countBajoPedido, countPersonalizadas: countPersonalizadas, countRenovaciones: countRenovaciones, countJuegos: countJuegos, p: req.user.perfil, countConsignaciones: countConsignaciones});
+        res.json({incidencias: incidencias, pse: linksPse, bajoPedido: cuentasBajoPedido, personalizadas: cuentasPersonalizadas, renovaciones: cuentasRenovaciones, juegos: cuentasJuegos, consignaciones: consignaciones, plataformas: plataformas, countBajoPedido: countBajoPedido, countPersonalizadas: countPersonalizadas, countRenovaciones: countRenovaciones, countJuegos: countJuegos, p: req.user.perfil, countConsignaciones: countConsignaciones, countIncidencias: countIncidencias, countLinksPse: countLinksPse});
         return;
     }
 

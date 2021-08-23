@@ -154,6 +154,8 @@
                 const personalizadas = respuesta.personalizadas;
                 const renovaciones = respuesta.renovaciones;
                 const juegos = respuesta.juegos;
+                const incidencias = respuesta.incidencias;
+                const pse = respuesta.pse;
                 const iConsignaciones = respuesta.consignaciones;
 
                 const audio = document.getElementById('sonido');
@@ -167,11 +169,15 @@
                 const cuentasRenovaciones = document.getElementById('cuentasRenovaciones');
                 const cuentasJuegos = document.getElementById('cuentasJuegos');
                 const consignaciones = document.getElementById('consignaciones');
+                const linksPse = document.getElementById('linksPse');
+                const reclamaciones = document.getElementById('reclamaciones');
+
+                const sumatoriaSuperdistribuidor = Number(respuesta.countBajoPedido) + Number(respuesta.countPersonalizadas) + Number(respuesta.countRenovaciones) + Number(respuesta.countJuegos) + Number(respuesta.countConsignaciones) + Number(respuesta.countIncidencias) +  Number(respuesta.countLinksPse);
                 
-                if(!(respuesta.countBajoPedido == 0 || respuesta.countPersonalizadas == 0 || respuesta.countRenovaciones == 0 || respuesta.countJuegos == 0 || respuesta.countConsignaciones == 0)) {
+                if(sumatoriaSuperdistribuidor !== 0) {
                     
                     audio.play();
-                    spanNotificacionesTotal.innerHTML = Number(respuesta.countBajoPedido) + Number(respuesta.countPersonalizadas) + Number(respuesta.countRenovaciones) + Number(respuesta.countJuegos);
+                    spanNotificacionesTotal.innerHTML = Number(respuesta.countBajoPedido) + Number(respuesta.countPersonalizadas) + Number(respuesta.countRenovaciones) + Number(respuesta.countJuegos) + Number(respuesta.countConsignaciones) + Number(respuesta.countIncidencias) +  Number(respuesta.countLinksPse);
 
                     iconoNotificacionesTotal.classList.add('animate__animated');
                     iconoNotificacionesTotal.classList.add('animate__rubberBand');
@@ -188,7 +194,7 @@
 
                     } else {
 
-                        const tot = Number(bajoPedido.length) + Number(personalizadas.length) + Number(renovaciones.length) + Number(juegos.length) + iConsignaciones.Number(length);
+                        const tot = Number(respuesta.countBajoPedido) + Number(respuesta.countPersonalizadas) + Number(respuesta.countRenovaciones) + Number(respuesta.countJuegos) + Number(respuesta.countConsignaciones) + Number(respuesta.countIncidencias) +  Number(respuesta.countLinksPse);
 
                         if(tot === 0) {
                         
@@ -362,6 +368,42 @@
                     cuentasJuegos.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin cuentas pendientes</p></div>`;
                 }
 
+                // Incidencias
+                if(incidencias.length !== 0) {
+                    const countReclamaciones = document.getElementById('countReclamaciones');
+                    countReclamaciones.innerHTML = respuesta.countIncidencias;
+                    var listaIncidencias = ``;
+
+                    for(var q = 0; q < incidencias.length; q++) {
+
+                        const asunto = incidencias[q].asunto;
+
+                        if(incidencias[q].estado === 1) {
+                            var span1 = `<span class="ml-auto text-success">aprobada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                        } else if(incidencias[q].estado === 2) {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">rechazada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-danger"></i></span>`;
+                        } else {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
+                        }
+
+                        listaIncidencias += `<div class="d-flex px-3 py-2 border-top">
+                                                <p class="mb-0 text-capitalize">${asunto}</p>
+                                                ${span1}
+                                                ${span2}
+                                            </div>`;
+
+                    }
+
+                        reclamaciones.innerHTML = listaIncidencias;
+
+                } else {
+                    
+                    reclamaciones.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin incidencias pendientes</p></div>`;
+                }
+
                 // Consignaciones
                 if(iConsignaciones.length !== 0) {
                     const countConsignaciones = document.getElementById('countConsignaciones');
@@ -398,6 +440,44 @@
                 } else {
                     
                     consignaciones.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin consignaciones pendientes</p></div>`;
+                }
+
+                // PSE
+                if(pse.length !== 0) {
+                    const countPse = document.getElementById('countPse');
+                    countPse.innerHTML = respuesta.countLinksPse;
+                    var listaPse = ``;
+
+                    for(var m = 0; m < pse.length; m++) {
+                        
+                        const val = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(pse[m].valor);
+
+                        const referencia = val;
+
+                        if(pse[m].estado === 1) {
+                            var span1 = `<span class="ml-auto text-success">aprobada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                        } else if(pse[m].estado === 2) {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">rechazada</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-danger"></i></span>`;
+                        } else {
+                            var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
+                            var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
+                        }
+
+                        listaPse += `<div class="d-flex px-3 py-2 border-top">
+                                                <p class="mb-0 text-capitalize">${referencia}</p>
+                                                ${span1}
+                                                ${span2}
+                                            </div>`;
+
+                    }
+
+                        linksPse.innerHTML = listaPse;
+
+                } else {
+                    
+                    linksPse.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin links pse pendientes</p></div>`;
                 }
 
             })
