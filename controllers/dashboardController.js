@@ -92,7 +92,11 @@ exports.asignarPlataformasUsuarios = async (req, res) => {
     const superDistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: enlace_superatrocinador }});
     const id_superDistribuidor = superDistribuidor.id_usuario;
 
-    const asignacionesDistribuidor = await Asignaciones.findAll({ where: { usuarioIdUsuario: id_distribuidor } });
+    const asignacionesDistribuidor = await Asignaciones.findAll({
+        where: { 
+            [Op.and]:[{usuarioIdUsuario: id_distribuidor}]
+         }
+    });
     
     asignacionesDistribuidor.forEach(async(i) => {
 
@@ -100,38 +104,41 @@ exports.asignarPlataformasUsuarios = async (req, res) => {
         const idPlataforma = i.plataformaIdPlataforma;
 
         const plataforma = await Plataformas.findOne({
-            where: { id_plataforma: idPlataforma },
-            attributes: ['plataforma']
+            where: { id_plataforma: idPlataforma }
         });
 
         const nombrePlataforma = plataforma.plataforma.toLowerCase();
 
-        if(nombrePlataforma.includes('free fire') || nombrePlataforma.includes('call of duty') || nombrePlataforma.includes('demo')) {
-            var valorUsuario = Number(valorDistribuidor);
-        } else {
-            if(req.user.pais === 'Colombia') {
-                if(usuario.perfil === 'distribuidor') {
-                    var valorUsuario = Number(valorDistribuidor) + 1000;
-                } else if (usuario.perfil === 'reseller') {
-                    var valorUsuario = Number(valorDistribuidor) + 2000;
-                }
+        if(plataforma.estado !== 0) {
+
+            if(nombrePlataforma.includes('free fire') || nombrePlataforma.includes('call of duty') || nombrePlataforma.includes('demo')) {
+                var valorUsuario = Number(valorDistribuidor);
             } else {
-                if(usuario.perfil === 'distribuidor') {
-                    var valorUsuario = Number(valorDistribuidor) + 0.28;
-                } else if (usuario.perfil === 'reseller') {
-                    var valorUsuario = Number(valorDistribuidor) + 0.56;
+                if(req.user.pais === 'Colombia') {
+                    if(usuario.perfil === 'distribuidor') {
+                        var valorUsuario = Number(valorDistribuidor) + 1000;
+                    } else if (usuario.perfil === 'reseller') {
+                        var valorUsuario = Number(valorDistribuidor) + 2000;
+                    }
+                } else {
+                    if(usuario.perfil === 'distribuidor') {
+                        var valorUsuario = Number(valorDistribuidor) + 0.28;
+                    } else if (usuario.perfil === 'reseller') {
+                        var valorUsuario = Number(valorDistribuidor) + 0.56;
+                    }
                 }
             }
-        }
 
-        Asignaciones.create({
-            id_asignacion: uuid_v4(),
-            valor: valorUsuario,
-            id_distribuidor: id_distribuidor,
-            id_superdistribuidor: id_superDistribuidor,
-            usuarioIdUsuario: id_usuario,
-            plataformaIdPlataforma: idPlataforma
-        });
+            Asignaciones.create({
+                id_asignacion: uuid_v4(),
+                valor: valorUsuario,
+                id_distribuidor: id_distribuidor,
+                id_superdistribuidor: id_superDistribuidor,
+                usuarioIdUsuario: id_usuario,
+                plataformaIdPlataforma: idPlataforma
+            });
+
+        }
 
     });
 
