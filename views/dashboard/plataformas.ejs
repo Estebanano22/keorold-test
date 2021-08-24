@@ -90,10 +90,10 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaPlataformasNormales.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaPlataformasNormales.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
-                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaPlataformasNormales.plataforma %></h5>
+                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaPlataformasNormales.plataforma.plataforma %></h5>
                                             <p class="user-info-rating mt-2">
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
@@ -103,24 +103,20 @@
                                             </p>
                                         </div>
                                         <h4 class="text-center color-primary">
-                                            <% const array = asignaciones.filter(function(element){ %>
-                                                <% return element.plataformaIdPlataforma == listaPlataformasNormales.id_plataforma; %> 
-                                            <% }); %>
-
-                                            <% const valor = array[0].valor; %>
 
                                             <% if(usuario.pais === 'Colombia') { %>
-                                                <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(valor); %>
+                                                <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaPlataformasNormales.valor); %>
                                             <% } else { %>
-                                                <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(valor); %>
+                                                <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaPlataformasNormales.valor); %>
                                             <% } %>
-                                            <%- valorFormateado %> 
+                                            <%- valorFormateado %>
+
                                         </h4>
                                         <div class="text-center">
-                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaPlataformasNormales.plataforma %>', '<%= listaPlataformasNormales.logo %>', '<%= listaPlataformasNormales.descripcion %>')"><i class="fas fa-info"></i></button>
+                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaPlataformasNormales.plataforma.plataforma %>', '<%= listaPlataformasNormales.plataforma.logo %>', '<%= listaPlataformasNormales.plataforma.descripcion %>')"><i class="fas fa-info"></i></button>
                                             
                                             <% const stock = cuentas.filter(function(element){ %>
-                                                <% return element.plataformaIdPlataforma == listaPlataformasNormales.id_plataforma; %> 
+                                                <% return element.plataformaIdPlataforma == listaPlataformasNormales.plataforma.id_plataforma; %> 
                                             <% }); %>
 
                                             <% if(stock.length === 0) { %>
@@ -129,8 +125,8 @@
                                             
                                             <% } else { %> 
 
-                                                <% if (Number(usuario.saldo) > Number(valor)) { %>
-                                                    <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraNormal" onclick="modalCompraNormal(event, '<%= listaPlataformasNormales.id_plataforma %>', '<%= listaPlataformasNormales.plataforma %>', '<%= listaPlataformasNormales.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
+                                                <% if (Number(usuario.saldo) > Number(listaPlataformasNormales.valor)) { %>
+                                                    <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraNormal" onclick="modalCompraNormal(event, '<%= listaPlataformasNormales.plataforma.id_plataforma %>', '<%= listaPlataformasNormales.plataforma.plataforma %>', '<%= listaPlataformasNormales.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                                 <% } else { %>
                                                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                                 <% } %>
@@ -163,10 +159,10 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaplataformasBajoPedido.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaplataformasBajoPedido.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
-                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaplataformasBajoPedido.plataforma %></h5>
+                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaplataformasBajoPedido.plataforma.plataforma %></h5>
                                             <p class="user-info-rating mt-2">
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
@@ -176,23 +172,18 @@
                                             </p>
                                         </div>
                                         <h4 class="text-center color-primary">
-                                            <% const array = asignaciones.filter(function(element){ %>
-                                                <% return element.plataformaIdPlataforma == listaplataformasBajoPedido.id_plataforma; %> 
-                                            <% }); %>
-
-                                            <% const valor = array[0].valor; %>
 
                                             <% if(usuario.pais === 'Colombia') { %>
-                                                <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(valor); %>
+                                                <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaplataformasBajoPedido.valor); %>
                                             <% } else { %>
-                                                <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(valor); %>
+                                                <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaplataformasBajoPedido.valor); %>
                                             <% } %>
                                             <%- valorFormateado %> 
                                         </h4>
                                         <div class="text-center">
-                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaplataformasBajoPedido.plataforma %>', '<%= listaplataformasBajoPedido.logo %>', '<%= listaplataformasBajoPedido.descripcion %>')"><i class="fas fa-info"></i></button>
-                                            <% if (Number(usuario.saldo) > Number(valor)) { %>
-                                                <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraPedido" onclick="modalCompraPedido(event, '<%= listaplataformasBajoPedido.id_plataforma %>', '<%= listaplataformasBajoPedido.plataforma %>', '<%= listaplataformasBajoPedido.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
+                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaplataformasBajoPedido.plataforma.plataforma %>', '<%= listaplataformasBajoPedido.plataforma.logo %>', '<%= listaplataformasBajoPedido.plataforma.descripcion %>')"><i class="fas fa-info"></i></button>
+                                            <% if (Number(usuario.saldo) > Number(listaplataformasBajoPedido.valor)) { %>
+                                                <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraPedido" onclick="modalCompraPedido(event, '<%= listaplataformasBajoPedido.plataforma.id_plataforma %>', '<%= listaplataformasBajoPedido.plataforma.plataforma %>', '<%= listaplataformasBajoPedido.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                             <% } else { %>
                                                 <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                             <% } %>
@@ -204,7 +195,6 @@
                             <% } %>  
 
                         </div>
-
 
                         <!-- ===========================
                             Plataformas Renovaciones
@@ -222,10 +212,10 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaplataformasRenovaciones.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaplataformasRenovaciones.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
-                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaplataformasRenovaciones.plataforma %></h5>
+                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaplataformasRenovaciones.plataforma.plataforma %></h5>
                                             <p class="user-info-rating mt-2">
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
@@ -235,24 +225,18 @@
                                             </p>
                                         </div>
                                         <h4 class="text-center color-primary">
-                                            <% const array = asignaciones.filter(function(element){ %>
-                                                <% return element.plataformaIdPlataforma == listaplataformasRenovaciones.id_plataforma; %> 
-                                            <% }); %>
-
-                                            <% const valor = array[0].valor; %>
-
                                             <% if(usuario.pais === 'Colombia') { %>
-                                                <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(valor); %>
+                                                <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaplataformasRenovaciones.valor); %>
                                             <% } else { %>
-                                                <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(valor); %>
+                                                <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaplataformasRenovaciones.valor); %>
                                             <% } %>
                                             <%- valorFormateado %> 
                                         </h4>
                                         <div class="text-center">
-                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaplataformasRenovaciones.plataforma %>', '<%= listaplataformasRenovaciones.logo %>', '<%= listaplataformasRenovaciones.descripcion %>')"><i class="fas fa-info"></i></button>
+                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaplataformasRenovaciones.plataforma.plataforma %>', '<%= listaplataformasRenovaciones.plataforma.logo %>', '<%= listaplataformasRenovaciones.plataforma.descripcion %>')"><i class="fas fa-info"></i></button>
 
-                                            <% if (Number(usuario.saldo) > Number(valor)) { %>
-                                                <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraRenovacion" onclick="modalCompraRenovacion(event, '<%= listaplataformasRenovaciones.id_plataforma %>', '<%= listaplataformasRenovaciones.plataforma %>', '<%= listaplataformasRenovaciones.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
+                                            <% if (Number(usuario.saldo) > Number(listaplataformasRenovaciones.valor)) { %>
+                                                <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraRenovacion" onclick="modalCompraRenovacion(event, '<%= listaplataformasRenovaciones.plataforma.id_plataforma %>', '<%= listaplataformasRenovaciones.plataforma.plataforma %>', '<%= listaplataformasRenovaciones.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                             <% } else { %>
                                                 <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                             <% } %>
@@ -283,10 +267,10 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaPlataformasPersonalizadas.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaPlataformasPersonalizadas.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
-                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaPlataformasPersonalizadas.plataforma %></h5>
+                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaPlataformasPersonalizadas.plataforma.plataforma %></h5>
                                             <p class="user-info-rating mt-2">
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
@@ -296,24 +280,18 @@
                                             </p>
                                         </div>
                                         <h4 class="text-center color-primary">
-                                            <% const array = asignaciones.filter(function(element){ %>
-                                                <% return element.plataformaIdPlataforma == listaPlataformasPersonalizadas.id_plataforma; %> 
-                                            <% }); %>
-
-                                            <% const valor = array[0].valor; %>
-
                                             <% if(usuario.pais === 'Colombia') { %>
-                                                <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(valor); %>
+                                                <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaPlataformasPersonalizadas.valor); %>
                                             <% } else { %>
-                                                <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(valor); %>
+                                                <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaPlataformasPersonalizadas.valor); %>
                                             <% } %>
                                             <%- valorFormateado %> 
                                         </h4>
                                         <div class="text-center">
-                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaPlataformasPersonalizadas.plataforma %>', '<%= listaPlataformasPersonalizadas.logo %>', '<%= listaPlataformasPersonalizadas.descripcion %>')"><i class="fas fa-info"></i></button>
+                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaPlataformasPersonalizadas.plataforma.plataforma %>', '<%= listaPlataformasPersonalizadas.plataforma.logo %>', '<%= listaPlataformasPersonalizadas.plataforma.descripcion %>')"><i class="fas fa-info"></i></button>
                                             
-                                            <% if (Number(usuario.saldo) > Number(valor)) { %>
-                                                <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraPersonalizada" onclick="modalCompraPersonalizada(event, '<%= listaPlataformasPersonalizadas.id_plataforma %>', '<%= listaPlataformasPersonalizadas.plataforma %>', '<%= listaPlataformasPersonalizadas.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
+                                            <% if (Number(usuario.saldo) > Number(listaPlataformasPersonalizadas.valor)) { %>
+                                                <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraPersonalizada" onclick="modalCompraPersonalizada(event, '<%= listaPlataformasPersonalizadas.plataforma.id_plataforma %>', '<%= listaPlataformasPersonalizadas.plataforma.plataforma %>', '<%= listaPlataformasPersonalizadas.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                             <% } else { %>
                                                 <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                             <% } %>
@@ -344,10 +322,10 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaPlataformasJuegos.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaPlataformasJuegos.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
-                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaPlataformasJuegos.plataforma %></h5>
+                                            <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaPlataformasJuegos.plataforma.plataforma %></h5>
                                             <p class="user-info-rating mt-2">
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
                                                 <a href="#"><i class="fa fa-star text-warning"> </i></a>
@@ -358,7 +336,7 @@
                                         </div>
                                         <h4 class="text-center color-primary">
                                             <% const array = asignaciones.filter(function(element){ %>
-                                                <% return element.plataformaIdPlataforma == listaPlataformasJuegos.id_plataforma; %> 
+                                                <% return element.plataformaIdPlataforma == listaPlataformasJuegos.plataforma.id_plataforma; %> 
                                             <% }); %>
 
                                             <% const valor = array[0].valor; %>
@@ -371,22 +349,22 @@
                                             <%- valorFormateado %> 
                                         </h4>
                                         <div class="text-center">
-                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaPlataformasJuegos.plataforma %>', '<%= listaPlataformasJuegos.logo %>', '<%= listaPlataformasJuegos.descripcion %>')"><i class="fas fa-info"></i></button>
+                                            <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaPlataformasJuegos.plataforma.plataforma %>', '<%= listaPlataformasJuegos.plataforma.logo %>', '<%= listaPlataformasJuegos.plataforma.descripcion %>')"><i class="fas fa-info"></i></button>
 
-                                            <% const nomPlataforma = listaPlataformasJuegos.plataforma.toLowerCase(); %>
+                                            <% const nomPlataforma = listaPlataformasJuegos.plataforma.plataforma.toLowerCase(); %>
                                             
                                             <% if(nomPlataforma.includes('free fire')) { %>
                                                 
                                                 <% if (Number(usuario.saldo) > Number(valor)) { %>
-                                                    <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraFreefire" onclick="modalCompraFreefire(event, '<%= listaPlataformasJuegos.id_plataforma %>', '<%= listaPlataformasJuegos.plataforma %>', '<%= listaPlataformasJuegos.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
+                                                    <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraFreefire" onclick="modalCompraFreefire(event, '<%= listaPlataformasJuegos.plataforma.id_plataforma %>', '<%= listaPlataformasJuegos.plataforma.plataforma %>', '<%= listaPlataformasJuegos.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                                 <% } else { %>
                                                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                                 <% } %>
 
                                             <% } else if(nomPlataforma.includes('call of duty')) { %>
                                                 
-                                                <% if (Number(usuario.saldo) > Number(valor)) { %>
-                                                    <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraCallofduty" onclick="modalCompraCallofduty(event, '<%= listaPlataformasJuegos.id_plataforma %>', '<%= listaPlataformasJuegos.plataforma %>', '<%= listaPlataformasJuegos.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
+                                                <% if (Number(usuario.saldo) > Number(listaPlataformasJuegos.valor)) { %>
+                                                    <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraCallofduty" onclick="modalCompraCallofduty(event, '<%= listaPlataformasJuegos.plataforma.id_plataforma %>', '<%= listaPlataformasJuegos.plataforma.plataforma %>', '<%= listaPlataformasJuegos.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                                 <% } else { %>
                                                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                                                 <% } %>

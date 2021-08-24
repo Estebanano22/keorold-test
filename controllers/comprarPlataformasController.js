@@ -25,39 +25,79 @@ exports.plataformas = async (req, res) => {
         order: [['plataforma', 'DESC']]
     });
 
-    const plataformasNormales = await Plataformas.findAll({
+    const plataformasNormales = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{id_superdistribuidor:superdistribuidor.id_usuario}, { estado: 1 }, { tipo_plataforma: 1 }]
+            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
         },
-        order: [['plataforma', 'DESC']]
+        include: [
+            {
+                model: Plataformas, foreignKey: 'plataformaIdPlataforma',
+                where: {
+                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 1 }]
+                }
+            },
+        ],
+        // order: [['plataforma', 'DESC']]
     });
 
-    const plataformasBajoPedido = await Plataformas.findAll({
+    const plataformasBajoPedido = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{id_superdistribuidor:superdistribuidor.id_usuario}, { estado: 1 }, { tipo_plataforma: 2 }]
+            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
         },
-        order: [['plataforma', 'DESC']]
+        include: [
+            {
+                model: Plataformas, foreignKey: 'plataformaIdPlataforma',
+                where: {
+                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 2 }]
+                }
+            },
+        ],
+        // order: [['plataforma', 'DESC']]
     });
 
-    const plataformasPersonalizadas = await Plataformas.findAll({
+    const plataformasPersonalizadas = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{id_superdistribuidor:superdistribuidor.id_usuario}, { estado: 1 }, { tipo_plataforma: 3 }]
+            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
         },
-        order: [['plataforma', 'DESC']]
+        include: [
+            {
+                model: Plataformas, foreignKey: 'plataformaIdPlataforma',
+                where: {
+                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 3 }]
+                }
+            },
+        ],
+        // order: [['plataforma', 'DESC']]
     });
 
-    const plataformasRenovaciones = await Plataformas.findAll({
+    const plataformasRenovaciones = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{id_superdistribuidor:superdistribuidor.id_usuario}, { estado: 1 }, { tipo_plataforma: 4 }]
+            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
         },
-        order: [['plataforma', 'DESC']]
+        include: [
+            {
+                model: Plataformas, foreignKey: 'plataformaIdPlataforma',
+                where: {
+                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 4 }]
+                }
+            },
+        ],
+        // order: [['plataforma', 'DESC']]
     });
 
-    const plataformasJuegos = await Plataformas.findAll({
+    const plataformasJuegos = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{id_superdistribuidor:superdistribuidor.id_usuario}, { estado: 1 }, { tipo_plataforma: 5 }]
+            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
         },
-        order: [['plataforma', 'DESC']]
+        include: [
+            {
+                model: Plataformas, foreignKey: 'plataformaIdPlataforma',
+                where: {
+                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 5 }]
+                }
+            },
+        ],
+        // order: [['plataforma', 'DESC']]
     });
 
     const asignaciones = await Asignaciones.findAll({

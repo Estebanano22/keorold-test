@@ -95,7 +95,15 @@ exports.asignarPlataformasUsuarios = async (req, res) => {
     const asignacionesDistribuidor = await Asignaciones.findAll({
         where: { 
             [Op.and]:[{usuarioIdUsuario: id_distribuidor}]
-         }
+        },
+        include: [
+            {
+                model: Plataformas, foreignKey: 'plataformaIdPlataforma',
+                where: {
+                    [Op.and]:[{ estado: 1 }]
+                }
+            },
+        ],
     });
     
     asignacionesDistribuidor.forEach(async(i) => {
