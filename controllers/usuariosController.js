@@ -391,6 +391,12 @@ exports.cargarSaldoUsuario = async (req, res) => {
     const usuario = await Usuarios.findOne({ where: { id_usuario: idUsuario }});
     const distribuidor = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
     const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador }});
+    const responsable = req.body.responsable;
+
+    if(responsable === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe llenar todos los campos.' });
+        return; 
+    }
 
     const saldoDistribuidor = distribuidor.saldo;
     // Cuadrar quien aprueba la carga de saldo que basicamente es el patrocinador, arreglar las cargas en superdistribuidor
@@ -416,7 +422,7 @@ exports.cargarSaldoUsuario = async (req, res) => {
         saldoAnterior: usuario.saldo,
         saldoNuevo: Number(usuario.saldo) + Number(valorCargar),
         usuarioIdUsuario: idUsuario,
-        responsableGestion: req.user.nombre
+        responsableGestion: responsable
     });
     
     usuario.saldo = Number(usuario.saldo) + Number(valorCargar);
@@ -436,6 +442,12 @@ exports.restarSaldoUsuario = async (req, res) => {
     const usuario = await Usuarios.findOne({ where: { id_usuario: idUsuario }});
     const distribuidor = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
     const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador }});
+    const responsable = req.body.responsable;
+
+    if(responsable === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe llenar todos los campos.' });
+        return; 
+    }
 
     if(!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible restar saldo a este usuario.' });
@@ -459,7 +471,7 @@ exports.restarSaldoUsuario = async (req, res) => {
         saldoAnterior: usuario.saldo,
         saldoNuevo: Number(usuario.saldo) - Number(valorCargar),
         usuarioIdUsuario: idUsuario,
-        responsableGestion: req.user.nombre
+        responsableGestion: responsable
     });
 
     usuario.saldo = Number(usuario.saldo) - Number(valorCargar);

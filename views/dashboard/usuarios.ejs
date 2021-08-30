@@ -199,6 +199,14 @@
 							</div>
 						</div>
 
+						<div class="form-group ">
+							<div class="row row-sm">
+								<label class="form-label">Ingrese su nombre<br>
+									<span>(Responsable de aprobar la consignación)</span></label>
+								<input type="text" class="form-control" placeholder="Nombre responsable" value="" id="responsableGestion" name="responsableGestion">
+							</div>
+						</div>
+
 						<div class="alert alert-danger mg-b-0 display-none" role="alert" id="alertaCargar">
 							Hola
 						</div>
@@ -414,13 +422,15 @@
 
 		const idCargar = document.getElementById("idCargar").value;
 		const saldoCargar = document.getElementById("saldoCargar").value;
+		const responsable = document.getElementById("responsableGestion").value;
 
 		fetch('/usuarios/cargarSaldo', {
 			method: 'POST',
 			headers: {'Content-type': 'application/json'},
 			body: JSON.stringify({
 				id: idCargar,
-				valor: saldoCargar
+				valor: saldoCargar,
+				responsable: responsable
 			})
 		})
 		.then(res => res.text())
@@ -457,13 +467,15 @@
 
 		const idCargar = document.getElementById("idCargar").value;
 		const saldoCargar = document.getElementById("saldoCargar").value;
+		const responsable = document.getElementById("responsableGestion").value;
 
 		fetch('/usuarios/restarSaldo', {
 			method: 'POST',
 			headers: {'Content-type': 'application/json'},
 			body: JSON.stringify({
 				id: idCargar,
-				valor: saldoCargar
+				valor: saldoCargar,
+				responsable: responsable
 			})
 		})
 		.then(res => res.text())
