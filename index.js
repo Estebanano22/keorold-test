@@ -32,7 +32,7 @@ require('./models/publicidadModelo');
 
 db.sync()
     .then(() => console.log('Conectado al servidor'))
-    .catch(error => console.log('error al conectar'));
+    .catch(error => console.log(error));
 
 // Variables de entorno
 dotenv.config({
