@@ -173,6 +173,7 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
     // recorrer array con asignaciones
     for(var i = 0; i < objetoAsignaciones.length; i++) {
         const idPlataforma = objetoAsignaciones[i][0].id;
+
         const valorPlataforma = objetoAsignaciones[i][0].valor;
 
         const asignacionDistribuidor = await Asignaciones.findOne({ 
@@ -252,7 +253,9 @@ exports.adminUsuariosSuperdistribuidor = async (req, res) => {
     });
     const distribuidores = await Usuarios.findAll();
     const plataformas = await Plataformas.findAll({
-        where: { estado: 1 }
+        where: {
+            [Op.and]:[{ estado: 1}, {id_superdistribuidor: req.user.id_usuario}]
+        }
     });
 
     res.render('dashboard/adminUsuariosSuperdistribuidor', {
