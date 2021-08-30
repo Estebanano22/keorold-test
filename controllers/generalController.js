@@ -24,7 +24,13 @@ exports.validarRegistro = async (req, res, next) => {
     const usuario = req.body;
 
     const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split('-');
-    const enlPat = validacionEnlacePatrocinador[0]+'-'+validacionEnlacePatrocinador[1]+'-'+validacionEnlacePatrocinador[2];
+    const perfilEnlace = validacionEnlacePatrocinador[validacionEnlacePatrocinador.length-1];
+    var enlPat2 = '';
+    for (var i = 0; i < validacionEnlacePatrocinador.length-1; i++) {
+        enlPat2 += validacionEnlacePatrocinador[i]+'-';
+    }
+
+    const enlPat = enlPat2.substring(0, enlPat2.length - 1);
 
     // validar distribuidor
     const validarDistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: enlPat, bloqueo: 0 }});
@@ -48,7 +54,7 @@ exports.validarRegistro = async (req, res, next) => {
         body('email').isEmail().withMessage('El email es obligatorio').normalizeEmail(),
         body('password').not().isEmpty().withMessage('El password es obligatorio').escape(),
         body('password').not().isEmpty().isLength({min: 10}).withMessage('El password debe ser mayor a 10 caracteres').escape(),
-        body('enlacePatrocinador').equals(validacionDist+'-'+validacionEnlacePatrocinador[3]).withMessage('El código de afiliación no es valido')
+        body('enlacePatrocinador').equals(validacionDist+'-'+perfilEnlace).withMessage('El código de afiliación no es valido')
     ];
  
     await Promise.all(rules.map(validation => validation.run(req)));
@@ -72,7 +78,13 @@ exports.validarRegistro = async (req, res, next) => {
 exports.crearRegistro = async (req, res) => {
 
     const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split('-');
-    const enlPat = validacionEnlacePatrocinador[0]+'-'+validacionEnlacePatrocinador[1]+'-'+validacionEnlacePatrocinador[2];
+    const perfilEnlace = validacionEnlacePatrocinador[validacionEnlacePatrocinador.length-1];
+    var enlPat2 = '';
+    for (var i = 0; i < validacionEnlacePatrocinador.length-1; i++) {
+        enlPat2 += validacionEnlacePatrocinador[i]+'-';
+    }
+
+    const enlPat = enlPat2.substring(0, enlPat2.length - 1);
 
     const datosRed = await Usuarios.findOne({ where: { enlace_afiliado: enlPat, bloqueo: 0 }});
 
@@ -85,13 +97,15 @@ exports.crearRegistro = async (req, res) => {
     const response = await axios.get('https://api.ipify.org?format=json');
     const ip = response.data.ip;
     const observaciones = 'Usuario creado desde codigo afiliado';
-
-    const valPerfil = req.body.enlacePatrocinador.split('-');
     
-    if(valPerfil[3] === 'res21ok7') {
+    if(perfilEnlace === 'res21ok7') {
         var perfil = 'reseller';
-    } else {
+    } else if(perfilEnlace === 'okdist21m') {
         var perfil = 'distribuidor';
+    } else {
+        req.flash('danger', 'El código de afiliación no es valido');
+        res.redirect('/registro');
+        return;
     }
 
     try {
