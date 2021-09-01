@@ -44,7 +44,7 @@ const Consignaciones = db.define('consignaciones', {
         defaultValue : null
     },
     comprobante: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     observaciones: {

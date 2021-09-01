@@ -12,6 +12,8 @@ const fs = require('fs');
 const xlsx = require('node-xlsx');
 const path = require('path');
 const dotenv = require('dotenv');
+const {s3, bucket} = require('../config/awsS3');
+const multerS3 = require('multer-s3');
 
 // Inicio
 exports.subirCuentas = async (req, res) => {
@@ -912,17 +914,21 @@ exports.adminCuentasJuegos = async (req, res) => {
     
 }
 
-const configuracionMulter2 = {
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/comrpobantesJuegos/');
+const configuracionMulter2 = ({
+    storage: multerS3({
+        s3,
+        bucket,
+        acl: 'public-read',
+        metadata: (req, file, next) => {
+            next(null, {
+                filename: file.fieldname
+            });
         },
-        filename: (req, file, next) => {
-            const extencion = file.mimetype.split('/')[1];
-            next(null, `${shortid.generate()}.${extencion}`);
+        key: (req, file, next) => {
+            next(null, `comrpobantesJuegos/${file.originalname}`);
         }
     })
-};
+});
 
 const upload2 = multer(configuracionMulter2).single('comprobante');
 
@@ -946,7 +952,7 @@ exports.subirDatosJuego = async (req, res) => {
     var idJuego = req.body.idJuego;
     const comprobante = req.body.comprobante;
 
-    if(comprobante === 'undefined') {
+    if(req.file.location === 'undefined' || req.file.location === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir el pantallazo o foto legible del comprobante de carga de esta cuenta.' });
         return;
     }
@@ -1034,7 +1040,7 @@ exports.subirDatosJuego = async (req, res) => {
     cuenta.estado = 1;
     cuenta.valorPagado = valorUsuario;
     cuenta.fechaCompra = new Date();
-    cuenta.comprobanteJuego = req.file.filename;
+    cuenta.comprobanteJuego = req.file.location;
 
     await cuenta.save();
 

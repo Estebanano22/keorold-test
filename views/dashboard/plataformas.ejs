@@ -90,7 +90,7 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaPlataformasNormales.plataforma.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="<%- listaPlataformasNormales.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
                                             <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaPlataformasNormales.plataforma.plataforma %></h5>
@@ -159,7 +159,7 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaplataformasBajoPedido.plataforma.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="<%- listaplataformasBajoPedido.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
                                             <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaplataformasBajoPedido.plataforma.plataforma %></h5>
@@ -212,7 +212,7 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaplataformasRenovaciones.plataforma.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="<%- listaplataformasRenovaciones.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
                                             <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaplataformasRenovaciones.plataforma.plataforma %></h5>
@@ -267,7 +267,7 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaPlataformasPersonalizadas.plataforma.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="<%- listaPlataformasPersonalizadas.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
                                             <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaPlataformasPersonalizadas.plataforma.plataforma %></h5>
@@ -322,7 +322,7 @@
                                     <div class="card-body">
                                         <div class="mb-3 circulo-etiqueta"></div>
                                         <div class="picture avatar-lg online text-center">
-                                            <img alt="avatar" class="rounded-circle" src="/uploads/plataformas/<%- listaPlataformasJuegos.plataforma.logo %>">
+                                            <img alt="avatar" class="rounded-circle" src="<%- listaPlataformasJuegos.plataforma.logo %>">
                                         </div>
                                         <div class="text-center mt-3">
                                             <h5 class="pro-user-username text-dark mt-2 mb-0"><%- listaPlataformasJuegos.plataforma.plataforma %></h5>
@@ -518,7 +518,7 @@
                     <div>
                         <center>
                             <div class="picture img-exito online text-center mb-4 mt-0">
-                                <img alt="avatar" class="rounded-circle" id="imgCompraNormal" src="/uploads/plataformas/z82AlZUAj.png">
+                                <img alt="avatar" class="rounded-circle" id="imgCompraNormal" src="">
                             </div>
                         </center>
                         <h3 class="text-center text-uppercase" style="color: #4a526f;">¡Compra Exitosa!</h3>
@@ -1595,7 +1595,7 @@
                         pinCuentaNormal.innerHTML = respuesta.pin;
                         
                         const imgCompraNormal = document.getElementById('imgCompraNormal');
-                        imgCompraNormal.src = '../uploads/plataformas/'+respuesta.logo;
+                        imgCompraNormal.src = respuesta.logo;
 
                         const btnWhatsappNormal = document.getElementById('btnWhatsappNormal');
 
@@ -1700,7 +1700,7 @@
         nombrePlataforma.innerHTML = nombre;
 
         const logoInfo = document.getElementById("logoInfo");
-        logoInfo.src = '../uploads/plataformas/'+logo;
+        logoInfo.src = logo;
 
         const descripcionEdit = document.getElementById("descripcionPltaforma");
         const formatDescripcion = descripcion.replaceAll('<br>', '\n');

@@ -84,7 +84,7 @@
 														<% cuentas.forEach(listaCuentas => { %>
 															<tr>
 																<td class="text-center">
-																	<img src="<%= listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/plataformas/' + listaCuentas.plataforma.logo %>" alt="" class="img-circle">
+																	<img src="<%= listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaCuentas.plataforma.logo %>" alt="" class="img-circle">
 																</td>
 																<td class="text-capitalize"><%= listaCuentas.plataforma.plataforma %></td>
 																<td class="text-capitalize text-center">
@@ -189,7 +189,7 @@
     function modalComprobante (e, img) {
 
         const imgComprobante = document.getElementById('imgComprobante');
-        imgComprobante.src = '/uploads/comrpobantesJuegos/'+img;
+        imgComprobante.src = img;
 
     }ç
 

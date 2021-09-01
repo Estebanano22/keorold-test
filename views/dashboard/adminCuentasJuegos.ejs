@@ -95,7 +95,7 @@
                                                                 <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
                                                                 <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaCuentas.usuario.perfil %></td>
 																<td class="text-center">
-																	<img src="<%= listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/plataformas/' + listaCuentas.plataforma.logo %>" alt="" class="img-circle">
+																	<img src="<%= listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaCuentas.plataforma.logo %>" alt="" class="img-circle">
 																</td>
 																<td class="text-capitalize"><%= listaCuentas.plataforma.plataforma %></td>
 																<td class="text-capitalize text-center">
@@ -289,7 +289,7 @@
     function modalComprobante (e, img) {
 
         const imgComprobante = document.getElementById('imgComprobante');
-        imgComprobante.src = '/uploads/comrpobantesJuegos/'+img;
+        imgComprobante.src = img;
 
     }
 
@@ -308,7 +308,7 @@
 			const respuesta = JSON.parse(data);
 			
             const logoSubir = document.getElementById("logoSubir");
-            logoSubir.src = '/uploads/plataformas/'+respuesta.cuentas.plataforma.logo;
+            logoSubir.src = respuesta.cuentas.plataforma.logo;
     
             const nombrePlataforma = document.getElementById("nombrePlataforma");
             nombrePlataforma.innerHTML = respuesta.cuentas.plataforma.plataforma;

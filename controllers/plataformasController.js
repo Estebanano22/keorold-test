@@ -7,6 +7,8 @@ const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
 const fs = require('fs');
+const {s3, bucket} = require('../config/awsS3');
+const multerS3 = require('multer-s3');
 
 // Admin
 exports.adminPlataformas = async (req, res) => {
@@ -44,17 +46,21 @@ exports.adminPlataformas = async (req, res) => {
     })
 }
 
-const configuracionMulter = {
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/plataformas/');
+const configuracionMulter = ({
+    storage: multerS3({
+        s3,
+        bucket,
+        acl: 'public-read',
+        metadata: (req, file, next) => {
+            next(null, {
+                filename: file.fieldname
+            });
         },
-        filename: (req, file, next) => {
-            const extencion = file.mimetype.split('/')[1];
-            next(null, `${shortid.generate()}.${extencion}`);
+        key: (req, file, next) => {
+            next(null, `plataformas/${file.originalname}`);
         }
-    }) 
-};
+    })
+});
 
 const upload = multer(configuracionMulter).single('files');
 
@@ -72,7 +78,7 @@ exports.uploadFoto = async (req, res, next) => {
 
 exports.crearPlataforma = async (req, res) => {
 
-    if(req.body.files === 'undefined') {
+    if(req.file.location === 'undefined' || req.file.location === '' || req.file.location === null) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen para el logo de la plataforma.' });
         return;
     }
@@ -93,7 +99,7 @@ exports.crearPlataforma = async (req, res) => {
             plataforma: plataforma,
             tipo_plataforma: tipoPlataforma,
             descripcion: descripcion,
-            logo: req.file.filename
+            logo: req.file.location
         });
     
         res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Plataforma creada con éxito.' });
@@ -316,7 +322,7 @@ exports.bajarValor = async (req, res) => {
 
 exports.editarLogo = async (req, res) => {
 
-    if(req.body.files === 'undefined') {
+    if(req.file.location === 'undefined' || req.file.location === '' || req.file.location === null) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen para el logo de la plataforma.' });
         return;
     }
@@ -334,7 +340,7 @@ exports.editarLogo = async (req, res) => {
         return;
     }
 
-    plataforma.logo = req.file.filename;
+    plataforma.logo = req.file.location;
     plataforma.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Logo actualizado con éxito.' });
@@ -344,7 +350,7 @@ exports.editarLogo = async (req, res) => {
 
 exports.crearPlataformaSuperdistribuidor = async (req, res) => {
 
-    if(req.body.files === 'undefined') {
+    if(req.file.location === 'undefined' || req.file.location === '' || req.file.location === null) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen para el logo de la plataforma.' });
         return;
     }
@@ -367,7 +373,7 @@ exports.crearPlataformaSuperdistribuidor = async (req, res) => {
             plataforma: plataforma,
             tipo_plataforma: tipoPlataforma,
             descripcion: descripcion,
-            logo: req.file.filename,
+            logo: req.file.location,
             id_superdistribuidor: req.user.id_usuario
         });
 

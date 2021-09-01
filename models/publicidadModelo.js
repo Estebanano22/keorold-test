@@ -14,7 +14,7 @@ const Publicidad = db.define('publicidadRed', {
         defaultValue : null
     },
     imagen: {
-        type: Sequelize.STRING(120),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     tipo: {

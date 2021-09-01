@@ -9,6 +9,8 @@ const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
 const bcrypt = require('bcrypt-nodejs');
+const {s3, bucket} = require('../config/awsS3');
+const multerS3 = require('multer-s3');
 
 // Inicio
 exports.inicio = async (req, res) => {
@@ -372,17 +374,21 @@ exports.editarRedesSociales = async (req, res, next) => {
     return;
 }
 
-const configuracionMulter = {
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/usuarios/');
+const configuracionMulter = ({
+    storage: multerS3({
+        s3,
+        bucket,
+        acl: 'public-read',
+        metadata: (req, file, next) => {
+            next(null, {
+                filename: file.fieldname
+            });
         },
-        filename: (req, file, next) => {
-            const extencion = file.mimetype.split('/')[1];
-            next(null, `${shortid.generate()}.${extencion}`);
+        key: (req, file, next) => {
+            next(null, `usuarios/${file.originalname}`);
         }
-    }) 
-};
+    })
+});
 
 const upload = multer(configuracionMulter).single('files');
 
@@ -412,7 +418,7 @@ exports.subirFoto = async (req, res, next) => {
     }
 
     // Leer imagen
-    usuario.foto = req.file.filename;
+    usuario.foto = req.file.location;
     await usuario.save();
 
     req.flash('success', 'La foto de perfil ha sido actualizada con éxito');

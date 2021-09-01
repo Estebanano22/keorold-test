@@ -110,7 +110,7 @@
 														<% } %> 
 															<tr>
 																<td class="text-center">
-																	<img src="<%= listaUsuario.foto === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/usuarios/' + listaUsuario.foto %>" alt="" class="img-circle">
+																	<img src="<%= listaUsuario.foto === null ? '/assetsDashboard/img/users/default.jpg' : listaUsuario.foto %>" alt="" class="img-circle">
 																</td>
 																<td class="text-capitalize"><%= listaUsuario.nombre %></td>
 																<td class="text-capitalize text-center">

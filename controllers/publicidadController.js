@@ -7,6 +7,9 @@ const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
 const fs = require('fs');
 const xlsx = require('node-xlsx');
+const { request } = require('http');
+const {s3, bucket} = require('../config/awsS3');
+const multerS3 = require('multer-s3');
 
 // Inicio
 exports.adminPublicidad = async (req, res) => {
@@ -26,17 +29,22 @@ exports.adminPublicidad = async (req, res) => {
     })
 }
 
-const configuracionMulter = {
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/pautas/');
+const configuracionMulter = ({
+    storage: multerS3({
+        s3,
+        bucket,
+        acl: 'public-read',
+        metadata: (req, file, next) => {
+            next(null, {
+                filename: file.fieldname
+            });
         },
-        filename: (req, file, next) => {
-            const extencion = file.mimetype.split('/')[1];
-            next(null, `${shortid.generate()}.${extencion}`);
+        key: (req, file, next) => {
+            console.log(file);
+            next(null, `pautas/${file.originalname}`);
         }
-    }) 
-};
+    })
+});
 
 const upload = multer(configuracionMulter).single('files');
 
@@ -54,12 +62,12 @@ exports.uploadPauta = async (req, res, next) => {
 
 exports.subirPauta = async (req, res) => {
 
-    if(req.body.files === 'undefined') {
+    if(req.file.location === 'undefined' || req.file.location === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen.' });
         return;
     }
 
-    const imgPauta = req.file.filename;
+    const imgPauta = req.file.location;
     const tipo = req.body.tipo;
 
     if(tipo === '') {

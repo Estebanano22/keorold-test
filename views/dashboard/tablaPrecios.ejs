@@ -71,7 +71,7 @@
 															<% } %>
 															<tr>
 																<td class="text-center">
-																	<img src="<%= listaAsignaciones.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/plataformas/' + listaAsignaciones.plataforma.logo %>" alt="" class="img-circle">
+																	<img src="<%= listaAsignaciones.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaAsignaciones.plataforma.logo %>" alt="" class="img-circle">
 																</td>
 																<td class="text-capitalize"><%= listaAsignaciones.plataforma.plataforma %></td>
 																<td class="text-capitalize text-right"><%= valorFormateado %></td>

@@ -135,7 +135,7 @@
 														<% plataformas.forEach(listaPlataformas => { %>  
 															<tr>
 																<td class="text-center">
-																	<img src="<%= listaPlataformas.logo === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/plataformas/' + listaPlataformas.logo %>" alt="" class="img-circle">
+																	<img src="<%= listaPlataformas.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaPlataformas.logo %>" alt="" class="img-circle">
 																</td>
 																<td class="text-capitalize"><%= listaPlataformas.plataforma %></td>
                                                                 <td class="text-center">

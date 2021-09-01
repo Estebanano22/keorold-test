@@ -33,7 +33,7 @@ const Insidencias = db.define('insidencias', {
         allowNull: true
     },
     imagen: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     fecha: {

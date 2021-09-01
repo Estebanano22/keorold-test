@@ -6,6 +6,8 @@ const {body, validationResult} = require('express-validator');
 const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
+const {s3, bucket} = require('../config/awsS3');
+const multerS3 = require('multer-s3');
 
 exports.reportarInsidencia = async (req, res) => {
 
@@ -50,17 +52,21 @@ exports.reportarInsidencia = async (req, res) => {
 
 }
 
-const configuracionMulter = {
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/insidencias/');
+const configuracionMulter = ({
+    storage: multerS3({
+        s3,
+        bucket,
+        acl: 'public-read',
+        metadata: (req, file, next) => {
+            next(null, {
+                filename: file.fieldname
+            });
         },
-        filename: (req, file, next) => {
-            const extencion = file.mimetype.split('/')[1];
-            next(null, `${shortid.generate()}.${extencion}`);
+        key: (req, file, next) => {
+            next(null, `insidencias/${file.originalname}`);
         }
     })
-};
+});
 
 const upload = multer(configuracionMulter).single('files');
 
@@ -90,10 +96,10 @@ exports.crearInsidencia = async (req, res) => {
 
     const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador }});
 
-    if(archivo === 'undefined') {
+    if(req.file.location === 'undefined' || req.file.location === '' || req.file.location === null) {
         var nombreArchivo = null;
     } else {
-        var nombreArchivo = req.file.filename;
+        var nombreArchivo = req.file.location;
     }
 
     await Insidencias.create({

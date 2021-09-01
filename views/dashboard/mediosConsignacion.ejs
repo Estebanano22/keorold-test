@@ -50,7 +50,7 @@
                                 <% medios.forEach(listaMedios => { %>
                                 <div class="col-md-6 col-lg-3">
                                     <div class="card overflow-hidden custom-card ">
-                                        <img alt="Image" class="img-fluid b-img" src="/uploads/medios/<%- listaMedios.imagen %>">
+                                        <img alt="Image" class="img-fluid b-img" src="<%- listaMedios.imagen %>">
                                         <div class="card-body">
                                             <p class="text-uppercase font-weight-bold"><%- listaMedios.titulo %></p>
                                             <p class="card-text"><%- listaMedios.descripcionCorta %></p>
@@ -519,9 +519,9 @@
 
             if(respuesta.medio.recurso !== null) {
                 recursoInfo.classList.remove('display-none');
-                imgRecurso.src = '/uploads/medios/'+respuesta.medio.recurso;
+                imgRecurso.src = respuesta.medio.recurso;
                 btnDescargarRecurso.classList.remove('display-none');
-                btnDescargarRecurso.href = '/uploads/medios/'+respuesta.medio.recurso;
+                btnDescargarRecurso.href = respuesta.medio.recurso;
                 const descarga = respuesta.medio.titulo;
                 btnDescargarRecurso.setAttribute("download", descarga);
             } else {

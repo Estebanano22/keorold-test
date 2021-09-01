@@ -5,6 +5,8 @@ const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
 const fs = require('fs');
+const {s3, bucket} = require('../config/awsS3');
+const multerS3 = require('multer-s3');
 
 exports.adminMarcasBlancas = async (req, res) => {
 
@@ -22,17 +24,21 @@ exports.adminMarcasBlancas = async (req, res) => {
 
 }
 
-const configuracionMulter = {
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/marcas/');
+const configuracionMulter = ({
+    storage: multerS3({
+        s3,
+        bucket,
+        acl: 'public-read',
+        metadata: (req, file, next) => {
+            next(null, {
+                filename: file.fieldname
+            });
         },
-        filename: (req, file, next) => {
-            const extencion = file.mimetype.split('/')[1];
-            next(null, `${shortid.generate()}.${extencion}`);
+        key: (req, file, next) => {
+            next(null, `marcas/${file.originalname}`);
         }
-    }) 
-};
+    })
+});
 
 const upload1 = multer(configuracionMulter).any('logo', 'icono');
 
@@ -57,10 +63,10 @@ exports.crearMarca = async (req, res) => {
 
     const marca = req.body.marca;
     const url = req.body.url;
-    const icono = req.files[0].filename;
-    const logo = req.files[1].filename;
-    const icono2 = req.files[2].filename;
-    const logo2 = req.files[3].filename;
+    const icono = req.files[0].location;
+    const logo = req.files[1].location;
+    const icono2 = req.files[2].location;
+    const logo2 = req.files[3].location;
 
     if(marca === '' || url === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe llenar todos los campos.' });

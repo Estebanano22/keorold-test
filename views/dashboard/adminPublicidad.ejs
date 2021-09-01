@@ -63,7 +63,7 @@
                                             <% if(listaPublicidad.tipo === '1') { %>
                                             <div class="carousel-item">
                                                 <button class="btn btn-danger position-absolute" style="top: 1rem; right: 1rem; z-index: 2;" title="Eliminar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEliminar" onclick="modalEliminar(event, '<%= listaPublicidad.idPublicidad %>')"><i class="far fa-trash-alt"></i></button>
-                                                <img src="/uploads/pautas/<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
+                                                <img src="<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
                                             </div>
                                             <% } %>
                                         <% }) %> 
@@ -91,7 +91,7 @@
                                         <% if(listaPublicidad.tipo === '2') { %>
                                             <div class="item">
                                                 <button class="btn btn-danger position-absolute" style="top: 1rem; right: 1rem; z-index: 999;" title="Eliminar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEliminar" onclick="modalEliminar(event, '<%= listaPublicidad.idPublicidad %>')"><i class="far fa-trash-alt"></i></button>
-                                                <img src="/uploads/pautas/<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
+                                                <img src="<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
                                             </div>
                                         <% } %>
                                     <% }) %> 

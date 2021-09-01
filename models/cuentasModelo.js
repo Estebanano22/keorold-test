@@ -20,11 +20,11 @@ const Cuentas = db.define('cuentasSubidas', {
         defaultValue : null
     },
     user: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     password: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     pantalla: {
@@ -40,7 +40,7 @@ const Cuentas = db.define('cuentasSubidas', {
         defaultValue : null
     },
     comprobanteJuego: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     estado: {

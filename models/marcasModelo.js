@@ -28,19 +28,19 @@ const Marcas = db.define('marcaBlanca', {
         defaultValue : 1
     },
     icono: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     logo: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     iconoBlanco: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     logoBlanco: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     }
 

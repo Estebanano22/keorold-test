@@ -31,11 +31,11 @@ const Medios = db.define('mediosConsignacion', {
         allowNull: true
     },
     imagen: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     recurso: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
 

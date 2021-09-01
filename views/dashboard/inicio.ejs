@@ -57,7 +57,7 @@
 												<% publicidad.forEach(listaPublicidad => { %>
 													<% if(listaPublicidad.tipo === '1') { %>
 													<div class="carousel-item">
-														<img src="/uploads/pautas/<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
+														<img src="<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
 													</div>
 													<% } %>
 												<% }) %> 
@@ -84,8 +84,8 @@
 											<% publicidad.forEach(listaPublicidad => { %>
 												<% if(listaPublicidad.tipo === '2') { %>
 													<div class="item">
-														<a class="btn btn-info position-absolute" style="top: 1rem; right: 1rem; z-index: 2;" title="Descargar" href="/uploads/pautas/<%= listaPublicidad.imagen%>" download="pauta-<%= listaPublicidad.imagen%>"><i class="fe fe-download"></i></a>
-														<img src="/uploads/pautas/<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
+														<a class="btn btn-info position-absolute" style="top: 1rem; right: 1rem; z-index: 2;" title="Descargar" href="<%= listaPublicidad.imagen%>" download="pauta-<%= listaPublicidad.imagen%>"><i class="fe fe-download"></i></a>
+														<img src="<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
 													</div>
 												<% } %>
 											<% }) %> 
@@ -132,7 +132,7 @@
 													<tr>
 														<td class="wd-5p">
 															<div class="main-img-user avatar-md">
-																<img alt="avatar" class="rounded-circle mr-3" src="/uploads/plataformas/<%- listaCuentas.plataforma.logo%>">
+																<img alt="avatar" class="rounded-circle mr-3" src="<%- listaCuentas.plataforma.logo%>">
 															</div>
 														</td>
 														<td>
@@ -176,7 +176,7 @@
 												<% publicidad.forEach(listaPublicidad => { %>
 													<% if(listaPublicidad.tipo === '1') { %>
 													<div class="carousel-item">
-														<img src="/uploads/pautas/<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
+														<img src="<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
 													</div>
 													<% } %>
 												<% }) %> 
@@ -203,11 +203,11 @@
 											<% publicidad.forEach(listaPublicidad => { %>
 												<% if(listaPublicidad.tipo === '2') { %>
 													<div class="item">
-														<a class="btn btn-info position-absolute" style="top: 1rem; right: 1rem; z-index: 2;" title="Descargar" href="/uploads/pautas/<%= listaPublicidad.imagen%>" download="pauta-<%= listaPublicidad.imagen%>"><i class="fe fe-download"></i></a>
-														<img src="/uploads/pautas/<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
+														<a class="btn btn-info position-absolute" style="top: 1rem; right: 1rem; z-index: 2;" title="Descargar" href="<%= listaPublicidad.imagen%>" download="pauta-<%= listaPublicidad.imagen%>"><i class="fe fe-download"></i></a>
+														<img src="<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
 													</div>
 												<% } %>
-											<% }) %> 
+											<% }) %>
 										<% } %>
 									</div>
 								</div>
@@ -251,7 +251,7 @@
 													<tr>
 														<td class="wd-5p">
 															<div class="main-img-user avatar-md">
-																<img alt="avatar" class="rounded-circle mr-3" src="/uploads/plataformas/<%- listaCuentas.plataforma.logo%>">
+																<img alt="avatar" class="rounded-circle mr-3" src="<%- listaCuentas.plataforma.logo%>">
 															</div>
 														</td>
 														<td>

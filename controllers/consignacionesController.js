@@ -7,6 +7,8 @@ const {body, validationResult} = require('express-validator');
 const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
+const {s3, bucket} = require('../config/awsS3');
+const multerS3 = require('multer-s3');
 
 exports.reportarConsignacion = async (req, res) => {
 
@@ -39,17 +41,21 @@ exports.reportarConsignacion = async (req, res) => {
 
 }
 
-const configuracionMulter = {
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/vouchers/');
+const configuracionMulter = ({
+    storage: multerS3({
+        s3,
+        bucket,
+        acl: 'public-read',
+        metadata: (req, file, next) => {
+            next(null, {
+                filename: file.fieldname
+            });
         },
-        filename: (req, file, next) => {
-            const extencion = file.mimetype.split('/')[1];
-            next(null, `${shortid.generate()}.${extencion}`);
+        key: (req, file, next) => {
+            next(null, `vouchers/${file.originalname}`);
         }
     })
-};
+});
 
 const upload = multer(configuracionMulter).single('comprobante');
 
@@ -101,7 +107,7 @@ exports.subirConsignacion = async (req, res) => {
         return;
     }
 
-    if(comprobante === 'undefined') {
+    if(req.file.location === 'undefined' || req.file.location === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir el pantallazo o foto legible del comprobante de consignación ó transferencia.' });
         return;
     }
@@ -126,7 +132,7 @@ exports.subirConsignacion = async (req, res) => {
         estado: 0,
         tipoConsignacion: tipoConsignacion,
         referencia: referencia,
-        comprobante: req.file.filename,
+        comprobante: req.file.location,
         usuarioIdUsuario: req.user.id_usuario,
         celularConsignacion: telefono,
         fechaHoraConsignacion: fechaHoraConsignacion

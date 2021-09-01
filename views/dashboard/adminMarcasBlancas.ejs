@@ -104,16 +104,16 @@
 																	<span class="text-muted"><i class="far <%= listaMarcas.estado === 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' %> mr-1"></i><%= listaMarcas.estado === 1 ? 'Activa' : 'Inactiva' %></span>
 																</td>
                                                                 <td class="text-center">
-																	<img src="<%= listaMarcas.logo === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/marcas/' + listaMarcas.logo %>" alt="" class="img-75px">
+																	<img src="<%= listaMarcas.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaMarcas.logo %>" alt="" class="img-75px">
 																</td>
                                                                 <td class="text-center">
-																	<img src="<%= listaMarcas.icono === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/marcas/' + listaMarcas.icono %>" alt="" class="img-33px">
+																	<img src="<%= listaMarcas.icono === null ? '/assetsDashboard/img/users/default.jpg' : listaMarcas.icono %>" alt="" class="img-33px">
 																</td>
 																<td class="text-center background-secondary">
-																	<img src="<%= listaMarcas.logo === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/marcas/' + listaMarcas.logoBlanco %>" alt="" class="img-75px">
+																	<img src="<%= listaMarcas.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaMarcas.logoBlanco %>" alt="" class="img-75px">
 																</td>
                                                                 <td class="text-center background-secondary">
-																	<img src="<%= listaMarcas.icono === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/marcas/' + listaMarcas.iconoBlanco %>" alt="" class="img-33px">
+																	<img src="<%= listaMarcas.icono === null ? '/assetsDashboard/img/users/default.jpg' : listaMarcas.iconoBlanco %>" alt="" class="img-33px">
 																</td>
 																<td class="text-capitalize">
 																	<div class="btn btn-list">

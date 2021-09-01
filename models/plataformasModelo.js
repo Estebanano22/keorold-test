@@ -32,7 +32,7 @@ const Plataformas = db.define('plataformas', {
         defaultValue : 1
     },
     logo: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     descripcion: {

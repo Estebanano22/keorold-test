@@ -6,6 +6,8 @@ const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
 const fs = require('fs');
+const {s3, bucket} = require('../config/awsS3');
+const multerS3 = require('multer-s3');
 
 exports.mediosConsignacion = async (req,res) => {
 
@@ -27,17 +29,21 @@ exports.mediosConsignacion = async (req,res) => {
 
 }
 
-const configuracionMulter = {
-    storage: fileStorage = multer.diskStorage({
-        destination: (req, res, next) => {
-            next(null, __dirname+'/../public/uploads/medios/');
+const configuracionMulter = ({
+    storage: multerS3({
+        s3,
+        bucket,
+        acl: 'public-read',
+        metadata: (req, file, next) => {
+            next(null, {
+                filename: file.fieldname
+            });
         },
-        filename: (req, file, next) => {
-            const extencion = file.mimetype.split('/')[1];
-            next(null, `${shortid.generate()}.${extencion}`);
+        key: (req, file, next) => {
+            next(null, `medios/${file.originalname}`);
         }
-    }) 
-};
+    })
+});
 
 const upload = multer(configuracionMulter).any('imagen', 'recurso');
 
@@ -54,7 +60,7 @@ exports.uploadRecursos = async (req, res, next) => {
 }
 
 exports.subirMedio = async (req, res) => {
-
+    console.log(req.body.imagen);
     if(req.body.imagen === 'undefined') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Por favor suba todos los recursos ya que son obligatorios.' });
         return;
@@ -63,9 +69,9 @@ exports.subirMedio = async (req, res) => {
     const titulo = req.body.tituloMedio.trim();
     const descripcionCorta = req.body.descripcionCortaMedio.trim();
     const descripcion = req.body.descripcionMedio.trim();
-    const imagen = req.files[0].filename;
+    const imagen = req.files[0].location;
     if(req.body.recurso !== 'undefined') {
-        var recurso = req.files[1].filename;
+        var recurso = req.files[1].location;
     } else {
         var recurso = null;
     }

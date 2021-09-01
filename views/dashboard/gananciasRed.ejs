@@ -84,7 +84,7 @@
                                                                 <td class="text-left text-capitalize"><%= listaGanancias.usuario.nombre %></td>
                                                                 <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaGanancias.usuario.perfil %></td>
 																<td class="text-center">
-																	<img src="<%= listaGanancias.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/plataformas/' + listaGanancias.plataforma.logo %>" alt="" class="img-circle">
+																	<img src="<%= listaGanancias.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaGanancias.plataforma.logo %>" alt="" class="img-circle">
 																</td>
 																<td class="text-capitalize"><%= listaGanancias.plataforma.plataforma %></td>
 																<td class="text-capitalize text-right"><%= valorFormateado %></td>

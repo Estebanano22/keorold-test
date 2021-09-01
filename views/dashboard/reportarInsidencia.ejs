@@ -469,8 +469,8 @@
             } else {
                 btnDescargarInsidencia.classList.remove('display-none');
                 adjuntosInsidencia.innerHTML = '1 Archivo adjunto';
-                imagenInsidencia.src = '/uploads/insidencias/'+respuesta.imagen;
-                btnDescargarInsidencia.href = '/uploads/insidencias/'+respuesta.imagen;
+                imagenInsidencia.src = respuesta.imagen;
+                btnDescargarInsidencia.href = respuesta.imagen;
                 btnDescargarInsidencia.setAttribute("download", respuesta.imagen);
                 nombreImagenInsidencia.innerHTML = respuesta.imagen;
             }

@@ -66,11 +66,11 @@ const Usuarios = db.define('usuarios', {
         defaultValue : 0
     },
     foto: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     enlace_afiliado: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(70),
         defaultValue : null,
         unique: {
             args: true,

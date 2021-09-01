@@ -144,7 +144,7 @@
 															<tr>
 																<td class="text-center">
 																	<a class="circle-edit" title="Editar Logo" data-effect="effect-flip-horizontal" data-toggle="modal" href="#editarLogo" onclick="modalEditarLogo(event, '<%= listaPlataformas.id_plataforma %>')"><i class="fas fa-camera"></i></a>
-																	<img src="<%= listaPlataformas.logo === null ? '/assetsDashboard/img/users/default.jpg' : '/uploads/plataformas/' + listaPlataformas.logo %>" alt="" class="img-circle">
+																	<img src="<%= listaPlataformas.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaPlataformas.logo %>" alt="" class="img-circle">
 																</td>
 																<td class="text-capitalize"><%= listaPlataformas.plataforma %></td>
                                                                 <td class="text-center">
