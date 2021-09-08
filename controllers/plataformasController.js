@@ -350,6 +350,11 @@ exports.editarLogo = async (req, res) => {
 
 exports.crearPlataformaSuperdistribuidor = async (req, res) => {
 
+    if(!req.file){
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen para el logo de la plataforma.' });
+        return;
+    }
+
     if(req.file.location === 'undefined' || req.file.location === '' || req.file.location === null) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen para el logo de la plataforma.' });
         return;
