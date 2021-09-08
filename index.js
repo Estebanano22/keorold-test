@@ -11,6 +11,7 @@ const axios = require('axios');
 const routes = require('./routes');
 const socketIO = require('socket.io');
 const moment = require('moment');
+const timeout = require('connect-timeout');
 
 // crear conexion ala DB
 const db = require('./config/db');
@@ -89,7 +90,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 // Rutas de la app
-app.use('/', routes());
+app.use('/', timeout('30s'), routes());
 
 // Error 404
 app.get('*', function(req, res){

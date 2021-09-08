@@ -360,6 +360,14 @@
                     });
 
                 }
+              }).catch(() => {
+                $('#global-loader').removeClass("d-block");
+                $('#global-loader').addClass("d-none");
+                swal({
+                  title: 'Request Error',
+                  text: '500 - Medios consignación',
+                  type: 'error'
+                });
               })
 
           }
@@ -386,6 +394,14 @@
                 nombreMedioEliminar.innerHTML = respuesta.medio.titulo;
                 const idEliminar = document.getElementById('idEliminar');
                 idEliminar.value = id;
+              }).catch(() => {
+                $('#global-loader').removeClass("d-block");
+                $('#global-loader').addClass("d-none");
+                swal({
+                  title: 'Request Error',
+                  text: '500 - Medios consignación',
+                  type: 'error'
+                });
               })
 
           }
@@ -426,6 +442,14 @@
                     });
 
                 }
+              }).catch(() => {
+                $('#global-loader').removeClass("d-block");
+                $('#global-loader').addClass("d-none");
+                swal({
+                  title: 'Request Error',
+                  text: '500 - Medios consignación',
+                  type: 'error'
+                });
               })
 
           }
@@ -480,6 +504,14 @@
                   $('#alertaEditar').html(error);
                   $('#alertaEditar').delay(2000).fadeOut();
                 }
+              }).catch(() => {
+                $('#global-loader').removeClass("d-block");
+                $('#global-loader').addClass("d-none");
+                swal({
+                  title: 'Request Error',
+                  text: '500 - Medios consignación',
+                  type: 'error'
+                });
               })
 
           }
@@ -515,6 +547,14 @@
                 const format = respuesta.medio.descripcion.replaceAll('<br>', '\n');
                 descripcionEditar.value = format;
 
+              }).catch(() => {
+                $('#global-loader').removeClass("d-block");
+                $('#global-loader').addClass("d-none");
+                swal({
+                  title: 'Request Error',
+                  text: '500 - Medios consignación',
+                  type: 'error'
+                });
               })
 
           }
@@ -561,6 +601,14 @@
                   btnDescargarRecurso.href = '';
                   btnDescargarRecurso.setAttribute("download", '');
                 }
+              }).catch(() => {
+                $('#global-loader').removeClass("d-block");
+                $('#global-loader').addClass("d-none");
+                swal({
+                  title: 'Request Error',
+                  text: '500 - Medios consignación',
+                  type: 'error'
+                });
               })
 
 
@@ -616,6 +664,14 @@
                   $('#alertaCrear').html(error);
                   $('#alertaCrear').delay(2000).fadeOut();
                 }
+              }).catch(() => {
+                $('#global-loader').removeClass("d-block");
+                $('#global-loader').addClass("d-none");
+                swal({
+                  title: 'Request Error',
+                  text: '500 - Medios consignación',
+                  type: 'error'
+                });
               })
           }
         </script>

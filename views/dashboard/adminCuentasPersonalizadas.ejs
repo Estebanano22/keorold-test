@@ -347,6 +347,14 @@
           const pinSubir = document.getElementById("pinSubir");
           pinSubir.value = respuesta.cuentas.pin;
 
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas personalizadas',
+            type: 'error'
+          });
         })
 
     }
@@ -401,6 +409,14 @@
             $('#alertaSubir').html(error);
             $('#alertaSubir').delay(15000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas personalizadas',
+            type: 'error'
+          });
         })
 
     }
@@ -443,6 +459,14 @@
           const pinEditar = document.getElementById("pinEditar");
           pinEditar.value = respuesta.cuentas.pin;
 
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas personalizadas',
+            type: 'error'
+          });
         })
 
     }
@@ -497,6 +521,14 @@
             $('#alertaEditar').html(error);
             $('#alertaEditar').delay(15000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas personalizadas',
+            type: 'error'
+          });
         })
 
     }
@@ -553,6 +585,14 @@
             })
 
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas personalizadas',
+            type: 'error'
+          });
         })
 
     }

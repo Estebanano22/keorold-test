@@ -309,6 +309,14 @@
             ellipsis_box(30);
           }
 
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar insidencias',
+            type: 'error'
+          });
         })
     }
 
@@ -366,6 +374,14 @@
             ellipsis_box(30);
           }
 
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar insidencias',
+            type: 'error'
+          });
         })
     }
 
@@ -423,6 +439,14 @@
             ellipsis_box(30);
           }
 
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar insidencias',
+            type: 'error'
+          });
         })
     }
 
@@ -496,6 +520,14 @@
             btnDescargarInsidencia.setAttribute("download", respuesta.imagen);
             nombreImagenInsidencia.innerHTML = respuesta.imagen;
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar insidencias',
+            type: 'error'
+          });
         })
 
     }
@@ -585,6 +617,14 @@
             $('#alertaCrear').delay(15000).fadeOut();
 
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar insidencias',
+            type: 'error'
+          });
         })
 
     }

@@ -359,6 +359,14 @@
             })
 
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Inicio',
+            type: 'error'
+          });
         })
     }
   </script>

@@ -298,6 +298,14 @@
             $('#alertaAsignar').html(error);
             $('#alertaAsignar').delay(2000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Links PSE',
+            type: 'error'
+          });
         })
 
     }
@@ -355,6 +363,14 @@
             $('#alertaEditar').html(error);
             $('#alertaEditar').delay(2000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Links PSE',
+            type: 'error'
+          });
         })
 
     }
@@ -411,6 +427,14 @@
             })
 
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Links PSE',
+            type: 'error'
+          });
         })
 
     }

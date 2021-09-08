@@ -1101,6 +1101,14 @@
               $('#alertaComprarCallofduty2').html(error);
               $('#alertaComprarCallofduty2').delay(2000).fadeOut();
             }
+          }).catch(() => {
+            $('#global-loader').removeClass("d-block");
+            $('#global-loader').addClass("d-none");
+            swal({
+              title: 'Request Error',
+              text: '500 - Plataformas',
+              type: 'error'
+            });
           })
 
       } else {
@@ -1214,6 +1222,14 @@
               $('#alertaComprarFreefire2').html(error);
               $('#alertaComprarFreefire2').delay(2000).fadeOut();
             }
+          }).catch(() => {
+            $('#global-loader').removeClass("d-block");
+            $('#global-loader').addClass("d-none");
+            swal({
+              title: 'Request Error',
+              text: '500 - Plataformas',
+              type: 'error'
+            });
           })
 
       } else {
@@ -1345,6 +1361,14 @@
                 $('#alertaComprarPersonalizada2').html(error);
                 $('#alertaComprarPersonalizada2').delay(2000).fadeOut();
               }
+            }).catch(() => {
+              $('#global-loader').removeClass("d-block");
+              $('#global-loader').addClass("d-none");
+              swal({
+                title: 'Request Error',
+                text: '500 - Plataformas',
+                type: 'error'
+              });
             })
         }
 
@@ -1464,6 +1488,14 @@
                 $('#alertaComprarRenovacion2').html(error);
                 $('#alertaComprarRenovacion2').delay(2000).fadeOut();
               }
+            }).catch(() => {
+              $('#global-loader').removeClass("d-block");
+              $('#global-loader').addClass("d-none");
+              swal({
+                title: 'Request Error',
+                text: '500 - Plataformas',
+                type: 'error'
+              });
             })
 
         } else {
@@ -1543,6 +1575,14 @@
                 $('#alertaComprarPedido').html(error);
                 $('#alertaComprarPedido').delay(2000).fadeOut();
               }
+            }).catch(() => {
+              $('#global-loader').removeClass("d-block");
+              $('#global-loader').addClass("d-none");
+              swal({
+                title: 'Request Error',
+                text: '500 - Plataformas',
+                type: 'error'
+              });
             })
 
         } else {
@@ -1647,6 +1687,14 @@
                 $('#alertaComprarNormal').html(error);
                 $('#alertaComprarNormal').delay(2000).fadeOut();
               }
+            }).catch(() => {
+              $('#global-loader').removeClass("d-block");
+              $('#global-loader').addClass("d-none");
+              swal({
+                title: 'Request Error',
+                text: '500 - Plataformas',
+                type: 'error'
+              });
             })
 
         } else {

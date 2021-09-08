@@ -219,6 +219,14 @@
             $('#alertaSolicitar').html(error);
             $('#alertaSolicitar').delay(2000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - link PSE',
+            type: 'error'
+          });
         })
 
     }

@@ -351,6 +351,14 @@
 
         $('#global-loader').removeClass("d-block");
         $('#global-loader').addClass("d-none");
+      }).catch(() => {
+        $('#global-loader').removeClass("d-block");
+        $('#global-loader').addClass("d-none");
+        swal({
+          title: 'Request Error',
+          text: '500 - Reportar consignación',
+          type: 'error'
+        });
       })
 
       btnDescargar.dataset.file = '';
@@ -398,6 +406,14 @@
             $('#alertaDescarga').html(error);
             $('#alertaDescarga').delay(2000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar consignación',
+            type: 'error'
+          });
         })
 
     }
@@ -452,6 +468,14 @@
             btnDescargarRecurso.href = '';
             btnDescargarRecurso.setAttribute("download", '');
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar consignación',
+            type: 'error'
+          });
         })
 
 
@@ -485,6 +509,14 @@
           } else {
             noCelular.classList.remove('display-none');
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar consignación',
+            type: 'error'
+          });
         })
 
     }
@@ -539,6 +571,14 @@
             $('#alertaConsignacion').html(error);
             $('#alertaConsignacion').delay(2000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar consignación',
+            type: 'error'
+          });
         })
     }
   </script>

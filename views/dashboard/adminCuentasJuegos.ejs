@@ -342,6 +342,14 @@
             divPasswordSubir.classList.remove('display-none');
           }
 
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas juegos',
+            type: 'error'
+          });
         })
 
     }
@@ -394,6 +402,14 @@
             $('#alertaSubir').html(error);
             $('#alertaSubir').delay(15000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas juegos',
+            type: 'error'
+          });
         })
 
     }
@@ -450,6 +466,14 @@
             })
 
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas juegos',
+            type: 'error'
+          });
         })
 
     }

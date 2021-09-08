@@ -223,6 +223,14 @@
 
         $('#global-loader').removeClass("d-block");
         $('#global-loader').addClass("d-none");
+      }).catch(() => {
+        $('#global-loader').removeClass("d-block");
+        $('#global-loader').addClass("d-none");
+        swal({
+          title: 'Request Error',
+          text: '500 - Ganancias',
+          type: 'error'
+        });
       })
 
       btnDescargar.dataset.file = '';
@@ -272,6 +280,14 @@
             $('#alertaDescarga').html(error);
             $('#alertaDescarga').delay(2000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Ganancias',
+            type: 'error'
+          });
         })
 
     }

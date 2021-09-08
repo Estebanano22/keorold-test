@@ -324,6 +324,14 @@
               confirmButtonColor: '#fd6074'
             })
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Faq',
+            type: 'error'
+          });
         })
     }
 
@@ -379,6 +387,14 @@
             })
 
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Faq',
+            type: 'error'
+          });
         })
 
     }
@@ -427,6 +443,14 @@
             $('#alertaSubir').html(error);
             $('#alertaSubir').delay(15000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Faq',
+            type: 'error'
+          });
         })
     }
   </script>

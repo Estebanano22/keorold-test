@@ -468,6 +468,14 @@
             $('#alertaCargar').html(error);
             $('#alertaCargar').delay(2000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
         })
 
     }
@@ -518,6 +526,14 @@
             $('#alertaCargar').html(error);
             $('#alertaCargar').delay(2000).fadeOut();
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
         })
 
     }
@@ -732,6 +748,14 @@
                 }
               });
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
         })
 
     }
@@ -761,6 +785,14 @@
             type: respuesta.resp,
             confirmButtonColor: respuesta.resp === 'error' ? '#fd6074' : '#57a94f'
           })
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
         })
     };
 
@@ -800,6 +832,14 @@
             $("#valorPlataforma_" + idP).val(valorP);
           }
 
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
         })
 
     }
@@ -845,6 +885,14 @@
               confirmButtonColor: '#fd6074'
             })
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
         })
     };
 
@@ -926,6 +974,14 @@
               confirmButtonColor: '#fd6074'
             })
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
         })
     }
 
@@ -983,6 +1039,14 @@
               confirmButtonColor: '#fd6074'
             })
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
         })
 
     }
