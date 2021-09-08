@@ -90,7 +90,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 // Rutas de la app
-app.use('/', timeout('30s'), routes());
+app.use('/', routes());
 
 // Error 404
 app.get('*', function(req, res){
