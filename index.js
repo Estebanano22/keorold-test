@@ -32,7 +32,7 @@ require('./models/preguntasModelo');
 require('./models/publicidadModelo');
 
 db.sync()
-    .then(() => console.log('Conectado al servidor'))
+    .then(() => console.log('Conectado a la base de datos'))
     .catch(error => console.log(error));
 
 // Variables de entorno
@@ -73,10 +73,10 @@ app.use(passport.session());
 app.use(flash());
 
 // Middleware's (usuario logueado, flash messages, fecha actual)
-app.use( async (req, res, next) => {
-    res.locals.usuario = {...req.user} || null;
+app.use(async(req, res, next) => {
+    res.locals.usuario = {...req.user } || null;
     res.locals.mensajes = req.flash();
-    const paises = await axios.get('http://'+req.headers.host+'/assetsDashboard/json/paises.json');
+    const paises = await axios.get('http://' + req.headers.host + '/assetsDashboard/json/paises.json');
     res.locals.paises = paises;
     const fecha = new Date();
     res.locals.year = fecha.getFullYear();
@@ -86,23 +86,23 @@ app.use( async (req, res, next) => {
 });
 
 // habilitar bodyparser
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Rutas de la app
 app.use('/', routes());
 
 // Error 404
-app.get('*', function(req, res){
-res.status(404).render('404', {
-    nombrePagina : 'Pagina no encontrada'
+app.get('*', function(req, res) {
+    res.status(404).render('404', {
+        nombrePagina: 'Pagina no encontrada'
     })
 });
 
 // puerto
 const puerto = process.env.PORT || 5000;
 const server = app.listen(puerto, () => {
-    console.log('Corriendo correctamente');
+    console.log(`Corriendo correctamente en el puerto ${puerto}`);
 });
 
 // // Socket
