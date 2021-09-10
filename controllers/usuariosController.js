@@ -182,13 +182,21 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
             },
             attributes: ['valor'],
         });
-        
 
-        if(Number(asignacionDistribuidor.valor) > Number(valorPlataforma)) {
-            res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar el valor a esta plataforma ya es que menor o igual a su valor asignado.' });
+
+
+        const menorValor = await Asignaciones.findOne({
+            where: { 
+                [Op.and]:[{id_distribuidor:req.user.id_usuario}, {plataformaIdPlataforma: idPlataforma}]
+            },
+            order: [ [ 'valor', 'ASC' ]],
+        }); 
+
+        if(objetoAsignaciones[i][0].id === ''){
+            res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No has hecho cambios en las plataformas' });
             
             return;
-        };
+        }
 
         if(Number(asignacionDistribuidor.valor) > Number(valorPlataforma)) {
             res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar el valor a esta plataforma ya es que menor o igual a su valor asignado.' });
@@ -208,18 +216,24 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
                     id_plataforma: idPlataforma
                 },
                 attributes: ['plataforma']
+                
             });
 
             const nombrePlataforma = plataforma.plataforma;
-        
             const diferencial = (Number(valorPlataforma) - Number(asignacion.valor));
+            console.log(menorValor);
 
             if(Number(diferencial) > 1000){
                 res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
             
                 return;
             }
-            
+
+            if(Number(valorPlataforma) > Number(menorValor.valor)){
+                res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
+                
+                return;
+            }
         
             if(asignacion !== null) {
 

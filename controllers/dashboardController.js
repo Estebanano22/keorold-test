@@ -417,6 +417,12 @@ exports.subirFoto = async (req, res, next) => {
         return next();
     }
 
+    if(!req.file) {
+        req.flash('error', 'No se selecciono una imagen');
+        res.redirect('/dashboard/mi-perfil');
+        return next();
+    }
+
     // Leer imagen
     usuario.foto = req.file.location;
     await usuario.save();
