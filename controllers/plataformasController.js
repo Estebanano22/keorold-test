@@ -519,6 +519,13 @@ exports.desplegarPlataformas = async(req, res) => {
 
         const valorBase = asignaciones.valor;
 
+        const testAsignacionPlataforma = await Asignaciones.findOne({
+            where: {
+                [Op.and]: [{ usuarioIdUsuario: id_usuario }, { plataformaIdPlataforma: id_plataforma }],
+            }
+        });
+        
+
         if (nombrePlataforma.includes('free fire') || nombrePlataforma.includes('call of duty') || nombrePlataforma.includes('demo')) {
             var valorUsuario = Number(valorBase);
         } else {
@@ -530,21 +537,26 @@ exports.desplegarPlataformas = async(req, res) => {
                 }
             } else {
                 if (usuarios[i].perfil === 'distribuidor') {
-                    var valorUsuario = Number(valorBase) + 1;
+                    var valorUsuario = Number(valorBase) + 0.28;
                 } else if (usuarios[i].perfil === 'reseller') {
-                    var valorUsuario = Number(valorBase) + 2;
+                    var valorUsuario = Number(valorBase) + 0.56;
                 }
             }
         }
 
-        await Asignaciones.create({
-            id_asignacion: uuid_v4(),
-            valor: valorUsuario,
-            id_distribuidor: distribuidorAsignacion.id_usuario,
-            id_superdistribuidor: req.user.id_usuario,
-            usuarioIdUsuario: id_usuario,
-            plataformaIdPlataforma: id_plataforma
-        });
+        if(!testAsignacionPlataforma){
+            await Asignaciones.create({
+                id_asignacion: uuid_v4(),
+                valor: valorUsuario,
+                id_distribuidor: distribuidorAsignacion.id_usuario,
+                id_superdistribuidor: req.user.id_usuario,
+                usuarioIdUsuario: id_usuario,
+                plataformaIdPlataforma: id_plataforma
+            });
+        }else{
+            testAsignacionPlataforma.valor = valorUsuario;
+            testAsignacionPlataforma.save();
+        }
     }
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'La plataforma ha sido desplegada con éxito en la red.' });
