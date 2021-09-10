@@ -233,7 +233,7 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
                 return;
             }
 
-            if(Number(valorPlataforma) > Number(menorValor.valor)){
+            if(Number(valorPlataforma) < Number(menorValor.valor)){
                 res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
                 
                 return;
