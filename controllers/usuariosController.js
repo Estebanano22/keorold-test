@@ -183,6 +183,13 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
             attributes: ['valor'],
         });
         
+
+        if(Number(asignacionDistribuidor.valor) > Number(valorPlataforma)) {
+            res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar el valor a esta plataforma ya es que menor o igual a su valor asignado.' });
+            
+            return;
+        };
+
         if(Number(asignacionDistribuidor.valor) > Number(valorPlataforma)) {
             res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar el valor a esta plataforma ya es que menor o igual a su valor asignado.' });
             
@@ -195,7 +202,25 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
                     [Op.and]: [{ usuarioIdUsuario: id_usuario }, { plataformaIdPlataforma: idPlataforma }],  
                 }
             });
+
+            const plataforma = await Plataformas.findOne({
+                where:{
+                    id_plataforma: idPlataforma
+                },
+                attributes: ['plataforma']
+            });
+
+            const nombrePlataforma = plataforma.plataforma;
+        
+            const diferencial = (Number(valorPlataforma) - Number(asignacion.valor));
+
+            if(Number(diferencial) > 1000){
+                res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
             
+                return;
+            }
+            
+        
             if(asignacion !== null) {
 
                 asignacion.valor = valorPlataforma;
