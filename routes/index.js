@@ -906,6 +906,13 @@ module.exports = function() {
         gananciasController.gananciasRed
     );
 
+    router.get('/dashboard/asignacionPlataformas/:id', 
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaDistribuidor,
+        usuariosController.asignacionesUsuario
+    )
+
     // Compra plataformas (Distribuidores y resellers)
     router.get('/dashboard/plataformas',
         authController.usuarioAutenticado,

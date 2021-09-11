@@ -135,9 +135,7 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
     const id_usuario = req.body.id.trim();
     const objetoAsignaciones = req.body.asignaciones;
 
-    console.log(objetoAsignaciones);
-
-    if(objetoAsignaciones === '' || objetoAsignaciones.length > 1) {
+    if(objetoAsignaciones === ''|| objetoAsignaciones.length > 1) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar las plataformas, debe ingresar algún valor en las casillas.' });
         return;
     }
@@ -175,6 +173,8 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
     // recorrer array con asignaciones
     for(var i = 0; i < objetoAsignaciones.length; i++) {
         const idPlataforma = objetoAsignaciones[i][0].id;
+        console.log('id plataforma:' + idPlataforma);
+        console.log('id usuario:' + id_usuario);
 
         const valorPlataforma = objetoAsignaciones[i][0].valor;
         const valorPlataforma2 = objetoAsignaciones[i][0].valor;
@@ -186,18 +186,10 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
             attributes: ['valor'],
         });
 
-        const menorValor = await Asignaciones.findOne({
-            where: { 
-                [Op.and]:[
-                    {id_distribuidor:id_usuario}, 
-                    {plataformaIdPlataforma: idPlataforma}, 
-                    // {valor: {[Op.ne]: valorPlataforma}}
-                ],
-            },
-            order: [ [ 'valor', 'ASC' ]],
-        });
+        let menorValor;
+        let resellerDiference;
 
-        const allUsersFrom = await Asignaciones.findAll({
+        const minimusPriceFromDistribuidores = await Asignaciones.findOne({
             where: { 
                 [Op.and]:[
                     {id_distribuidor:id_usuario}, 
@@ -205,9 +197,16 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
                 ],
             },
             order: [ [ 'valor', 'ASC' ]],
-        })
+        });
+        
+        if(minimusPriceFromDistribuidores){
+            menorValor = minimusPriceFromDistribuidores.valor;
+            resellerDiference = false;
+        }else{
+            menorValor = 100000000000;
+            resellerDiference = true;
+        }
 
-        console.log(allUsersFrom);
 
         if(objetoAsignaciones[i][0].id === ''){
             res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No has hecho cambios en las plataformas' });
@@ -219,8 +218,8 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
             res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar el valor a esta plataforma ya es que menor o igual a su valor asignado.' });
             
             return;
-        };
-        
+        }
+
         if(valorPlataforma !== '') {
             const asignacion = await Asignaciones.findOne({ 
                 where: { 
@@ -238,38 +237,28 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
 
             const nombrePlataforma = plataforma.plataforma;
             const diferencial = (Number(valorPlataforma) - Number(asignacion.valor));
-
             
             console.log('Menor valor');
             console.log(menorValor);
-            console.log(menorValor.valor);
 
             console.log('Diferencial')
             console.log(diferencial);
 
-            console.log('valor entrante de plataforma');
+            console.log('valor plataforma');
             console.log(valorPlataforma); 
 
-            if(Number(diferencial) > 1000){
+            if(Number(diferencial) > 1000 && !resellerDiference){
                 res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
             
                 return;
             }
 
-            // if(Number(valorPlataforma) > Number(menorValor.valor)){
-            //     res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
-                
-            //     return;
-            // }
-            if(Number(valorPlataforma2) > Number(menorValor.valor)){
-                console.log('El valor de la plataforma es supuestamente mayor al valor del hijo mas cercano');
-                console.log(menorValor.valor);
-
+            if(Number(valorPlataforma2) > Number(menorValor)){
                 res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
                 
                 return;
             }
-        
+            
             if(asignacion !== null) {
 
                 asignacion.valor = valorPlataforma;
@@ -448,36 +437,18 @@ exports.usuariosInformacionPlataformasUsuario = async (req, res) => {
     return res.json({ data: asignaciones});
 }
 
-exports.usuarios =  ( req, res) => {
-    const usuario = Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
-    const usuarios = Usuarios.findAll({
+exports.usuarios =  async ( req, res) => {
+    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
+    const usuarios = await Usuarios.findAll({
         where: { 
             [Op.and]: [{ patrocinador: req.user.enlace_afiliado }],
         }
     });
 
-    const distribuidores = Usuarios.findAll();
-    const plataformas = Plataformas.findAll({
+    const distribuidores = await Usuarios.findAll();
+    const plataformas = await Plataformas.findAll({
         where: { estado: 1 }
     });
-
-    let asignaciones = [];
-
-    usuarios.forEach((usuarioAsignar) => {
-        let asignacionesUsuario = Asignaciones.findAll({
-            where: {
-                usuarioIdUsuario: usuarioAsignar.id_usuario
-            },
-            include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
-                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
-            ]
-        });
-
-        asignaciones.push(asignacionesUsuario);
-    });
-
-    console.log(asignaciones);
 
     res.render('dashboard/usuarios', {
         nombrePagina : 'Administrador Usuarios',
@@ -487,7 +458,6 @@ exports.usuarios =  ( req, res) => {
         usuario,
         usuarios,
         plataformas,
-        asignaciones,
         distribuidores
     })
 }
@@ -596,8 +566,6 @@ exports.asignarPlataformaUsuario = async (req, res) => {
     const id_usuario = req.body.id.trim();
     const objetoAsignaciones = req.body.asignaciones;
 
-    console.log(objetoAsignaciones);
-
     if(objetoAsignaciones === ''|| objetoAsignaciones.length > 1) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar las plataformas, debe ingresar algún valor en las casillas.' });
         return;
@@ -636,6 +604,8 @@ exports.asignarPlataformaUsuario = async (req, res) => {
     // recorrer array con asignaciones
     for(var i = 0; i < objetoAsignaciones.length; i++) {
         const idPlataforma = objetoAsignaciones[i][0].id;
+        console.log('id plataforma:' + idPlataforma);
+        console.log('id usuario:' + id_usuario);
 
         const valorPlataforma = objetoAsignaciones[i][0].valor;
         const valorPlataforma2 = objetoAsignaciones[i][0].valor;
@@ -647,23 +617,10 @@ exports.asignarPlataformaUsuario = async (req, res) => {
             attributes: ['valor'],
         });
 
-        console.log(id_usuario);
-        console.log(idPlataforma);
+        let menorValor;
+        let resellerDiference;
 
-        let menorValor = await Asignaciones.findOne({
-            where: { 
-                [Op.and]:[
-                    {id_distribuidor:id_usuario}, 
-                    {plataformaIdPlataforma: idPlataforma}, 
-                    // {valor: {[Op.ne]: valorPlataforma}}
-                ],
-            },
-            order: [ [ 'valor', 'ASC' ]],
-        });
-        
-        console.log(menorValor.valor);
-
-        const allUsersFrom = await Asignaciones.findAll({
+        const minimusPriceFromDistribuidores = await Asignaciones.findOne({
             where: { 
                 [Op.and]:[
                     {id_distribuidor:id_usuario}, 
@@ -671,9 +628,16 @@ exports.asignarPlataformaUsuario = async (req, res) => {
                 ],
             },
             order: [ [ 'valor', 'ASC' ]],
-        })
+        });
+        
+        if(minimusPriceFromDistribuidores){
+            menorValor = minimusPriceFromDistribuidores.valor;
+            resellerDiference = false;
+        }else{
+            menorValor = 100000000000;
+            resellerDiference = true;
+        }
 
-        console.log(allUsersFrom);
 
         if(objetoAsignaciones[i][0].id === ''){
             res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No has hecho cambios en las plataformas' });
@@ -714,22 +678,13 @@ exports.asignarPlataformaUsuario = async (req, res) => {
             console.log('valor plataforma');
             console.log(valorPlataforma); 
 
-            if(Number(diferencial) > 1000){
+            if(Number(diferencial) > 1000 && !resellerDiference){
                 res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
             
                 return;
             }
 
-            // if(Number(valorPlataforma) > Number(menorValor.valor)){
-            //     res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
-                
-            //     return;
-            // }
-
-            if(Number(valorPlataforma2) > Number(menorValor.valor)){
-                console.log('El valor de la plataforma es supuestamente mayor al valor del hijo mas cercano');
-                console.log(menorValor.valor);
-
+            if(Number(valorPlataforma2) > Number(menorValor)){
                 res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
                 
                 return;
@@ -783,4 +738,37 @@ exports.tablaPrecios = async (req, res) => {
         asignaciones
     })
 
+}
+
+// ============================================================================
+//                      Asignaciones controller
+// ============================================================================
+
+exports.asignacionesUsuario = async (req, res) => {
+    
+    const usuarioAsignaciones = await Usuarios.findOne({ where: { id_usuario: req.params.id }});
+    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
+
+    if(usuario.enlace_afiliado !== usuarioAsignaciones.patrocinador){
+        return res.redirect('/dashboard/usuarios');
+    }
+
+    const asignaciones = await Asignaciones.findAll({
+        where: {
+            [Op.and]: [{usuarioIdUsuario: req.params.id}, {id_distribuidor: req.user.id_usuario}]
+        },
+        include:[
+            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'},
+        ]
+    });
+
+    res.render('dashboard/asignaciones', {
+        nombrePagina : 'Asginacion de plataformas',
+        titulo: 'Asginacion de plataformas',
+        breadcrumb: 'Asginacion de plataformas',
+        classActive: req.path.split('/')[2],
+        usuario,
+        usuarioAsignaciones,
+        asignaciones
+    })
 }
