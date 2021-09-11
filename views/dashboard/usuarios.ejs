@@ -248,19 +248,19 @@
                 </tr>
               </thead>
               <tbody>
-                <% if(plataformas.length) { %>
-
-                <% plataformas.forEach(listaPlataformas => { %>
+                <% if(asignaciones.length) { %>
+                <% console.log('nice') %>
+                <% asignaciones.forEach(asignacion => { %>
                 <tr>
                   <td>
-                    <input type='checkbox' class='asignarCheckbox' id-asignacion='<%= listaPlataformas.id_plataforma %>' id="check_<%= listaPlataformas.id_plataforma %>">
+                    <input type='checkbox' class='asignarCheckbox' id-asignacion='<%= asignacion.id_asignacion %>' id="check_<%= asignacion.id_asignacion %>">
                   </td>
                   <td class="text-center">
-                    <img src="<%= listaPlataformas.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaPlataformas.logo %>" alt="" class="img-circle">
+                    <img src="<%= asignacion.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : asignacion.plataforma.logo %>" alt="" class="img-circle">
                   </td>
                   <td class="text-capitalize text-left"><%= listaPlataformas.plataforma %></td>
                   <td>
-                    <input class="form-control input-md inputValor" type="text" name="valorPlataforma" id="valorPlataforma_<%= listaPlataformas.id_plataforma %>" data-id="<%= listaPlataformas.id_plataforma %>" value="" placeholder="0.00">
+                    <input class="form-control input-md inputValor" type="text" name="valorPlataforma" id="valorPlataforma_<%= asignacion.id_asignacion %>" data-id="<%= asignacion.id_asignacion %>" value="" placeholder="0.00">
                   </td>
                   <!-- <td>
 												<div class="btn btn-list">
@@ -275,6 +275,9 @@
                 <% }) %>
                 <% } %>
               </tbody>
+              <!-- <tbody id="render-tbody-asignaciones">
+
+              </tbody> -->
             </table>
           </div>
         </div>
@@ -387,7 +390,6 @@
   <% } else if (validacionErrores == 'success') { %>
   <% title = 'Perfecto!' %>
   <% } %>
-
   <script>
     swal({
       title: "<%= title %>",
@@ -401,9 +403,10 @@
 
   <% } %>
   <% } %>
-
+  <% asignaciones %>
   <script>
     // Cargar Saldo
+    console.log(dataAsignaciones)
 
     function modalCargar(e, id, nombre) {
 
@@ -677,6 +680,9 @@
       const arrayValores = btnAsignar.getAttribute('arrayValores');
       const objetoSplitValores = arrayValores.split(',');
 
+      console.log(arrayId);
+      console.log(arrayValores);
+
       const objetoId = [];
 
       for (var i = 0; i < objetoSplitId.length; i++) {
@@ -695,6 +701,9 @@
       }]);
       console.log(resultado)
       const id = document.getElementById("idUserAsignar").value;
+
+      console.log(id);
+      console.log(resultado);
 
       $('#global-loader').addClass("d-block");
       $('#global-loader').removeClass("d-none");
@@ -795,9 +804,7 @@
 
       $('#tablaAsignar').DataTable().destroy();
 
-      $('#global-loader').addClass("d-block");
-      $('#global-loader').removeClass("d-none");
-      fetch('/usuarios/tablaAsignarPlataformas', {
+      fetch('/usuarios/informacionPlataformasUsuario', {
           method: 'POST',
           headers: {
             'Content-type': 'application/json'
@@ -808,22 +815,35 @@
         })
         .then(res => res.text())
         .then(data => {
-
-          $('#global-loader').removeClass("d-block");
-          $('#global-loader').addClass("d-none");
-          const asignaciones = JSON.parse(data);
-
+          let dataLet = JSON.parse(data);
+          console.log(dataLet.data);
+          const asignaciones = dataLet.data
+          // $('#global-loader').removeClass("d-block");
+          // $('#global-loader').addClass("d-none");
+          // const asignaciones = JSON.parse(data);
+          const tbodyAsignaciones = document.getElementById('render-tbody-asignaciones');
+          const arrayTbodyAsignaciones = '';
           for (var f = 0; f < asignaciones.length; f++) {
-
-            var idP = asignaciones[f].plataformaIdPlataforma;
-            var valorP = asignaciones[f].valor;
-
-            $("#valorPlataforma_" + idP).val(valorP);
+            const plataforma = asignaciones[f];
+            console.log(plataforma);
+            const logo = plataforma.plataforma.logo;
+            const tr = `<tr>
+                  <td>
+                    <input type='checkbox' class='asignarCheckbox' id-asignacion='${plataforma.plataforma.id_plataforma}' id="check_${plataforma.plataforma.id_plataforma}">
+                  </td>
+                  <td class="text-center">
+                    <img src="${logo}" alt="" class="img-circle">
+                  </td>
+                  <td class="text-capitalize text-left">${plataforma.plataforma.plataforma}</td>
+                  <td>
+                    <input class="form-control input-md inputValor" type="text" name="valorPlataforma" id="valorPlataforma_${plataforma.plataforma.plataforma}" data-id="${plataforma.plataforma.id_plataforma}" value="${plataforma.valor}" placeholder="0.00">
+                  </td>
+                </tr>`
+            tbodyAsignaciones.innerHTML += tr;
           }
 
-        }).catch(() => {
-          $('#global-loader').removeClass("d-block");
-          $('#global-loader').addClass("d-none");
+        }).catch((err) => {
+          console.log(err);
           swal({
             title: 'Request Error',
             text: '500 - usuarios',
@@ -831,6 +851,39 @@
           });
         })
 
+      // fetch('/usuarios/tablaAsignarPlataformas', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-type': 'application/json'
+      //     },
+      //     body: JSON.stringify({
+      //       id: id
+      //     })
+      //   })
+      //   .then(res => res.text())
+      //   .then(data => {
+
+      //     $('#global-loader').removeClass("d-block");
+      //     $('#global-loader').addClass("d-none");
+      //     const asignaciones = JSON.parse(data);
+
+      //     for (var f = 0; f < asignaciones.length; f++) {
+
+      //       var idP = asignaciones[f].plataformaIdPlataforma;
+      //       var valorP = asignaciones[f].valor;
+
+      //       $("#valorPlataforma_" + idP).val(valorP);
+      //     }
+
+      //   }).catch(() => {
+      //     $('#global-loader').removeClass("d-block");
+      //     $('#global-loader').addClass("d-none");
+      //     swal({
+      //       title: 'Request Error',
+      //       text: '500 - usuarios',
+      //       type: 'error'
+      //     });
+      //   })
     }
 
     function bloqueoUsuario(e, id) {

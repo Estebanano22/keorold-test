@@ -838,6 +838,10 @@ module.exports = function() {
         usuariosController.usuarios
     );
 
+    router.post('/usuarios/informacionPlataformasUsuario',
+        usuariosController.usuariosInformacionPlataformasUsuario
+    )
+
     router.post('/usuarios/cambioPefil',
         authController.usuarioAutenticado,
         authController.verifyToken,
