@@ -337,20 +337,21 @@
     function archivoDescargado(e) {
 
       const btnDescargar = document.getElementById('btnDescargar');
-      fetch('/reportarConsignacion/eliminarArchivo', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          data: btnDescargar.dataset.file,
+      setTimeout(() => {
+        fetch('/reportarConsignacion/eliminarArchivo', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            data: btnDescargar.dataset.file,
+          })
         })
-      })
 
-      btnDescargar.dataset.file = '';
-      btnDescargar.setAttribute("download", "");
-      btnDescargar.classList.add('display-none');
-
+        btnDescargar.dataset.file = '';
+        btnDescargar.setAttribute("download", "");
+        btnDescargar.classList.add('display-none');
+      }, 3000);
     }
 
     function generarReporte(e) {
