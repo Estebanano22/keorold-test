@@ -2074,7 +2074,6 @@ exports.reporteGanancias = async (req, res) => {
 
 exports.reporteConsignacionesDistribuidor = async (req, res) => {
 
-    console.log(req.body);
     const fecha = req.body.fecha.split(' - ');
     const idUsuarioReporte = req.body.user;
     const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
@@ -2091,7 +2090,6 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
             ],
             order: [['fecha', 'DESC']]
         });
-        console.log(ganancias);
     } else {
         var ganancias = await Ganancias.findAll({
             where: {
