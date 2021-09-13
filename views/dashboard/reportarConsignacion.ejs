@@ -337,8 +337,6 @@
     function archivoDescargado(e) {
 
       const btnDescargar = document.getElementById('btnDescargar');
-      $('#global-loader').addClass("d-block");
-      $('#global-loader').removeClass("d-none");
       fetch('/reportarConsignacion/eliminarArchivo', {
         method: 'POST',
         headers: {
@@ -347,18 +345,6 @@
         body: JSON.stringify({
           data: btnDescargar.dataset.file,
         })
-      }).then(() => {
-
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-      }).catch(() => {
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-        swal({
-          title: 'Request Error',
-          text: '500 - Reportar consignación',
-          type: 'error'
-        });
       })
 
       btnDescargar.dataset.file = '';

@@ -338,8 +338,6 @@
     }
 
     function archivoDescargado(e) {
-      $('#global-loader').addClass("d-block");
-      $('#global-loader').removeClass("d-none");
       const btnDescargar = document.getElementById('btnDescargar');
       fetch('/adminConsignaciones/eliminarArchivo', {
         method: 'POST',
@@ -349,18 +347,6 @@
         body: JSON.stringify({
           data: btnDescargar.dataset.file,
         })
-      }).then(() => {
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-      }).catch((err) => {
-        console.log(err);
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-        swal({
-          title: 'Request Error',
-          text: '500 - Admin Consignaciones',
-          type: 'error'
-        });
       })
 
       btnDescargar.dataset.file = '';

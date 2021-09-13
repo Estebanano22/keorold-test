@@ -302,9 +302,6 @@
 
   <script>
     function archivoDescargado(e) {
-
-      $('#global-loader').addClass("d-block");
-      $('#global-loader').removeClass("d-none");
       const btnDescargar = document.getElementById('btnDescargar');
       fetch('/adminCuentasVendidas/eliminarArchivo', {
         method: 'POST',
@@ -314,17 +311,6 @@
         body: JSON.stringify({
           data: btnDescargar.dataset.file,
         })
-      }).then(() => {
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-      }).catch(() => {
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-        swal({
-          title: 'Request Error',
-          text: '500 - Admin Cuentas vendidas',
-          type: 'error'
-        });
       })
 
       btnDescargar.dataset.file = '';

@@ -225,7 +225,7 @@ exports.reporteConsignaciones = async (req, res) => {
             },
             outline: false,
         },
-        numberFormat: 'm/d/yy hh:mm:ss'
+        numberFormat: 'mm/dd/yyyy hh:mm:ss'
     });
 
     worksheet.column(1).setWidth(45);
@@ -305,8 +305,8 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
 
     const fecha = req.body.fecha.split(' - ');
     const idUsuarioReporte = req.body.user;
-    const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
-    const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
+    const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
+    const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
     if(idUsuarioReporte === '0') {
         var cargas = await Cargas.findAll({
@@ -480,7 +480,7 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
             },
             outline: false,
         },
-        numberFormat: 'm/d/yy hh:mm:ss'
+        numberFormat: 'mm/dd/yyyy hh:mm:ss'
     });
 
     worksheet.column(1).setWidth(45);
@@ -521,15 +521,17 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
             var observaciones = '-';
         }
 
-        worksheet.cell(i + 3, 1).string(cargas[i].idCarga).style(style2);
-        worksheet.cell(i + 3, 2).string(cargas[i].usuario.nombre).style(style2);
-        worksheet.cell(i + 3, 3).number(Number(cargas[i].valor)).style(style3);
-        worksheet.cell(i + 3, 4).number(Number(cargas[i].saldoAnterior)).style(style3);
-        worksheet.cell(i + 3, 5).number(Number(cargas[i].saldoNuevo)).style(style3);
-        worksheet.cell(i + 3, 6).string(cargas[i].tipoCarga).style(style2);
-        worksheet.cell(i + 3, 7).string(cargas[i].accionCarga).style(style2);
-        worksheet.cell(i + 3, 8).date(cargas[i].fechaCarga).style(style5);
-        worksheet.cell(i + 3, 9).string(cargas[i].responsableGestion).style(style2);
+        if(cargas[i].usuario !== null){
+            worksheet.cell(i + 3, 1).string(cargas[i].idCarga).style(style2);
+            worksheet.cell(i + 3, 2).string(cargas[i].usuario.nombre).style(style2);
+            worksheet.cell(i + 3, 3).number(Number(cargas[i].valor)).style(style3);
+            worksheet.cell(i + 3, 4).number(Number(cargas[i].saldoAnterior)).style(style3);
+            worksheet.cell(i + 3, 5).number(Number(cargas[i].saldoNuevo)).style(style3);
+            worksheet.cell(i + 3, 6).string(cargas[i].tipoCarga).style(style2);
+            worksheet.cell(i + 3, 7).string(cargas[i].accionCarga).style(style2);
+            worksheet.cell(i + 3, 8).date(cargas[i].fechaCarga).style(style5);
+            worksheet.cell(i + 3, 9).string(cargas[i].responsableGestion).style(style2);
+        }
     }
 
     const nombreArchivo = `temp-${shortid.generate()}.xlsx`;
@@ -546,8 +548,8 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
 
     const fecha = req.body.fecha.split(' - ');
     const idUsuarioReporte = req.body.user;
-    const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
-    const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
+    const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
+    const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
     if(idUsuarioReporte === '0') {
         var cuentas = await Cuentas.findAll({
@@ -729,7 +731,7 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
             },
             outline: false,
         },
-        numberFormat: 'm/d/yy hh:mm:ss'
+        numberFormat: 'mm/dd/yyyy hh:mm:ss'
     });
 
     worksheet.column(1).setWidth(45);
@@ -831,8 +833,8 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
 exports.reporteCuentas = async (req, res) => {
 
     const fecha = req.body.fecha.split(' - ');
-    const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
-    const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
+    const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
+    const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
     const cuentas = await Cuentas.findAll({
         where: {
@@ -995,7 +997,7 @@ exports.reporteCuentas = async (req, res) => {
             },
             outline: false,
         },
-        numberFormat: 'm/d/yy hh:mm:ss'
+        numberFormat: 'mm/dd/yyyy hh:mm:ss'
     });
 
     worksheet.column(1).setWidth(45);
@@ -1099,8 +1101,8 @@ exports.reporteCuentas = async (req, res) => {
 exports.reporteConsignacionesUser = async (req, res) => {
 
     const fecha = req.body.fecha.split(' - ');
-    const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
-    const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
+    const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
+    const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
     const consignaciones = await Consignaciones.findAll({
         where: {
@@ -1262,7 +1264,7 @@ exports.reporteConsignacionesUser = async (req, res) => {
             },
             outline: false,
         },
-        numberFormat: 'm/d/yy hh:mm:ss'
+        numberFormat: 'mm/dd/yyyy hh:mm:ss'
     });
 
     worksheet.column(1).setWidth(45);
@@ -1318,13 +1320,6 @@ exports.reporteConsignacionesUser = async (req, res) => {
     const nameTemp = `/uploads/temporal/${nombreArchivo}`;
     const url = `${__dirname}/../public${nameTemp}`;
     workbook.write(url);
-    // workbook.write(url, function(err, stats) {
-    //     if (err) {
-    //       console.log('Error: '+err);
-    //     } else {
-    //       console.log('Status: '+stats);
-    //     }
-    // });
 
     res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
     return;
@@ -1356,8 +1351,8 @@ exports.reporteCompras = async (req, res) => {
 exports.reporteComprasSaldo = async (req, res) => {
 
     const fecha = req.body.fecha.split(' - ');
-    const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
-    const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
+    const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
+    const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
     const cargas = await Cargas.findAll({
         where: {
@@ -1519,7 +1514,7 @@ exports.reporteComprasSaldo = async (req, res) => {
             },
             outline: false,
         },
-        numberFormat: 'm/d/yy hh:mm:ss'
+        numberFormat: 'mm/dd/yyyy hh:mm:ss'
     });
 
     worksheet.column(1).setWidth(45);
@@ -1611,8 +1606,8 @@ exports.reporteVentasSaldo = async (req, res) => {
 
     const fecha = req.body.fecha.split(' - ');
     const idUsuarioReporte = req.body.user;
-    const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
-    const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
+    const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
+    const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
     if(idUsuarioReporte === '0') {
         var cargas = await Cargas.findAll({
@@ -1786,7 +1781,7 @@ exports.reporteVentasSaldo = async (req, res) => {
             },
             outline: false,
         },
-        numberFormat: 'm/d/yy hh:mm:ss'
+        numberFormat: 'mm/dd/yyyy hh:mm:ss'
     });
 
     worksheet.column(1).setWidth(45);
@@ -2081,8 +2076,8 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
 
     const fecha = req.body.fecha.split(' - ');
     const idUsuarioReporte = req.body.user;
-    const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
-    const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
+    const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
+    const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
     if(idUsuarioReporte === '0' || idUsuarioReporte === 0) {
         var ganancias = await Ganancias.findAll({
@@ -2258,7 +2253,7 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
             },
             outline: false,
         },
-        numberFormat: 'm/d/yy hh:mm:ss'
+        numberFormat: 'mm/dd/yyyy hh:mm:ss'
     });
 
     worksheet.column(1).setWidth(45);
@@ -2277,11 +2272,13 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
 
     for (let i = 0; i < ganancias.length; i += 1) {
 
-        worksheet.cell(i + 3, 1).string(ganancias[i].usuario.nombre).style(style2);
-        worksheet.cell(i + 3, 2).string(ganancias[i].usuario.perfil).style(style2);
-        worksheet.cell(i + 3, 3).string(ganancias[i].plataforma.plataforma).style(style2);
-        worksheet.cell(i + 3, 4).number(Number(ganancias[i].ganancia)).style(style3);
-        worksheet.cell(i + 3, 5).date(ganancias[i].fecha).style(style5);
+        if(ganancias[i].usuario !== null || ganancias[i].plataforma !== null){
+            worksheet.cell(i + 3, 1).string(ganancias[i].usuario.nombre).style(style2);
+            worksheet.cell(i + 3, 2).string(ganancias[i].usuario.perfil).style(style2);
+            worksheet.cell(i + 3, 3).string(ganancias[i].plataforma.plataforma).style(style2);
+            worksheet.cell(i + 3, 4).number(Number(ganancias[i].ganancia)).style(style3);
+            worksheet.cell(i + 3, 5).date(ganancias[i].fecha).style(style5);
+        }
     }
 
     const nombreArchivo = `temp-${shortid.generate()}.xlsx`;

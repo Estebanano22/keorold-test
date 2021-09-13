@@ -210,8 +210,6 @@
     function archivoDescargado(e) {
 
       const btnDescargar = document.getElementById('btnDescargar');
-      $('#global-loader').addClass("d-block");
-      $('#global-loader').removeClass("d-none");
       fetch('/reporteCompras/eliminarArchivo', {
         method: 'POST',
         headers: {
@@ -220,18 +218,6 @@
         body: JSON.stringify({
           data: btnDescargar.dataset.file,
         })
-      }).then(() => {
-
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-      }).catch(() => {
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-        swal({
-          title: 'Request Error',
-          text: '500 - Reportar compras',
-          type: 'error'
-        });
       })
 
       btnDescargar.dataset.file = '';
