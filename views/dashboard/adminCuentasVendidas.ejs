@@ -148,6 +148,7 @@
                         <% moment.locale('es'); %>
                         <% if(cuentas.length) { %>
                         <% cuentas.forEach(listaCuentas => { %>
+                        <% if(!(listaCuentas.usuario == null || listaCuentas.plataforma == null)) {%>
                         <% const distribuidor = usuarios.filter(function(element){ %>
                         <% return element.id_usuario == listaCuentas.idDistribuidor; %>
                         <% }); %>
@@ -194,6 +195,7 @@
                           <td class="text-center"><%= moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                         </tr>
+                        <% }%>
                         <% }) %>
                         <% } %>
                       </tbody>
