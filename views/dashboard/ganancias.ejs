@@ -207,9 +207,6 @@
 
   <script>
     function archivoDescargado(e) {
-
-      $('#global-loader').addClass("d-block");
-      $('#global-loader').removeClass("d-none");
       const btnDescargar = document.getElementById('btnDescargar');
       fetch('/ganancias/eliminarArchivo', {
         method: 'POST',
@@ -219,18 +216,6 @@
         body: JSON.stringify({
           data: btnDescargar.dataset.file,
         })
-      }).then(() => {
-
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-      }).catch(() => {
-        $('#global-loader').removeClass("d-block");
-        $('#global-loader').addClass("d-none");
-        swal({
-          title: 'Request Error',
-          text: '500 - Ganancias',
-          type: 'error'
-        });
       })
 
       btnDescargar.dataset.file = '';

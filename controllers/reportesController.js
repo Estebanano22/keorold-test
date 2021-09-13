@@ -1852,8 +1852,8 @@ exports.reporteGanancias = async (req, res) => {
 
     const fecha = req.body.fecha.split(' - ');
     const idUsuarioReporte = req.body.user;
-    const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
-    const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
+    const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
+    const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
     if(idUsuarioReporte === '0' || idUsuarioReporte === 0) {
         var ganancias = await Ganancias.findAll({
@@ -2029,7 +2029,7 @@ exports.reporteGanancias = async (req, res) => {
             },
             outline: false,
         },
-        numberFormat: 'm/d/yy hh:mm:ss'
+        numberFormat: 'mm/dd/yyyy hh:mm:ss'
     });
 
     worksheet.column(1).setWidth(45);
@@ -2057,13 +2057,14 @@ exports.reporteGanancias = async (req, res) => {
         })
     
         const nombreDistribuidor = distribuidor.nombre;
-
-        worksheet.cell(i + 3, 1).string(nombreDistribuidor).style(style2);
-        worksheet.cell(i + 3, 2).string(ganancias[i].usuario.nombre).style(style2);
-        worksheet.cell(i + 3, 3).string(ganancias[i].usuario.perfil).style(style2);
-        worksheet.cell(i + 3, 4).string(ganancias[i].plataforma.plataforma).style(style2);
-        worksheet.cell(i + 3, 5).number(Number(ganancias[i].ganancia)).style(style3);
-        worksheet.cell(i + 3, 6).date(ganancias[i].fecha).style(style5);
+        if(ganancias[i].usuario !== null || ganancias[i].plataforma !== null){
+            worksheet.cell(i + 3, 1).string(nombreDistribuidor).style(style2);
+            worksheet.cell(i + 3, 2).string(ganancias[i].usuario.nombre).style(style2);
+            worksheet.cell(i + 3, 3).string(ganancias[i].usuario.perfil).style(style2);
+            worksheet.cell(i + 3, 4).string(ganancias[i].plataforma.plataforma).style(style2);
+            worksheet.cell(i + 3, 5).number(Number(ganancias[i].ganancia)).style(style3);
+            worksheet.cell(i + 3, 6).date(ganancias[i].fecha).style(style5);
+        }
     }
 
     const nombreArchivo = `temp-${shortid.generate()}.xlsx`;
