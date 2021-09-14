@@ -97,7 +97,7 @@
                       <tbody>
                         <% if(consignaciones.length) { %>
                         <% consignaciones.forEach(listaConsignaciones => { %>
-
+                        <% if(!(listaConsignaciones.usuario === null)) { %>
                         <tr>
                           <td class="text-left text-capitalize">
                             <%= listaConsignaciones.usuario.nombre %>
@@ -141,6 +141,7 @@
                             </div>
                           </td>
                         </tr>
+                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>

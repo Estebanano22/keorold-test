@@ -567,7 +567,7 @@ exports.asignarPlataformaUsuario = async (req, res) => {
     const id_usuario = req.body.id.trim();
     const objetoAsignaciones = req.body.asignaciones;
 
-    if(objetoAsignaciones === ''|| objetoAsignaciones.length > 1) {
+    if(objetoAsignaciones === ''|| objetoAsignaciones.length < 1) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible asignar las plataformas, debe ingresar algún valor en las casillas.' });
         return;
     }
