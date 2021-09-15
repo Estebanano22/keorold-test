@@ -17,7 +17,7 @@ const Usuarios = db.define('usuarios', {
         defaultValue : null
     },
     nombre: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(80),
         defaultValue : null,
         validate: {
             notEmpty: {
@@ -30,7 +30,7 @@ const Usuarios = db.define('usuarios', {
         defaultValue : 0.00
     },
     email: {
-        type: Sequelize.STRING(45),
+        type: Sequelize.STRING(100),
         defaultValue : null,
         unique: {
             args: true,
@@ -41,7 +41,7 @@ const Usuarios = db.define('usuarios', {
         }
     },
     password: {
-        type: Sequelize.STRING(60),
+        type: Sequelize.STRING(70),
         defaultValue : null,
         validate: {
             notEmpty: {
@@ -70,7 +70,7 @@ const Usuarios = db.define('usuarios', {
         defaultValue : null
     },
     enlace_afiliado: {
-        type: Sequelize.STRING(70),
+        type: Sequelize.STRING(100),
         defaultValue : null,
         unique: {
             args: true,
@@ -78,11 +78,11 @@ const Usuarios = db.define('usuarios', {
         }
     },
     patrocinador: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(100),
         defaultValue : null
     },
     super_patrocinador: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(100),
         defaultValue : null
     },
     facebook: {
@@ -106,15 +106,15 @@ const Usuarios = db.define('usuarios', {
         defaultValue: Sequelize.NOW
     },
     observaciones: {
-        type: Sequelize.STRING(200),
+        type: Sequelize.STRING(100),
         defaultValue : null
     },
     pdf_consignaciones: {
-        type: Sequelize.STRING(70),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     qr_consignaciones: {
-        type: Sequelize.STRING(70),
+        type: Sequelize.STRING(250),
         defaultValue : null
     },
     ip: {
