@@ -69,6 +69,21 @@ exports.validarRegistro = async (req, res, next) => {
         })
         return;
     }
+
+    const email = req.body.email;
+    const userExist = await Usuarios.findOne({
+        where:{
+            email: email
+        }
+    });
+
+    if(userExist){
+        req.flash('danger', 'El usuario ya se encuentra registrado en nuestra plataforma');
+        return res.render('registro', {
+            nombrePagina: 'Registro',
+            mensajes: req.flash()
+        })
+    }
  
     //si toda la validacion es correcta
     next();
