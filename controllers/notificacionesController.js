@@ -74,19 +74,28 @@ exports.notificacionesUsuario = async (req, res) => {
     
         const countBajoPedido = await Cuentas.count({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 2 }]
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 2 }],
+                usuarioIdUsuario: {
+                    [Op.ne]: null
+                }
             },
         });
     
         const countPersonalizadas = await Cuentas.count({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 3 }]
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 3 }],
+                usuarioIdUsuario: {
+                    [Op.ne]: null
+                }
             },
         });
     
         const countRenovaciones = await Cuentas.count({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 4 }]
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 4 }],
+                usuarioIdUsuario: {
+                    [Op.ne]: null
+                }
             },
         });
     
@@ -120,7 +129,24 @@ exports.notificacionesUsuario = async (req, res) => {
             }
         });
 
-        res.json({incidencias: incidencias, pse: linksPse, bajoPedido: cuentasBajoPedido, personalizadas: cuentasPersonalizadas, renovaciones: cuentasRenovaciones, juegos: cuentasJuegos, consignaciones: consignaciones, plataformas: plataformas, countBajoPedido: countBajoPedido, countPersonalizadas: countPersonalizadas, countRenovaciones: countRenovaciones, countJuegos: countJuegos, p: req.user.perfil, countConsignaciones: countConsignaciones, countIncidencias: countIncidencias, countLinksPse: countLinksPse});
+        res.json({
+            incidencias: incidencias, 
+            pse: linksPse, 
+            bajoPedido: cuentasBajoPedido, 
+            personalizadas: cuentasPersonalizadas, 
+            renovaciones: cuentasRenovaciones, 
+            juegos: cuentasJuegos, 
+            consignaciones: consignaciones, 
+            plataformas: plataformas, 
+            countBajoPedido: countBajoPedido, 
+            countPersonalizadas: countPersonalizadas, 
+            countRenovaciones: countRenovaciones, 
+            countJuegos: countJuegos, 
+            p: req.user.perfil, 
+            countConsignaciones: countConsignaciones, 
+            countIncidencias: countIncidencias, 
+            countLinksPse: countLinksPse
+        });
         return;
 
     } else {

@@ -150,7 +150,6 @@
               .then(res => res.text())
               .then(data => {
                 const respuesta = JSON.parse(data);
-                console.log(respuesta.renovaciones);
                 const plataformas = respuesta.plataformas;
                 const bajoPedido = respuesta.bajoPedido;
                 const personalizadas = respuesta.personalizadas;
