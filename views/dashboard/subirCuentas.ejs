@@ -110,9 +110,11 @@
                       <tbody>
                         <% if(cuentas.length) { %>
                         <% cuentas.forEach(listaCuentas => { %>
+                        <% if(!(listaCuentas.user == null || listaCuentas.plataformaIdPlataforma == null)) {%>
                         <% const plataformasCuentas = plataformas.filter(function(element){ %>
                         <% return element.id_plataforma == listaCuentas.plataformaIdPlataforma; %>
                         <% }); %>
+                        <% if(!(plataformasCuentas[0] == null)){ %>
                         <% const logo = plataformasCuentas[0].logo; %>
                         <% const nombrePlataforma = plataformasCuentas[0].plataforma; %>
 
@@ -137,6 +139,8 @@
                             </div>
                           </td>
                         </tr>
+                        <% } %>
+                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>
