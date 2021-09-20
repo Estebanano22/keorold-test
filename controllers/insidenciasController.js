@@ -82,6 +82,7 @@ exports.uploadArchivo = async (req, res, next) => {
     })
 }
 
+
 exports.crearInsidencia = async (req, res) => {
     
     const asunto = req.body.asunto.trim();
