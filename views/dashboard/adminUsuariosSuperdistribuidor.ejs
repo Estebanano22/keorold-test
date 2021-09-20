@@ -105,6 +105,7 @@
                       <tbody>
                         <% if(usuarios.length) { %>
                         <% usuarios.forEach(listaUsuario => { %>
+                        <% if(!(listaUsuario.length < 1)) {%>
                         <% if(listaUsuario.pais === 'Colombia') { %>
                         <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaUsuario.saldo); %>
                         <% } else { %>
@@ -143,10 +144,10 @@
                             <button class="btn ripple btn-secondary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalAsignar" onclick="modalAsignar(event, '<%= listaUsuario.id_usuario %>', '<%= listaUsuario.nombre %>')"><i class="ti ti-view-grid"></i><span class="ml-2">Asignar plataformas</span></button>
                           </td>
                           <td class="text-capitalize"><%= listaUsuario.enlace_afiliado %></td>
-
                           <% distribuidores.forEach(listaDistribuidor => { %>
                           <% if(listaDistribuidor.enlace_afiliado === listaUsuario.patrocinador) { %>
                           <% const nombreDistribuidor = listaDistribuidor.nombre %>
+                          <% listaUsuario.isComplete = true %>
                           <td class="text-capitalize"><%= nombreDistribuidor %></td>
                           <% } %>
                           <% }) %>
@@ -159,6 +160,10 @@
                             </div>
                           </td>
                         </tr>
+                        <% if(!listaUsuario.isComplete){ %>
+                        <% console.log(listaUsuario) %>
+                        <% } %>
+                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>

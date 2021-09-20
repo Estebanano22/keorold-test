@@ -77,7 +77,7 @@
                       <tbody>
                         <% if(linksPse.length) { %>
                         <% linksPse.forEach(listaLinks => { %>
-
+                        <% if(!(listaLinks.usuarioIdUsuario === null)) { %>
                         <tr>
                           <td class="text-left text-capitalize">
                             <%= listaLinks.usuario.nombre;%>
@@ -107,6 +107,7 @@
                             </div>
                           </td>
                         </tr>
+                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>
