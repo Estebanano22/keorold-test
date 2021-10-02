@@ -125,7 +125,7 @@
 
                     <% } else { %>
 
-                    <% if (Number(usuario.saldo) > Number(listaPlataformasNormales.valor)) { %>
+                    <% if (Number(usuario.saldo) >= Number(listaPlataformasNormales.valor)) { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraNormal" onclick="modalCompraNormal(event, '<%= listaPlataformasNormales.plataforma.id_plataforma %>', '<%= listaPlataformasNormales.plataforma.plataforma %>', '<%= listaPlataformasNormales.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                     <% } else { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
@@ -182,7 +182,7 @@
                   </h4>
                   <div class="text-center">
                     <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaplataformasBajoPedido.plataforma.plataforma %>', '<%= listaplataformasBajoPedido.plataforma.logo %>', '<%= listaplataformasBajoPedido.plataforma.descripcion %>')"><i class="fas fa-info"></i></button>
-                    <% if (Number(usuario.saldo) > Number(listaplataformasBajoPedido.valor)) { %>
+                    <% if (Number(usuario.saldo) >= Number(listaplataformasBajoPedido.valor)) { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraPedido" onclick="modalCompraPedido(event, '<%= listaplataformasBajoPedido.plataforma.id_plataforma %>', '<%= listaplataformasBajoPedido.plataforma.plataforma %>', '<%= listaplataformasBajoPedido.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                     <% } else { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
@@ -235,7 +235,7 @@
                   <div class="text-center">
                     <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaplataformasRenovaciones.plataforma.plataforma %>', '<%= listaplataformasRenovaciones.plataforma.logo %>', '<%= listaplataformasRenovaciones.plataforma.descripcion %>')"><i class="fas fa-info"></i></button>
 
-                    <% if (Number(usuario.saldo) > Number(listaplataformasRenovaciones.valor)) { %>
+                    <% if (Number(usuario.saldo) >= Number(listaplataformasRenovaciones.valor)) { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraRenovacion" onclick="modalCompraRenovacion(event, '<%= listaplataformasRenovaciones.plataforma.id_plataforma %>', '<%= listaplataformasRenovaciones.plataforma.plataforma %>', '<%= listaplataformasRenovaciones.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                     <% } else { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
@@ -290,7 +290,7 @@
                   <div class="text-center">
                     <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaPlataformasPersonalizadas.plataforma.plataforma %>', '<%= listaPlataformasPersonalizadas.plataforma.logo %>', '<%= listaPlataformasPersonalizadas.plataforma.descripcion %>')"><i class="fas fa-info"></i></button>
 
-                    <% if (Number(usuario.saldo) > Number(listaPlataformasPersonalizadas.valor)) { %>
+                    <% if (Number(usuario.saldo) >= Number(listaPlataformasPersonalizadas.valor)) { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraPersonalizada" onclick="modalCompraPersonalizada(event, '<%= listaPlataformasPersonalizadas.plataforma.id_plataforma %>', '<%= listaPlataformasPersonalizadas.plataforma.plataforma %>', '<%= listaPlataformasPersonalizadas.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                     <% } else { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
@@ -355,7 +355,7 @@
 
                     <% if(nomPlataforma.includes('free fire')) { %>
 
-                    <% if (Number(usuario.saldo) > Number(valor)) { %>
+                    <% if (Number(usuario.saldo) >= Number(valor)) { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraFreefire" onclick="modalCompraFreefire(event, '<%= listaPlataformasJuegos.plataforma.id_plataforma %>', '<%= listaPlataformasJuegos.plataforma.plataforma %>', '<%= listaPlataformasJuegos.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                     <% } else { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
@@ -363,7 +363,7 @@
 
                     <% } else if(nomPlataforma.includes('call of duty')) { %>
 
-                    <% if (Number(usuario.saldo) > Number(listaPlataformasJuegos.valor)) { %>
+                    <% if (Number(usuario.saldo) >= Number(listaPlataformasJuegos.valor)) { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraCallofduty" onclick="modalCompraCallofduty(event, '<%= listaPlataformasJuegos.plataforma.id_plataforma %>', '<%= listaPlataformasJuegos.plataforma.plataforma %>', '<%= listaPlataformasJuegos.plataforma.logo %>')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
                     <% } else { %>
                     <button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>
