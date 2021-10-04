@@ -172,7 +172,7 @@
                           <td class="text-center">
                             <img src="<%= listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaCuentas.plataforma.logo %>" alt="" class="img-circle">
                           </td>
-                          <td class="text-center"><%= listaCuentas.fechaCompra.toLocaleString('es-CO'); %></td>
+                          <td class="text-center"><%=  moment(listaCuentas.fechaCompra).format('DD:MM:YYYY HH:MM:SS') %></td>
                           <td class="text-capitalize"><%= listaCuentas.plataforma.plataforma %></td>
                           <td class="text-capitalize text-right"><%= valorFormateado %></td>
                           <td class="text-capitalize text-center">
