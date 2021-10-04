@@ -80,6 +80,7 @@
                         <% return element.id_usuario == listaGanancias.distribuidor; %>
                         <% }); %>
                         <% const nombre = distribuidor[0].nombre; %>
+                        <% if(!(listaGanancias.length < 1 || !listaGanancias.usuario)) {%>
                         <% if(listaGanancias.usuario.pais === 'Colombia') { %>
                         <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaGanancias.ganancia); %>
                         <% } else { %>
@@ -101,6 +102,7 @@
                           </td>
                           <td class="text-center"><%= moment(listaGanancias.fecha).format('DD:MM:YYYY HH:MM:SS') %></td>
                         </tr>
+                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>
