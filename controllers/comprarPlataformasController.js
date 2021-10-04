@@ -4,7 +4,7 @@ const Asignaciones = require('../models/asignacionesModelo');
 const Cuentas = require('../models/cuentasModelo');
 const Ganancias = require('../models/gananciasModelo');
 const { Op } = require("sequelize");
-const {body, validationResult} = require('express-validator');
+const { body, validationResult } = require('express-validator');
 const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
@@ -12,28 +12,28 @@ const { v4: uuid_v4 } = require('uuid');
 
 // Inicio
 exports.plataformas = async (req, res) => {
-    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario }});
-    const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador }});
+    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario } });
+    const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
     const usuarios = await Usuarios.findAll({
         where: { patrocinador: req.user.enlace_afiliado }
     });
 
     const plataformas = await Plataformas.findAll({
         where: {
-            [Op.and]: [{id_superdistribuidor:superdistribuidor.id_usuario}, { estado: 1 }]
+            [Op.and]: [{ id_superdistribuidor: superdistribuidor.id_usuario }, { estado: 1 }]
         },
         order: [['plataforma', 'DESC']]
     });
 
     const plataformasNormales = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
         include: [
             {
                 model: Plataformas, foreignKey: 'plataformaIdPlataforma',
                 where: {
-                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 1 }]
+                    [Op.and]: [{ estado: 1 }, { tipo_plataforma: 1 }]
                 }
             },
         ],
@@ -42,13 +42,13 @@ exports.plataformas = async (req, res) => {
 
     const plataformasBajoPedido = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
         include: [
             {
                 model: Plataformas, foreignKey: 'plataformaIdPlataforma',
                 where: {
-                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 2 }]
+                    [Op.and]: [{ estado: 1 }, { tipo_plataforma: 2 }]
                 }
             },
         ],
@@ -57,13 +57,13 @@ exports.plataformas = async (req, res) => {
 
     const plataformasPersonalizadas = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
         include: [
             {
                 model: Plataformas, foreignKey: 'plataformaIdPlataforma',
                 where: {
-                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 3 }]
+                    [Op.and]: [{ estado: 1 }, { tipo_plataforma: 3 }]
                 }
             },
         ],
@@ -72,13 +72,13 @@ exports.plataformas = async (req, res) => {
 
     const plataformasRenovaciones = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
         include: [
             {
                 model: Plataformas, foreignKey: 'plataformaIdPlataforma',
                 where: {
-                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 4 }]
+                    [Op.and]: [{ estado: 1 }, { tipo_plataforma: 4 }]
                 }
             },
         ],
@@ -87,13 +87,13 @@ exports.plataformas = async (req, res) => {
 
     const plataformasJuegos = await Asignaciones.findAll({
         where: {
-            [Op.and]: [{usuarioIdUsuario:req.user.id_usuario}]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
         include: [
             {
                 model: Plataformas, foreignKey: 'plataformaIdPlataforma',
                 where: {
-                    [Op.and]:[{ estado: 1 }, { tipo_plataforma: 5 }]
+                    [Op.and]: [{ estado: 1 }, { tipo_plataforma: 5 }]
                 }
             },
         ],
@@ -106,12 +106,12 @@ exports.plataformas = async (req, res) => {
 
     const cuentas = await Cuentas.findAll({
         where: {
-            [Op.and]: [{estado: 0}, {idSuperdistribuidor:superdistribuidor.id_usuario}]
+            [Op.and]: [{ estado: 0 }, { idSuperdistribuidor: superdistribuidor.id_usuario }]
         }
     })
 
     res.render('dashboard/plataformas', {
-        nombrePagina : 'Comprar cuentas',
+        nombrePagina: 'Comprar cuentas',
         titulo: 'Comprar cuentas',
         breadcrumb: 'Comprar cuentas',
         classActive: req.path.split('/')[2],
@@ -132,37 +132,42 @@ exports.compraCuentaNormal = async (req, res) => {
 
     const plataforma = await Plataformas.findOne({
         where: {
-            [Op.and]: [{id_plataforma: req.body.id}]
+            [Op.and]: [{ id_plataforma: req.body.id }]
         }
     });
 
     const cuenta = await Cuentas.findOne({
         where: {
-            [Op.and]: [{plataformaIdPlataforma: req.body.id}, { estado: 0 }, { tipoCuenta: 1 }]
+            [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { estado: 0 }, { tipoCuenta: 1 }]
         },
         order: [['fechaSubida', 'ASC']]
     });
 
     const asignacionUsuario = await Asignaciones.findOne({
         where: {
-            [Op.and]: [{plataformaIdPlataforma: req.body.id}, {usuarioIdUsuario: req.user.id_usuario}]
+            [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: req.user.id_usuario }]
         }
     });
 
-    if(Number(asignacionUsuario.valor > Number(req.user.saldo))) {
+    // if (Number(asignacionUsuario.valor > Number(req.user.saldo))) {
+    //     res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento, debido a que su saldo no es suficiente.' });
+    //     return;
+    // }
+
+    if (Number(asignacionUsuario.valor) > Number(req.user.saldo)) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento, debido a que su saldo no es suficiente.' });
         return;
     }
 
-    if(!cuenta) {
+    if (!cuenta) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento.' });
         return;
     }
-    
+
     const telefonoCliente = req.body.telefono;
     const nombreCliente = req.body.cliente.trim();
 
-    if(telefonoCliente === '' || nombreCliente === '') {
+    if (telefonoCliente === '' || nombreCliente === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debes llenar todos los campos y autorizar el envio de datos.' });
         return;
     }
@@ -170,11 +175,11 @@ exports.compraCuentaNormal = async (req, res) => {
     // Restar Saldo del usuario
     const usuario = await Usuarios.findOne({
         where: {
-            [Op.and]: [{id_usuario: req.user.id_usuario}, {bloqueo: 0}]
+            [Op.and]: [{ id_usuario: req.user.id_usuario }, { bloqueo: 0 }]
         }
     });
 
-    if(!usuario) {
+    if (!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible solicitar la cuenta debido a que el usuario no no existe o se encuentra bloqueado.' });
         return;
     }
@@ -185,13 +190,13 @@ exports.compraCuentaNormal = async (req, res) => {
     //Generar Ganancia Disitribuidor
     const distribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.patrocinador }]
         }
     });
 
     const asignacionDistribuidor = await Asignaciones.findOne({
         where: {
-            [Op.and]: [{plataformaIdPlataforma: req.body.id}, {usuarioIdUsuario: distribuidor.id_usuario}]
+            [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: distribuidor.id_usuario }]
         }
     });
 
@@ -211,7 +216,7 @@ exports.compraCuentaNormal = async (req, res) => {
         usuarioIdUsuario: req.user.id_usuario,
         plataformaIdPlataforma: req.body.id
     });
-    
+
     // Actualizar cuenta
     cuenta.idDistribuidor = distribuidor.id_usuario;
     cuenta.estado = 1;
@@ -222,7 +227,7 @@ exports.compraCuentaNormal = async (req, res) => {
     cuenta.valorPagado = valorUsuario;
     await cuenta.save();
 
-    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Cuenta comprada con éxito.', user: cuenta.user, password: cuenta.password, pantalla: cuenta.pantalla, pin: cuenta.pin, logo: plataforma.logo, plataforma: plataforma.plataforma, telefono: telefonoCliente, cliente: nombreCliente});
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Cuenta comprada con éxito.', user: cuenta.user, password: cuenta.password, pantalla: cuenta.pantalla, pin: cuenta.pin, logo: plataforma.logo, plataforma: plataforma.plataforma, telefono: telefonoCliente, cliente: nombreCliente });
     return;
 
 }
@@ -232,7 +237,7 @@ exports.compraCuentaPedido = async (req, res) => {
     const telefonoCliente = req.body.telefono;
     const nombreCliente = req.body.cliente.trim();
 
-    if(telefonoCliente === '' || nombreCliente === '') {
+    if (telefonoCliente === '' || nombreCliente === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debes llenar todos los campos y autorizar el envio de datos.' });
         return;
     }
@@ -240,24 +245,24 @@ exports.compraCuentaPedido = async (req, res) => {
     // Restar Saldo del usuario
     const usuario = await Usuarios.findOne({
         where: {
-            [Op.and]: [{id_usuario: req.user.id_usuario}, {bloqueo: 0}]
+            [Op.and]: [{ id_usuario: req.user.id_usuario }, { bloqueo: 0 }]
         }
     });
 
-    if(!usuario) {
+    if (!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible solicitar la cuenta debido a que el usuario no existe o se encuentra bloqueado.' });
         return;
     }
 
     const distribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.patrocinador }]
         }
     });
 
     const superDistribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.super_patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.super_patrocinador }]
         }
     });
 
@@ -275,7 +280,7 @@ exports.compraCuentaPedido = async (req, res) => {
         plataformaIdPlataforma: req.body.id
     });
 
-    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Cuenta solicitada con éxito.'});
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Cuenta solicitada con éxito.' });
     return;
 
 }
@@ -287,7 +292,7 @@ exports.compraCuentaPersonalizada = async (req, res) => {
     const usuarioPersonalizada = req.body.usuarioPersonalizada.trim();
     const passwordPersonalizada = req.body.passwordPersonalizada.trim();
 
-    if(telefonoCliente === '' || nombreCliente === '' || usuarioPersonalizada === '' || passwordPersonalizada === '') {
+    if (telefonoCliente === '' || nombreCliente === '' || usuarioPersonalizada === '' || passwordPersonalizada === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debes llenar todos los campos y autorizar el envio de datos.' });
         return;
     }
@@ -295,24 +300,24 @@ exports.compraCuentaPersonalizada = async (req, res) => {
     // Restar Saldo del usuario
     const usuario = await Usuarios.findOne({
         where: {
-            [Op.and]: [{id_usuario: req.user.id_usuario}, {bloqueo: 0}]
+            [Op.and]: [{ id_usuario: req.user.id_usuario }, { bloqueo: 0 }]
         }
     });
 
-    if(!usuario) {
+    if (!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible solicitar la personalización de la cuenta debido a que el usuario no existe o se encuentra bloqueado.' });
         return;
     }
 
     const distribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.patrocinador }]
         }
     });
 
     const superDistribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.super_patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.super_patrocinador }]
         }
     });
 
@@ -332,7 +337,7 @@ exports.compraCuentaPersonalizada = async (req, res) => {
         password: passwordPersonalizada
     });
 
-    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Personalización en proceso.'});
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Personalización en proceso.' });
     return;
 
 }
@@ -344,7 +349,7 @@ exports.compraCuentaRenovacion = async (req, res) => {
     const usuarioRenovacion = req.body.usuarioRenovacion.trim();
     const passwordRenovacion = req.body.passwordRenovacion.trim();
 
-    if(telefonoCliente === '' || nombreCliente === '' || usuarioRenovacion === '' || passwordRenovacion === '') {
+    if (telefonoCliente === '' || nombreCliente === '' || usuarioRenovacion === '' || passwordRenovacion === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debes llenar todos los campos y autorizar el envio de datos.' });
         return;
     }
@@ -352,24 +357,24 @@ exports.compraCuentaRenovacion = async (req, res) => {
     // Restar Saldo del usuario
     const usuario = await Usuarios.findOne({
         where: {
-            [Op.and]: [{id_usuario: req.user.id_usuario}, {bloqueo: 0}]
+            [Op.and]: [{ id_usuario: req.user.id_usuario }, { bloqueo: 0 }]
         }
     });
 
-    if(!usuario) {
+    if (!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible solicitar la renovación debido a que el usuario no existe o se encuentra bloqueado.' });
         return;
     }
 
     const distribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.patrocinador }]
         }
     });
 
     const superDistribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.super_patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.super_patrocinador }]
         }
     });
 
@@ -389,7 +394,7 @@ exports.compraCuentaRenovacion = async (req, res) => {
         password: passwordRenovacion
     });
 
-    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Renovación solicitada con éxito.'});
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Renovación solicitada con éxito.' });
     return;
 
 }
@@ -400,7 +405,7 @@ exports.compraCuentaFreefire = async (req, res) => {
     const nombreCliente = req.body.cliente.trim();
     const idFreefire = req.body.idFreefire.trim();
 
-    if(telefonoCliente === '' || nombreCliente === '' || idFreefire === '') {
+    if (telefonoCliente === '' || nombreCliente === '' || idFreefire === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debes llenar todos los campos y autorizar el envio de datos.' });
         return;
     }
@@ -408,24 +413,24 @@ exports.compraCuentaFreefire = async (req, res) => {
     // Restar Saldo del usuario
     const usuario = await Usuarios.findOne({
         where: {
-            [Op.and]: [{id_usuario: req.user.id_usuario}, {bloqueo: 0}]
+            [Op.and]: [{ id_usuario: req.user.id_usuario }, { bloqueo: 0 }]
         }
     });
 
-    if(!usuario) {
+    if (!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar la compra en Freefire debido a que el usuario no existe o se encuentra bloqueado en nuestra plataforma.' });
         return;
     }
 
     const distribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.patrocinador }]
         }
     });
 
     const superDistribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.super_patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.super_patrocinador }]
         }
     });
 
@@ -444,7 +449,7 @@ exports.compraCuentaFreefire = async (req, res) => {
         idJuego: idFreefire
     });
 
-    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Tu compra de Freefire se esta procesando con éxito.'});
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Tu compra de Freefire se esta procesando con éxito.' });
     return;
 
 }
@@ -457,7 +462,7 @@ exports.compraCuentaCallofduty = async (req, res) => {
     const usFacebook = req.body.usFacebook.trim();
     const psFacebook = req.body.psFacebook.trim();
 
-    if(telefonoCliente === '' || nombreCliente === '' || psFacebook === '' || usFacebook === '') {
+    if (telefonoCliente === '' || nombreCliente === '' || psFacebook === '' || usFacebook === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debes llenar todos los campos y autorizar el envio de datos.' });
         return;
     }
@@ -465,24 +470,24 @@ exports.compraCuentaCallofduty = async (req, res) => {
     // Restar Saldo del usuario
     const usuario = await Usuarios.findOne({
         where: {
-            [Op.and]: [{id_usuario: req.user.id_usuario}, {bloqueo: 0}]
+            [Op.and]: [{ id_usuario: req.user.id_usuario }, { bloqueo: 0 }]
         }
     });
 
-    if(!usuario) {
+    if (!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar la compra en Call of duty debido a que el usuario no existe o se encuentra bloqueado en nuestra plataforma.' });
         return;
     }
 
     const distribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.patrocinador }]
         }
     });
 
     const superDistribuidor = await Usuarios.findOne({
         where: {
-            [Op.and]: [{enlace_afiliado: req.user.super_patrocinador}]
+            [Op.and]: [{ enlace_afiliado: req.user.super_patrocinador }]
         }
     });
 
@@ -502,7 +507,7 @@ exports.compraCuentaCallofduty = async (req, res) => {
         password: psFacebook
     });
 
-    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Tu compra de Call of dutty se esta procesando con éxito.'});
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Tu compra de Call of dutty se esta procesando con éxito.' });
     return;
 
 }

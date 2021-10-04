@@ -76,8 +76,8 @@
                     <table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexample">
                       <thead>
                         <tr>
-                          <th>Fecha</th>
                           <th>Banco</th>
+                          <th>Fecha</th>
                           <th>Valor</th>
                           <th>Referencia</th>
                           <th>Estado</th>
@@ -90,11 +90,11 @@
                         <% consignaciones.forEach(listaConsignaciones => { %>
 
                         <tr>
-                          <td class="text-center">
-                            <%= listaConsignaciones.fecha.toLocaleString('es-CO');%>
-                          </td>
                           <td class="text-left text-capitalize">
                             <%- listaConsignaciones.tipoConsignacion %>
+                          </td>
+                          <td class="text-center">
+                            <%= listaConsignaciones.fecha.toLocaleString('es-CO');%>
                           </td>
                           <td class="text-left text-capitalize">
                             <% if(usuario.pais === 'Colombia') { %>

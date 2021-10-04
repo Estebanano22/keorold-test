@@ -96,13 +96,13 @@
                       <thead>
                         <tr>
                           <th>Logo</th>
+                          <th>Fecha de Creación</th>
                           <th>Plataforma</th>
                           <th>Usuario</th>
                           <th>Contraseña</th>
                           <th>Pantalla</th>
                           <th>Pin</th>
                           <th>Estado</th>
-                          <th>Fecha de Creación</th>
                           <th>Fecha de Compra</th>
                           <th>Acciones</th>
                         </tr>
@@ -122,6 +122,7 @@
                           <td class="text-center">
                             <img src="<%= logo === null ? '/assetsDashboard/img/users/default.jpg' : logo %>" alt="" class="img-circle">
                           </td>
+                          <td><%= listaCuentas.fechaSubida.toLocaleString('es-CO');%></td>
                           <td class="text-capitalize"><%= nombrePlataforma %></td>
                           <td class="text-lowercase"><%= listaCuentas.user%></td>
                           <td><%= listaCuentas.password%></td>
@@ -130,7 +131,6 @@
                           <td class="text-capitalize text-center">
                             <span class="text-muted"><i class="far <%= listaCuentas.estado === 1 ? 'fa-check-circle text-success' : 'fa-minus-square text-warning' %> mr-1"></i><%= listaCuentas.estado === 1 ? 'Tomada' : 'Sin Tomar' %></span>
                           </td>
-                          <td><%= listaCuentas.fechaSubida.toLocaleString('es-CO');%></td>
                           <td><%- listaCuentas.fechaCompra === null ? '<span class="badge badge-pill badge-secondary">Sin fecha</span>' : listaCuentas.fechaCompra.toLocaleString('es-CO')%></td>
                           <td class="text-capitalize">
                             <div class="btn btn-list">

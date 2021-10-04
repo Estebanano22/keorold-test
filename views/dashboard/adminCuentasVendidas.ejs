@@ -192,8 +192,8 @@
                           <td class="text-left"><%= listaCuentas.pantalla %></td>
                           <td class="text-left"><%= listaCuentas.pin %></td>
                           <td class="text-left"><%= idJuego %></td>
-                          <td class="text-center"><%= moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
-                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
+                          <td class="text-center"><%= listaCuentas.fechaCompra.toLocaleString('es-CO'); %></td>
+                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('DD:MM:YYYY HH:MM:SS') %></td>
                         </tr>
                         <% }%>
                         <% }) %>

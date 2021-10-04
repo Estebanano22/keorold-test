@@ -67,6 +67,7 @@
                       <thead>
                         <tr>
                           <th>Distribuidor</th>
+                          <th>Fecha Solcitud</th>
                           <th>Vendedor</th>
                           <th>Perfil vendedor</th>
                           <th>Logo</th>
@@ -77,7 +78,6 @@
                           <th>Password facebook</th>
                           <th>ID Usuario Juego</th>
                           <th>Comprobante</th>
-                          <th>Fecha Solcitud</th>
                           <th>Fecha Compra</th>
                           <th>Acciones</th>
                         </tr>
@@ -93,6 +93,7 @@
                         <% const nombre = distribuidor[0].nombre; %>
                         <tr>
                           <td class="text-left text-capitalize"><%= nombre %></td>
+                          <td class="text-center"><%= listaCuentas.fechaSubida.toLocaleString('es-CO'); %></td>
                           <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
                           <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaCuentas.usuario.perfil %></td>
                           <td class="text-center">
@@ -113,7 +114,6 @@
                           <td class="text-left">
                             <a data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalComprobante" onclick="modalComprobante(event, '<%= listaCuentas.comprobanteJuego %>')"><%- listaCuentas.comprobanteJuego %></a>
                           </td>
-                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-center <%= listaCuentas.fechaCompra === null ? 'text-warning' : '' %>"><%= listaCuentas.fechaCompra === null ? 'Sin fecha de compra' : moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-capitalize">
                             <div class="btn btn-list">

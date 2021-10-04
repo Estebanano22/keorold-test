@@ -129,6 +129,7 @@
                       <thead>
                         <tr>
                           <th>Logo</th>
+                          <th>Fecha Compra</th>
                           <th>Plataforma</th>
                           <th>Valor pagado</th>
                           <th>Tipo plataforma</th>
@@ -137,7 +138,6 @@
                           <th>Pantalla</th>
                           <th>Pin</th>
                           <th>ID Jugador</th>
-                          <th>Fecha Compra</th>
                           <th>Fecha Subida</th>
                         </tr>
                       </thead>
@@ -172,6 +172,7 @@
                           <td class="text-center">
                             <img src="<%= listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaCuentas.plataforma.logo %>" alt="" class="img-circle">
                           </td>
+                          <td class="text-center"><%= moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-capitalize"><%= listaCuentas.plataforma.plataforma %></td>
                           <td class="text-capitalize text-right"><%= valorFormateado %></td>
                           <td class="text-capitalize text-center">
@@ -184,7 +185,6 @@
                           <td class="text-left"><%= listaCuentas.pantalla %></td>
                           <td class="text-left"><%= listaCuentas.pin %></td>
                           <td class="text-left"><%= idJuego %></td>
-                          <td class="text-center"><%= moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                         </tr>
                         <% }) %>
