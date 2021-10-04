@@ -59,7 +59,7 @@
                     <p class="text-muted card-sub-title">A continuación encontrara un reporte detallado de todas las ganancias recibidas en su red.</p>
                   </div>
                   <div class="table-responsive">
-                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexamplecuentas">
+                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexamplecuentas_red">
                       <thead>
                         <tr>
                           <th>Distribuidor</th>
@@ -99,7 +99,7 @@
                               <%= listaGanancias.plataforma.tipo_plataforma === 1 ? 'Normal' : listaGanancias.plataforma.tipo_plataforma === 2 ? 'Bajo Pedido' : listaGanancias.plataforma.tipo_plataforma === 3 ? 'Personalizada' : listaGanancias.plataforma.tipo_plataforma === 4 ? 'Renovaciones' : listaGanancias.plataforma.tipo_plataforma === 5 ? 'Juegos' : 'N/A' %>
                             </span>
                           </td>
-                          <td class="text-center"><%= moment(listaGanancias.fecha).format('MMMM Do YYYY, h:mm:ss a') %></td>
+                          <td class="text-center"><%= moment(listaGanancias.fecha).format('DD:MM:YYYY HH:MM:SS') %></td>
                         </tr>
                         <% }) %>
                         <% } %>

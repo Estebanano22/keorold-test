@@ -63,7 +63,7 @@
                     <p class="text-muted card-sub-title">A continuación encontrara un reporte detallado de todas las cuentas solicitadas bajo pedido en la red de este superdistribuidor.</p>
                   </div>
                   <div class="table-responsive">
-                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexample">
+                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexample_date">
                       <thead>
                         <tr>
                           <th>Distribuidor</th>
@@ -93,7 +93,7 @@
                         <% const nombre = distribuidor[0].nombre; %>
                         <tr>
                           <td class="text-left text-capitalize"><%= nombre %></td>
-                          <td class="text-center"><%= listaCuentas.fechaSubida.toLocaleString('es-CO'); %></td>
+                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('DD/MM/YYYY HH:MM:SS') %></td>
                           <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
                           <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaCuentas.usuario.perfil %></td>
                           <td class="text-center">
