@@ -117,11 +117,11 @@ $(function () {
       lengthChange: false,
       buttons: ['copy', 'excel', 'pdf', 'colvis'],
       columnDefs: [{
-         "targets": 11,
+         "targets": 12,
          "render": function (data, type, row, meta) {
             return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
          },
-         "aaSorting": [[11, "ASC"]]
+         "aaSorting": [[12, "ASC"]]
       }]
    });
    table.buttons().container()
