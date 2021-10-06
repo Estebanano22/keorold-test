@@ -144,13 +144,13 @@
                             <button class="btn ripple btn-secondary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalAsignar" onclick="modalAsignar(event, '<%= listaUsuario.id_usuario %>', '<%= listaUsuario.nombre %>')"><i class="ti ti-view-grid"></i><span class="ml-2">Asignar plataformas</span></button>
                           </td>
                           <td class="text-capitalize"><%= listaUsuario.enlace_afiliado %></td>
+                          <% distribuidorName = '' %>
                           <% distribuidores.forEach(listaDistribuidor => { %>
                           <% if(listaDistribuidor.enlace_afiliado === listaUsuario.patrocinador) { %>
-                          <% const nombreDistribuidor = listaDistribuidor.nombre %>
-                          <% listaUsuario.isComplete = true %>
-                          <td class="text-capitalize"><%= nombreDistribuidor %></td>
+                          <% distribuidorName = listaDistribuidor.nombre %>
                           <% } %>
                           <% }) %>
+                          <td class="text-capitalize"><%= distribuidorName || '...' %></td>
 
                           <td class="text-capitalize">
                             <div class="btn btn-list">
@@ -160,9 +160,6 @@
                             </div>
                           </td>
                         </tr>
-                        <% if(!listaUsuario.isComplete){ %>
-                        <% console.log(listaUsuario) %>
-                        <% } %>
                         <% } %>
                         <% }) %>
                         <% } %>
