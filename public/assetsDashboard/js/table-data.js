@@ -25,9 +25,9 @@ $(function () {
       buttons: ['copy', 'excel', 'pdf', 'colvis'],
       columnDefs: [{
          "targets": 1,
-         "render": function (data, type, row, meta) {
-            return moment(data, 'DD/MM/YYYY HH:mm:ss').format('D/M/YYYY HH:mm:ss');
-         },
+         // "render": function (data, type, row, meta) {
+         //    return moment(data, 'DD/MM/YYYY HH:mm:ss').format('D/M/YYYY HH:mm:ss');
+         // },
          "aaSorting": [[1, "ASC"]]
       }]
    });
@@ -86,9 +86,9 @@ $(function () {
       buttons: ['copy', 'excel', 'pdf', 'colvis'],
       columnDefs: [{
          "targets": 6,
-         "render": function (data, type, row, meta) {
-            return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
-         },
+         // "render": function (data, type, row, meta) {
+         //    return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
+         // },
          "aaSorting": [[6, "ASC"]]
       }]
    });
@@ -118,9 +118,9 @@ $(function () {
       buttons: ['copy', 'excel', 'pdf', 'colvis'],
       columnDefs: [{
          "targets": 12,
-         "render": function (data, type, row, meta) {
-            return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
-         },
+         // "render": function (data, type, row, meta) {
+         //    return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
+         // },
          "aaSorting": [[12, "ASC"]]
       }]
    });
@@ -150,9 +150,9 @@ $(function () {
       buttons: ['copy', 'excel', 'pdf', 'colvis'],
       columnDefs: [{
          "targets": 7,
-         "render": function (data, type, row, meta) {
-            return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
-         },
+         // "render": function (data, type, row, meta) {
+         //    return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
+         // },
          "aaSorting": [[7, "ASC"]]
       }]
    });
