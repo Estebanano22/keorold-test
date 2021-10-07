@@ -22,10 +22,11 @@ $(function () {
          },
       },
       lengthChange: false,
-      buttons: ['copy', 'excel', 'pdf', 'colvis']
+      buttons: ['copy', 'excel', 'pdf', 'colvis'],
+      "bSort": false
    });
    table.buttons().container()
-      .appendTo('#exportexample_wrapper .col-md-6:eq(0)');
+      .appendTo('#exportexample_date_wrapper .col-md-6:eq(0)');
 
    // exportexample_admin_renovaciones
    var table = $('#exportexample_admin_renovaciones').DataTable({
@@ -48,7 +49,8 @@ $(function () {
          },
       },
       lengthChange: false,
-      buttons: ['copy', 'excel', 'pdf', 'colvis']
+      buttons: ['copy', 'excel', 'pdf', 'colvis'],
+      "bSort": false
    });
    table.buttons().container()
       .appendTo('#exportexample_admin_renovaciones_wrapper .col-md-6:eq(0)');
@@ -75,7 +77,8 @@ $(function () {
          },
       },
       lengthChange: false,
-      buttons: ['copy', 'excel', 'pdf', 'colvis']
+      buttons: ['copy', 'excel', 'pdf', 'colvis'],
+      "bSort": false
    });
    table.buttons().container()
       .appendTo('#tablageneralsinfiltro_wrapper .col-md-6:eq(0)');
@@ -101,10 +104,7 @@ $(function () {
       },
       lengthChange: false,
       buttons: ['copy', 'excel', 'pdf', 'colvis'],
-      columnDefs: [{
-         "targets": 1,
-         "aaSorting": [[1, "ASC"]]
-      }]
+      "bSort": false
    });
    table.buttons().container()
       .appendTo('#exportexample_wrapper .col-md-6:eq(0)');
@@ -130,13 +130,7 @@ $(function () {
       },
       lengthChange: false,
       buttons: ['copy', 'excel', 'pdf', 'colvis'],
-      columnDefs: [{
-         "targets": 6,
-         // "render": function (data, type, row, meta) {
-         //    return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
-         // },
-         "aaSorting": [[6, "ASC"]]
-      }]
+      "bSort": false
    });
    table.buttons().container()
       .appendTo('#exportexamplecargas_wrapper .col-md-6:eq(0)');
@@ -162,7 +156,8 @@ $(function () {
          },
       },
       lengthChange: false,
-      buttons: ['copy', 'excel', 'pdf', 'colvis']
+      buttons: ['copy', 'excel', 'pdf', 'colvis'],
+      "bSort": false
    });
    table.buttons().container()
       .appendTo('#exportexamplecuentas_wrapper .col-md-6:eq(0)');
@@ -187,7 +182,8 @@ $(function () {
          },
       },
       lengthChange: false,
-      buttons: ['copy', 'excel', 'pdf', 'colvis']
+      buttons: ['copy', 'excel', 'pdf', 'colvis'],
+      "bSort": false
    });
    table.buttons().container()
       .appendTo('#exportexamplecuentas_wrapper .col-md-6:eq(0)');

@@ -63,7 +63,7 @@
                     <p class="text-muted card-sub-title">A continuación encontrara un reporte detallado de todas las cuentas solicitadas para renovación en la red de este superdistribuidor.</p>
                   </div>
                   <div class="table-responsive">
-                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="tablageneralsinfiltro">
+                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexample_date">
                       <thead>
                         <tr>
                           <th>Distribuidor</th>
@@ -83,6 +83,7 @@
                         </tr>
                       </thead>
                       <tbody>
+                        <% moment.locale('es'); %>
                         <% if(cuentas.length) { %>
                         <% cuentas.forEach(listaCuentas => { %>
                         <% if(!(listaCuentas.usuario == null || listaCuentas.plataforma == null)) {%>

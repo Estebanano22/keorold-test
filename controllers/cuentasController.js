@@ -513,6 +513,9 @@ exports.adminCuentasRenovaciones = async (req, res) => {
         ],
         order: [['fechaSubida', 'DESC']]
     })
+    cuentas.forEach((cuenta) => {
+        console.log(cuenta.fechaSubida)
+    })
 
     const cuentasRenovaciones = await Cuentas.count({
         where: {
