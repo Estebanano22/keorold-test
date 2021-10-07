@@ -98,7 +98,7 @@
                           </td>
                           <td class="text-left text-capitalize">
                             <% if(usuario.pais === 'Colombia') { %>
-                            <% var saldoFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaConsignaciones.valor); %>
+                            <% var saldoFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaConsignaciones.valor); %>
                             <% } else { %>
                             <% var saldoFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaConsignaciones.valor); %>
                             <% } %>

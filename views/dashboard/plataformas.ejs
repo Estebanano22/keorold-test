@@ -48,7 +48,7 @@
                 <div class="card-body">
                   <div class="card-widget">
                     <% if(usuario.pais === 'Colombia') { %>
-                    <% var saldoFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(usuario.saldo); %>
+                    <% var saldoFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(usuario.saldo); %>
                     <% } else { %>
                     <% var saldoFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(usuario.saldo); %>
                     <% } %>
@@ -105,7 +105,7 @@
                   <h4 class="text-center color-primary">
 
                     <% if(usuario.pais === 'Colombia') { %>
-                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaPlataformasNormales.valor); %>
+                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaPlataformasNormales.valor); %>
                     <% } else { %>
                     <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaPlataformasNormales.valor); %>
                     <% } %>
@@ -174,7 +174,7 @@
                   <h4 class="text-center color-primary">
 
                     <% if(usuario.pais === 'Colombia') { %>
-                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaplataformasBajoPedido.valor); %>
+                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaplataformasBajoPedido.valor); %>
                     <% } else { %>
                     <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaplataformasBajoPedido.valor); %>
                     <% } %>
@@ -226,7 +226,7 @@
                   </div>
                   <h4 class="text-center color-primary">
                     <% if(usuario.pais === 'Colombia') { %>
-                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaplataformasRenovaciones.valor); %>
+                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaplataformasRenovaciones.valor); %>
                     <% } else { %>
                     <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaplataformasRenovaciones.valor); %>
                     <% } %>
@@ -281,7 +281,7 @@
                   </div>
                   <h4 class="text-center color-primary">
                     <% if(usuario.pais === 'Colombia') { %>
-                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaPlataformasPersonalizadas.valor); %>
+                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaPlataformasPersonalizadas.valor); %>
                     <% } else { %>
                     <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaPlataformasPersonalizadas.valor); %>
                     <% } %>
@@ -342,7 +342,7 @@
                     <% const valor = array[0].valor; %>
 
                     <% if(usuario.pais === 'Colombia') { %>
-                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(valor); %>
+                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(valor); %>
                     <% } else { %>
                     <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(valor); %>
                     <% } %>

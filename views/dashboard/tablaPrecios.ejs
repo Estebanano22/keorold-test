@@ -65,7 +65,7 @@
                         <% if(asignaciones.length) { %>
                         <% asignaciones.forEach(listaAsignaciones => { %>
                         <% if(listaAsignaciones.usuario.pais === 'Colombia') { %>
-                        <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaAsignaciones.valor); %>
+                        <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaAsignaciones.valor); %>
                         <% } else { %>
                         <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaAsignaciones.valor); %>
                         <% } %>

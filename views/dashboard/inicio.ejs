@@ -103,7 +103,7 @@
                         <span class="d-block tx-12 mb-0 text-muted">Observe su saldo en tiempo real</span>
                       </div>
                       <% if(usuario.pais === 'Colombia') { %>
-                      <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(usuario.saldo); %>
+                      <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(usuario.saldo); %>
                       <% } else { %>
                       <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(usuario.saldo); %>
                       <% } %>
@@ -125,7 +125,7 @@
                     <% if(cuentas.length) { %>
                     <% cuentas.forEach(listaCuentas => { %>
                     <% if(listaCuentas.usuario.pais === 'Colombia') { %>
-                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaCuentas.valorPagado); %>
+                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCuentas.valorPagado); %>
                     <% } else { %>
                     <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaCuentas.valorPagado); %>
                     <% } %>
@@ -222,7 +222,7 @@
                         <span class="d-block tx-12 mb-0 text-muted">Observe el saldo actual en circulación de su red</span>
                       </div>
                       <% if(usuario.pais === 'Colombia') { %>
-                      <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(saldoRed); %>
+                      <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(saldoRed); %>
                       <% } else { %>
                       <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(saldoRed); %>
                       <% } %>
@@ -244,7 +244,7 @@
                     <% if(cuentas.length) { %>
                     <% cuentas.forEach(listaCuentas => { %>
                     <% if(listaCuentas.usuario.pais === 'Colombia') { %>
-                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaCuentas.valorPagado); %>
+                    <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCuentas.valorPagado); %>
                     <% } else { %>
                     <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaCuentas.valorPagado); %>
                     <% } %>

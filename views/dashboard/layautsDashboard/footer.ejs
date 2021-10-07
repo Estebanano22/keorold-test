@@ -428,7 +428,7 @@
                       const val = new Intl.NumberFormat("es-CO", {
                         style: "currency",
                         currency: "COP",
-                        maximumSignificantDigits: 3
+                        maximumSignificantDigits: 7
                       }).format(iConsignaciones[u].valor);
 
                       const referencia = iConsignaciones[u].referencia + ' - ' + val;
@@ -471,7 +471,7 @@
                       const val = new Intl.NumberFormat("es-CO", {
                         style: "currency",
                         currency: "COP",
-                        maximumSignificantDigits: 3
+                        maximumSignificantDigits: 7
                       }).format(pse[m].valor);
 
                       const referencia = val;

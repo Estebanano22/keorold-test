@@ -84,13 +84,13 @@
                         <% cargas.forEach(listaCargas => { %>
                         <% if(!(listaCargas.usuario == null || listaCargas.plataforma == null)) {%>
                         <% if(listaCargas.usuario.pais === 'Colombia') { %>
-                        <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaCargas.valor); %>
-                        <% var saldoAnteriorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaCargas.saldoAnterior); %>
-                        <% var saldoNuevoFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaCargas.saldoNuevo); %>
+                        <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCargas.valor); %>
+                        <% var saldoAnteriorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCargas.saldoAnterior); %>
+                        <% var saldoNuevoFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCargas.saldoNuevo); %>
                         <% } else { %>
                         <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaCargas.valor); %>
-                        <% var saldoAnteriorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaCargas.saldoAnterior); %>
-                        <% var saldoNuevoFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaCargas.saldoNuevo); %>
+                        <% var saldoAnteriorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCargas.saldoAnterior); %>
+                        <% var saldoNuevoFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCargas.saldoNuevo); %>
                         <% } %>
                         <tr>
                           <td class="text-capitalize"><%= listaCargas.usuario.nombre %></td>

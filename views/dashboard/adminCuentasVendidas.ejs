@@ -154,7 +154,7 @@
                         <% }); %>
                         <% const nombre = distribuidor[0].nombre; %>
                         <% if(listaCuentas.usuario.pais === 'Colombia') { %>
-                        <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaCuentas.valorPagado); %>
+                        <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCuentas.valorPagado); %>
                         <% } else { %>
                         <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaCuentas.valorPagado); %>
                         <% } %>

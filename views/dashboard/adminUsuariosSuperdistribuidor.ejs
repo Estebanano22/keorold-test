@@ -136,7 +136,7 @@
                               <option class="text-capitalize" value="reseller">Reseller</option>
                             </select>
                           </td>
-                          <td class="text-capitalize"><%= valorFormateado %></td>
+                          <td class="text-capitalize"><%= valorFormateado  listaUsuario.saldo %> || <%= listaUsuario.saldo %></td>
 
                           <td class="text-capitalize">
                             <button class="btn ripple btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCargar" onclick="modalCargar(event, '<%= listaUsuario.id_usuario %>', '<%= listaUsuario.nombre %>')"><i class="ti ti-wallet"></i><span class="ml-2">Cargar saldo</span></button>
