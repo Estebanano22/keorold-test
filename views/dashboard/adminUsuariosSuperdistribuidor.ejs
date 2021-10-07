@@ -107,7 +107,7 @@
                         <% usuarios.forEach(listaUsuario => { %>
                         <% if(!(listaUsuario.length < 1 || !listaUsuario)) {%>
                         <% if(listaUsuario.pais === 'Colombia') { %>
-                        <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 3}).format(listaUsuario.saldo); %>
+                        <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaUsuario.saldo); %>
                         <% } else { %>
                         <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaUsuario.saldo); %>
                         <% } %>
@@ -137,6 +137,7 @@
                             </select>
                           </td>
                           <td class="text-capitalize"><%= valorFormateado %></td>
+
                           <td class="text-capitalize">
                             <button class="btn ripple btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCargar" onclick="modalCargar(event, '<%= listaUsuario.id_usuario %>', '<%= listaUsuario.nombre %>')"><i class="ti ti-wallet"></i><span class="ml-2">Cargar saldo</span></button>
                           </td>
