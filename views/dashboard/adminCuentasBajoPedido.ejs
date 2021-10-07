@@ -63,11 +63,10 @@
                     <p class="text-muted card-sub-title">A continuación encontrara un reporte detallado de todas las cuentas solicitadas bajo pedido en la red de este superdistribuidor.</p>
                   </div>
                   <div class="table-responsive">
-                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexample_date">
+                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="tablageneralsinfiltro">
                       <thead>
                         <tr>
                           <th>Distribuidor</th>
-                          <th>Fecha Solcitud</th>
                           <th>Vendedor</th>
                           <th>Perfil vendedor</th>
                           <th>Logo</th>
@@ -78,6 +77,7 @@
                           <th>Password</th>
                           <th>Pantalla</th>
                           <th>Pin</th>
+                          <th>Fecha Solcitud</th>
                           <th>Fecha Compra</th>
                           <th>Acciones</th>
                         </tr>
@@ -93,7 +93,6 @@
                         <% const nombre = distribuidor[0].nombre; %>
                         <tr>
                           <td class="text-left text-capitalize"><%= nombre %></td>
-                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('DD/MM/YYYY HH:MM:SS') %></td>
                           <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
                           <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaCuentas.usuario.perfil %></td>
                           <td class="text-center">
@@ -112,7 +111,9 @@
                           <td class="text-left"><%= listaCuentas.password === null ? 'Sin dato ingresado' : listaCuentas.password %></td>
                           <td class="text-left"><%= listaCuentas.pantalla === null ? 'Sin dato ingresado' : listaCuentas.pantalla %></td>
                           <td class="text-left"><%= listaCuentas.pin === null ? 'Sin dato ingresado' : listaCuentas.pin %></td>
-                          <td class="text-center <%= listaCuentas.fechaCompra === null ? 'text-warning' : '' %>"><%= listaCuentas.fechaCompra === null ? 'Sin fecha de compra' : moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
+                          <td class="text-center <%= listaCuentas.fechaCompra === null ? 'text-warning' : '' %>"><%= listaCuentas.fechaCompra === null ? 'Sin fecha de compra' : moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %>
+                          </td>
+                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-capitalize">
                             <div class="btn btn-list">
                               <a class="btn ripple btn-primary modal-effect" title="Gestionar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSubir" onclick="modalSubir(event, '<%= listaCuentas.idCuenta %>')"><i class="fe fe-upload"></i></a>

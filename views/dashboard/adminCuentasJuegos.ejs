@@ -67,7 +67,6 @@
                       <thead>
                         <tr>
                           <th>Distribuidor</th>
-                          <th>Fecha Solcitud</th>
                           <th>Vendedor</th>
                           <th>Perfil vendedor</th>
                           <th>Logo</th>
@@ -79,6 +78,7 @@
                           <th>ID Usuario Juego</th>
                           <th>Comprobante</th>
                           <th>Fecha Compra</th>
+                          <th>Fecha Solcitud</th>
                           <th>Acciones</th>
                         </tr>
                       </thead>
@@ -93,7 +93,6 @@
                         <% const nombre = distribuidor[0].nombre; %>
                         <tr>
                           <td class="text-left text-capitalize"><%= nombre %></td>
-                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('DD:MM:YYYY HH:MM:SS')%></td>
                           <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
                           <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaCuentas.usuario.perfil %></td>
                           <td class="text-center">
@@ -115,6 +114,7 @@
                             <a data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalComprobante" onclick="modalComprobante(event, '<%= listaCuentas.comprobanteJuego %>')"><%- listaCuentas.comprobanteJuego %></a>
                           </td>
                           <td class="text-center <%= listaCuentas.fechaCompra === null ? 'text-warning' : '' %>"><%= listaCuentas.fechaCompra === null ? 'Sin fecha de compra' : moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
+                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-capitalize">
                             <div class="btn btn-list">
                               <a class="btn ripple btn-primary modal-effect" title="Renovar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalGestionar" onclick="modalGestionar(event, '<%= listaCuentas.idCuenta %>')"><i class="fe fe-upload"></i></a>

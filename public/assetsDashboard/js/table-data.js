@@ -34,6 +34,66 @@ $(function () {
    table.buttons().container()
       .appendTo('#exportexample_wrapper .col-md-6:eq(0)');
 
+   // exportexample_admin_renovaciones
+   var table = $('#exportexample_admin_renovaciones').DataTable({
+      responsive: true,
+      language: {
+         searchPlaceholder: 'Buscar...',
+         sSearch: '',
+         lengthMenu: '_MENU_ filas/pagina',
+         buttons: {
+            'copy': 'Copiar',
+            'excel': 'Excel',
+            'pdf': 'PDF',
+            'colvis': 'Ocultar columnas'
+         },
+         paginate: {
+            'first': 'Primero',
+            'last': 'Último',
+            'next': 'Siguiente',
+            'previous': 'Anterior'
+         },
+      },
+      lengthChange: false,
+      buttons: ['copy', 'excel', 'pdf', 'colvis'],
+      columnDefs: [{
+         "targets": 1,
+         "render": function (data, type, row, meta) {
+            return moment(data).format('D/M/YYYY HH:mm:ss');
+         },
+         "aaSorting": [[1, "ASC"]]
+      }]
+   });
+   table.buttons().container()
+      .appendTo('#exportexample_admin_renovaciones_wrapper .col-md-6:eq(0)');
+
+
+   // exportexample_admin_bajo_pedido
+   var table = $('#tablageneralsinfiltro').DataTable({
+      responsive: true,
+      language: {
+         searchPlaceholder: 'Buscar...',
+         sSearch: '',
+         lengthMenu: '_MENU_ filas/pagina',
+         buttons: {
+            'copy': 'Copiar',
+            'excel': 'Excel',
+            'pdf': 'PDF',
+            'colvis': 'Ocultar columnas'
+         },
+         paginate: {
+            'first': 'Primero',
+            'last': 'Último',
+            'next': 'Siguiente',
+            'previous': 'Anterior'
+         },
+      },
+      lengthChange: false,
+      buttons: ['copy', 'excel', 'pdf', 'colvis']
+   });
+   table.buttons().container()
+      .appendTo('#tablageneralsinfiltro_wrapper .col-md-6:eq(0)');
+
    var table = $('#exportexample').DataTable({
       responsive: true,
       language: {
@@ -95,6 +155,7 @@ $(function () {
    table.buttons().container()
       .appendTo('#exportexamplecargas_wrapper .col-md-6:eq(0)');
 
+   // Cuentas vendidas
    var table = $('#exportexamplecuentas').DataTable({
       responsive: true,
       language: {
@@ -115,14 +176,7 @@ $(function () {
          },
       },
       lengthChange: false,
-      buttons: ['copy', 'excel', 'pdf', 'colvis'],
-      columnDefs: [{
-         "targets": 12,
-         // "render": function (data, type, row, meta) {
-         //    return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
-         // },
-         "aaSorting": [[12, "ASC"]]
-      }]
+      buttons: ['copy', 'excel', 'pdf', 'colvis']
    });
    table.buttons().container()
       .appendTo('#exportexamplecuentas_wrapper .col-md-6:eq(0)');
@@ -147,14 +201,7 @@ $(function () {
          },
       },
       lengthChange: false,
-      buttons: ['copy', 'excel', 'pdf', 'colvis'],
-      columnDefs: [{
-         "targets": 7,
-         // "render": function (data, type, row, meta) {
-         //    return moment(data, 'DD/MM/YYYY HH:mm:ss A').format('D/M/YYYY HH:mm:ss A');
-         // },
-         "aaSorting": [[7, "ASC"]]
-      }]
+      buttons: ['copy', 'excel', 'pdf', 'colvis']
    });
    table.buttons().container()
       .appendTo('#exportexamplecuentas_wrapper .col-md-6:eq(0)');
