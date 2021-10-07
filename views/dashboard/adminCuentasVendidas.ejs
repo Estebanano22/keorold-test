@@ -125,7 +125,7 @@
                     <p class="text-muted card-sub-title">A continuación encontrara un reporte detallado de todas las cuentas vendidas en la red de este superdistribuidor.</p>
                   </div>
                   <div class="table-responsive">
-                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="exportexamplecuentas">
+                    <table class="table table-bordered text-nowrap w-100 key-buttons" id="tablageneralsinfiltro">
                       <thead>
                         <tr>
                           <th>Distribuidor</th>
@@ -193,7 +193,7 @@
                           <td class="text-left"><%= listaCuentas.pin %></td>
                           <td class="text-left"><%= idJuego %></td>
                           <td class="text-center"><%= moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
-                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('DD:MM:YYYY HH:MM:SS') %></td>
+                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                         </tr>
                         <% }%>
                         <% }) %>

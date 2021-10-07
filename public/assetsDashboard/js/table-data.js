@@ -22,14 +22,7 @@ $(function () {
          },
       },
       lengthChange: false,
-      buttons: ['copy', 'excel', 'pdf', 'colvis'],
-      columnDefs: [{
-         "targets": 1,
-         // "render": function (data, type, row, meta) {
-         //    return moment(data, 'DD/MM/YYYY HH:mm:ss').format('D/M/YYYY HH:mm:ss');
-         // },
-         "aaSorting": [[1, "ASC"]]
-      }]
+      buttons: ['copy', 'excel', 'pdf', 'colvis']
    });
    table.buttons().container()
       .appendTo('#exportexample_wrapper .col-md-6:eq(0)');
@@ -55,14 +48,7 @@ $(function () {
          },
       },
       lengthChange: false,
-      buttons: ['copy', 'excel', 'pdf', 'colvis'],
-      columnDefs: [{
-         "targets": 1,
-         "render": function (data, type, row, meta) {
-            return moment(data).format('D/M/YYYY HH:mm:ss');
-         },
-         "aaSorting": [[1, "ASC"]]
-      }]
+      buttons: ['copy', 'excel', 'pdf', 'colvis']
    });
    table.buttons().container()
       .appendTo('#exportexample_admin_renovaciones_wrapper .col-md-6:eq(0)');
