@@ -82,6 +82,7 @@
                       <tbody>
                         <% if(insidencias.length) { %>
                         <% insidencias.forEach(listaInsidencias => { %>
+                        <% if(!(listaInsidencias.length < 1 || !listaInsidencias || !listaInsidencias.plataforma )) {%>
                         <% moment.locale('es'); %>
                         <% const fecha = moment(listaInsidencias.fecha).format('MMMM Do YYYY, h:mm:ss a'); %>
                         <tr class="">
@@ -91,6 +92,7 @@
                           <td class="view-message text-left"><%- listaInsidencias.usuario.nombre %></td>
                           <td class="view-message text-right font-weight-semibold"><%= fecha %></td>
                         </tr>
+                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>
