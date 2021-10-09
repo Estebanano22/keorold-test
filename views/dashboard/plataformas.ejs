@@ -1651,15 +1651,15 @@
                 footerUno.fadeOut(300).delay(800);
 
                 const usuarioCuentaNormal = document.getElementById('usuarioCuentaNormal');
-                const respuestaUser = respuesta.user;
-                respuestaUser.replaceAll('+', '%2B');
-                respuestaUser.replaceAll('&', '%26');
+                let respuestaUser = respuesta.user;
+                respuestaUser = respuestaUser.replaceAll('+', '%2B');
+                respuestaUser = respuestaUser.replaceAll('&', '%26');
                 usuarioCuentaNormal.innerHTML = respuestaUser;
 
                 const passwordCuentaNormal = document.getElementById('passwordCuentaNormal');
-                const respuestaPassword = respuesta.password;
-                respuestaPassword.replaceAll('+', '%2B');
-                respuestaPassword.replaceAll('&', '%26');
+                let respuestaPassword = respuesta.password;
+                respuestaPassword = respuestaPassword.replaceAll('+', '%2B');
+                respuestaPassword = respuestaPassword.replaceAll('&', '%26');
                 passwordCuentaNormal.innerHTML = respuestaPassword;
 
                 const pantallaCuentaNormal = document.getElementById('pantallaCuentaNormal');
@@ -1687,7 +1687,8 @@
                 $('#alertaComprarNormal').html(error);
                 $('#alertaComprarNormal').delay(2000).fadeOut();
               }
-            }).catch(() => {
+            }).catch((err) => {
+              console.log(err)
               $('#global-loader').removeClass("d-block");
               $('#global-loader').addClass("d-none");
               swal({
