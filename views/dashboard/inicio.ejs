@@ -124,6 +124,7 @@
                     <% moment.locale('es'); %>
                     <% if(cuentas.length) { %>
                     <% cuentas.forEach(listaCuentas => { %>
+                    <% if(!(listaCuentas.length < 1 || !listaCuentas || !listaCuentas.plataforma)) {%>
                     <% if(listaCuentas.usuario.pais === 'Colombia') { %>
                     <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCuentas.valorPagado); %>
                     <% } else { %>
@@ -150,6 +151,7 @@
                         </div>
                       </td>
                     </tr>
+                    <% } %>
                     <% }) %>
                     <% } %>
                   </tbody>

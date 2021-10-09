@@ -145,6 +145,7 @@
                         <% moment.locale('es'); %>
                         <% if(cuentas.length) { %>
                         <% cuentas.forEach(listaCuentas => { %>
+                        <% if(!(listaCuentas.usuario == null || listaCuentas.plataforma == null)) {%>
                         <% if(listaCuentas.usuario.pais === 'Colombia') { %>
                         <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCuentas.valorPagado); %>
                         <% } else { %>
@@ -187,6 +188,7 @@
                           <td class="text-left"><%= idJuego %></td>
                           <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                         </tr>
+                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>

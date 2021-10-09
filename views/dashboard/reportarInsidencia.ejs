@@ -85,7 +85,7 @@
                         <% const plataforma = plataformas.filter(function(element){ %>
                         <% return element.id_plataforma == listaInsidencias.plataformaIdPlataforma; %>
                         <% }); %>
-                        <% const nombre = plataforma[0].plataforma; %>
+                        <% const nombre = (plataforma[0]) ? plataforma[0].plataforma : ''; %>
                         <% moment.locale('es'); %>
                         <% const fecha = moment(listaInsidencias.fecha).format('MMMM Do YYYY, h:mm:ss a'); %>
                         <tr class="">
