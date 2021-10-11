@@ -1652,15 +1652,17 @@
 
                 const usuarioCuentaNormal = document.getElementById('usuarioCuentaNormal');
                 let respuestaUser = respuesta.user;
+                let pre_respuestaUser = respuestaUser;
                 respuestaUser = respuestaUser.replaceAll('+', '%2B');
                 respuestaUser = respuestaUser.replaceAll('&', '%26');
-                usuarioCuentaNormal.innerHTML = respuestaUser;
+                usuarioCuentaNormal.innerHTML = pre_respuestaUser;
 
                 const passwordCuentaNormal = document.getElementById('passwordCuentaNormal');
                 let respuestaPassword = respuesta.password;
+                let pre_respuestaPassword = respuestaPassword;
                 respuestaPassword = respuestaPassword.replaceAll('+', '%2B');
                 respuestaPassword = respuestaPassword.replaceAll('&', '%26');
-                passwordCuentaNormal.innerHTML = respuestaPassword;
+                passwordCuentaNormal.innerHTML = pre_respuestaPassword;
 
                 const pantallaCuentaNormal = document.getElementById('pantallaCuentaNormal');
                 pantallaCuentaNormal.innerHTML = respuesta.pantalla;
