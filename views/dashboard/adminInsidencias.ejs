@@ -82,10 +82,8 @@
                       <tbody>
                         <% if(insidencias.length) { %>
                         <% insidencias.forEach(listaInsidencias => { %>
-                        <% console.log(listaInsidencias.plataforma) %>
                         <% const nombre_usuario = (listaInsidencias.usuario!==null) ? listaInsidencias.usuario.nombre : '---' %>
                         <% const nombre_plataforma = (listaInsidencias.plataforma !== null) ? listaInsidencias.plataforma.plataforma : '---' %>
-                        <% console.log(listaInsidencias.usuario) %>
                         <% moment.locale('es'); %>
                         <% const fecha = moment(listaInsidencias.fecha).format('MMMM Do YYYY, h:mm:ss a'); %>
                         <tr class="">
