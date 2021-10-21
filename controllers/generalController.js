@@ -1,6 +1,6 @@
 const Usuarios = require('../models/UsuariosModelo');
 const { Op } = require("sequelize");
-const {body, validationResult} = require('express-validator');
+const { body, validationResult } = require('express-validator');
 const enviarEmails = require('../handlers/emails');
 const axios = require('axios');
 const { v4: uuid_v4 } = require('uuid');
@@ -9,14 +9,14 @@ const bcrypt = require('bcrypt-nodejs');
 
 exports.inicio = (req, res) => {
     res.render('inicio', {
-        nombrePagina : 'El mejor entretenimiento en linea'
-     })
+        nombrePagina: 'El mejor entretenimiento en linea'
+    })
 }
 
 exports.formRegistro = (req, res) => {
     res.render('registro', {
-        nombrePagina : 'Registro'
-     })
+        nombrePagina: 'Registro'
+    })
 }
 
 exports.validarRegistro = async (req, res, next) => {
@@ -24,18 +24,18 @@ exports.validarRegistro = async (req, res, next) => {
     const usuario = req.body;
 
     const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split('-');
-    const perfilEnlace = validacionEnlacePatrocinador[validacionEnlacePatrocinador.length-1];
+    const perfilEnlace = validacionEnlacePatrocinador[validacionEnlacePatrocinador.length - 1];
     var enlPat2 = '';
-    for (var i = 0; i < validacionEnlacePatrocinador.length-1; i++) {
-        enlPat2 += validacionEnlacePatrocinador[i]+'-';
+    for (var i = 0; i < validacionEnlacePatrocinador.length - 1; i++) {
+        enlPat2 += validacionEnlacePatrocinador[i] + '-';
     }
 
     const enlPat = enlPat2.substring(0, enlPat2.length - 1);
 
     // validar distribuidor
-    const validarDistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: enlPat, bloqueo: 0 }});
-    
-    if(validarDistribuidor) {
+    const validarDistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: enlPat, bloqueo: 0 } });
+
+    if (validarDistribuidor) {
         var validacionDist = validarDistribuidor.enlace_afiliado;
         var superPatrocinador = validarDistribuidor.super_patrocinador;
     } else {
@@ -51,12 +51,12 @@ exports.validarRegistro = async (req, res, next) => {
         body('telefono').not().isEmpty().withMessage('El teléfono es obligatorio').escape(),
         body('pais').not().isEmpty().withMessage('El pais es obligatorio').escape(),
         body('enlacePatrocinador').not().isEmpty().withMessage('El código de afiliación no puede ser vacio').escape(),
-        body('email').isEmail().withMessage('El email es obligatorio').normalizeEmail(),
+        body('email').isEmail().withMessage('El email es obligatorio').normalizeEmail({ "gmail_remove_dots": false }),
         body('password').not().isEmpty().withMessage('El password es obligatorio').escape(),
-        body('password').not().isEmpty().isLength({min: 10}).withMessage('El password debe ser mayor a 10 caracteres').escape(),
-        body('enlacePatrocinador').equals(validacionDist+'-'+perfilEnlace).withMessage('El código de afiliación no es valido')
+        body('password').not().isEmpty().isLength({ min: 10 }).withMessage('El password debe ser mayor a 10 caracteres').escape(),
+        body('enlacePatrocinador').equals(validacionDist + '-' + perfilEnlace).withMessage('El código de afiliación no es valido')
     ];
- 
+
     await Promise.all(rules.map(validation => validation.run(req)));
 
     const errores = validationResult(req);
@@ -64,7 +64,7 @@ exports.validarRegistro = async (req, res, next) => {
     if (!errores.isEmpty()) {
         req.flash('danger', errores.array().map(error => error.msg));
         res.render('registro', {
-            nombrePagina : 'Registro',
+            nombrePagina: 'Registro',
             mensajes: req.flash()
         })
         return;
@@ -72,50 +72,50 @@ exports.validarRegistro = async (req, res, next) => {
 
     const email = req.body.email;
     const userExist = await Usuarios.findOne({
-        where:{
+        where: {
             email: email
         }
     });
 
-    if(userExist){
+    if (userExist) {
         req.flash('danger', 'El usuario ya se encuentra registrado en nuestra plataforma');
         return res.render('registro', {
             nombrePagina: 'Registro',
             mensajes: req.flash()
         })
     }
- 
+
     //si toda la validacion es correcta
     next();
-    
+
 }
 
 exports.crearRegistro = async (req, res) => {
 
     const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split('-');
-    const perfilEnlace = validacionEnlacePatrocinador[validacionEnlacePatrocinador.length-1];
+    const perfilEnlace = validacionEnlacePatrocinador[validacionEnlacePatrocinador.length - 1];
     var enlPat2 = '';
-    for (var i = 0; i < validacionEnlacePatrocinador.length-1; i++) {
-        enlPat2 += validacionEnlacePatrocinador[i]+'-';
+    for (var i = 0; i < validacionEnlacePatrocinador.length - 1; i++) {
+        enlPat2 += validacionEnlacePatrocinador[i] + '-';
     }
 
     const enlPat = enlPat2.substring(0, enlPat2.length - 1);
 
-    const datosRed = await Usuarios.findOne({ where: { enlace_afiliado: enlPat, bloqueo: 0 }});
+    const datosRed = await Usuarios.findOne({ where: { enlace_afiliado: enlPat, bloqueo: 0 } });
 
     const usuario = req.body;
     const superPatrocinador = datosRed.super_patrocinador;
     const replacer = new RegExp(' ', 'g');
     const digito = Math.round(Math.random() * (999 - 0) + 0);
     const enlace = usuario.nombre.replace(replacer, '-').toLowerCase();
-    const enlace_afiliado = enlace+'-'+digito;
+    const enlace_afiliado = enlace + '-' + digito;
     const response = await axios.get('https://api.ipify.org?format=json');
     const ip = response.data.ip;
     const observaciones = 'Usuario creado desde codigo afiliado';
-    
-    if(perfilEnlace === 'res21ok7') {
+
+    if (perfilEnlace === 'res21ok7') {
         var perfil = 'reseller';
-    } else if(perfilEnlace === 'okdist21m') {
+    } else if (perfilEnlace === 'okdist21m') {
         var perfil = 'distribuidor';
     } else {
         req.flash('danger', 'El código de afiliación no es valido');
@@ -157,7 +157,7 @@ exports.crearRegistro = async (req, res) => {
         // console.log('creando usuario');
 
     } catch (error) {
-        
+
         console.log(error)
         const erroresSequelize = error.errors.map(err => err.message);
 
@@ -171,11 +171,11 @@ exports.recuperarPasswords = async (req, res) => {
 
     const email = req.body.emailRecuperar.trim();
 
-    const usuario = await Usuarios.findOne({ where: { email: email }});
+    const usuario = await Usuarios.findOne({ where: { email: email } });
 
-    if(!usuario) {
+    if (!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'El email ingresado no existe en nuestra base de datos.' });
-        return; 
+        return;
     }
 
     // NewPassword
@@ -205,11 +205,11 @@ exports.recuperarPasswords = async (req, res) => {
 
 exports.confirmarCuenta = async (req, res, next) => {
     // verificar usuario existe
-    const usuario = await Usuarios.findOne({ where: { email: req.params.correo }});
+    const usuario = await Usuarios.findOne({ where: { email: req.params.correo } });
 
     // si no existe redireccionar
-    if(!usuario) {
-        req.flash('warning', 'El usuario '+req.params.correo+' no existe en nuestra plataforma');
+    if (!usuario) {
+        req.flash('warning', 'El usuario ' + req.params.correo + ' no existe en nuestra plataforma');
         res.redirect('/registro');
         return next();
     }
@@ -224,6 +224,6 @@ exports.confirmarCuenta = async (req, res, next) => {
 
 exports.formIngreso = (req, res) => {
     res.render('ingreso', {
-        nombrePagina : 'Ingreso'
-     })
+        nombrePagina: 'Ingreso'
+    })
 }
