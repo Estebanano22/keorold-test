@@ -138,7 +138,9 @@
                           <th>Pantalla</th>
                           <th>Pin</th>
                           <th>ID Jugador</th>
+                          <% if (usuario.perfil !== 'reseller') {%>
                           <th>Fecha Subida</th>
+                          <% } %>
                         </tr>
                       </thead>
                       <tbody>
@@ -186,7 +188,9 @@
                           <td class="text-left"><%= listaCuentas.pantalla %></td>
                           <td class="text-left"><%= listaCuentas.pin %></td>
                           <td class="text-left"><%= idJuego %></td>
+                          <% if (usuario.perfil !== 'reseller') {%>
                           <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
+                          <% } %>
                         </tr>
                         <% } %>
                         <% }) %>
