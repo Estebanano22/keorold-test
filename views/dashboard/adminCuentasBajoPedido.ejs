@@ -119,6 +119,7 @@
                               <a class="btn ripple btn-primary modal-effect" title="Gestionar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSubir" onclick="modalSubir(event, '<%= listaCuentas.idCuenta %>')"><i class="fe fe-upload"></i></a>
                               <a class="btn ripple btn-warning modal-effect" title="Editar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEditar" onclick="modalEditar(event, '<%= listaCuentas.idCuenta %>')"><i class="far fa-edit"></i></a>
                               <a class="btn ripple btn-danger modal-effect" title="Eliminar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEliminar" onclick="modalEliminar(event, '<%= listaCuentas.idCuenta %>')"><i class="far fa-trash-alt"></i></a>
+                              <a class="btn ripple btn-warning modal-effect" title="Rechazar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalRechazar" onclick="modalRechazar(event, '<%= listaCuentas.idCuenta %>')"><i class="fa fa-ban"></i></a>
                             </div>
                           </td>
                         </tr>
@@ -270,6 +271,29 @@
           <p class="mg-b-2 mg-x-20 mb-4">¿Esta seguro de eliminar esta cuenta?</p>
           <input type="hidden" value="" id="idEliminar">
           <button aria-label="Close" class="btn ripple btn-danger pd-x-25" data-dismiss="modal" type="button" onclick="eliminarCuenta(event)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Rechazar -->
+
+  <div class="modal" id="modalRechazar">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content tx-size-sm">
+        <div class="modal-body tx-center pd-y-20 pd-x-20">
+          <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+          <i class="icon icon ion-ios-close-circle-outline tx-100 tx-warning lh-1 mg-t-20 d-inline-block"></i>
+          <h4 class="tx-warning mg-b-20">¡Hola!</h4>
+          <p class="mg-b-2 mg-x-20 mb-4">¿Esta seguro de rechazar esta cuenta?</p>
+          <input type="hidden" value="" id="idRechazar">
+          <div class="form-group p-3">
+            <div class="row row-sm">
+              <label class="form-label">Explica la razón del rechazo de la cuenta</label>
+              <input type="text" class="form-control" placeholder="Razón de rechazo" value="" id="razon_rechazo">
+            </div>
+          </div>
+          <button aria-label="Close" class="btn ripple btn-warning pd-x-25" data-dismiss="modal" type="button">Rechazar</button>
         </div>
       </div>
     </div>
