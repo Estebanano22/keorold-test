@@ -782,18 +782,22 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
             var observaciones = '-';
         }
 
-        if (cuentas[i].plataforma.tipo_plataforma === 1) {
-            var tipoPlataforma = 'Normal';
-        } else if (cuentas[i].plataforma.tipo_plataforma === 2) {
-            var tipoPlataforma = 'Bajo Pedido';
-        } else if (cuentas[i].plataforma.tipo_plataforma === 3) {
-            var tipoPlataforma = 'Personalizada';
-        } else if (cuentas[i].plataforma.tipo_plataforma === 4) {
-            var tipoPlataforma = 'Renovaciones';
-        } else if (cuentas[i].plataforma.tipo_plataforma === 5) {
-            var tipoPlataforma = 'Juegos';
+        if (cuentas[i].plataforma) {
+            if (cuentas[i].plataforma.tipo_plataforma === 1) {
+                var tipoPlataforma = 'Normal';
+            } else if (cuentas[i].plataforma.tipo_plataforma === 2) {
+                var tipoPlataforma = 'Bajo Pedido';
+            } else if (cuentas[i].plataforma.tipo_plataforma === 3) {
+                var tipoPlataforma = 'Personalizada';
+            } else if (cuentas[i].plataforma.tipo_plataforma === 4) {
+                var tipoPlataforma = 'Renovaciones';
+            } else if (cuentas[i].plataforma.tipo_plataforma === 5) {
+                var tipoPlataforma = 'Juegos';
+            } else {
+                var tipoPlataforma = 'N/A';
+            }
         } else {
-            var tipoPlataforma = 'N/A';
+            var tipoPlataforma = 'N/A'
         }
 
         const distribuidor = await Usuarios.findOne({
@@ -803,12 +807,15 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
         })
 
         const nombreDistribuidor = distribuidor.nombre;
+        let usuario_nombre = (cuentas[i].usuario) ? cuentas[i].usuario.nombre : '';
+        let usuario_perfil = (cuentas[i].usuario) ? cuentas[i].usuario.perfil : '';
+        let plataforma_nombre = (cuentas[i].plataforma) ? cuentas[i].plataforma.plataforma : '';
 
         worksheet.cell(i + 3, 1).string(cuentas[i].idCuenta).style(style2);
         worksheet.cell(i + 3, 2).string(nombreDistribuidor).style(style2);
-        worksheet.cell(i + 3, 3).string(cuentas[i].usuario.nombre).style(style2);
-        worksheet.cell(i + 3, 4).string(cuentas[i].usuario.perfil).style(style2);
-        worksheet.cell(i + 3, 5).string(cuentas[i].plataforma.plataforma).style(style2);
+        worksheet.cell(i + 3, 3).string(usuario_nombre).style(style2);
+        worksheet.cell(i + 3, 4).string(usuario_perfil).style(style2);
+        worksheet.cell(i + 3, 5).string(plataforma_nombre).style(style2);
         worksheet.cell(i + 3, 6).number(Number(cuentas[i].valorPagado)).style(style3);
         worksheet.cell(i + 3, 7).string(tipoPlataforma).style(style2);
         worksheet.cell(i + 3, 8).string(cuentas[i].user).style(style2);
