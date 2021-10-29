@@ -77,6 +77,7 @@
                           <th>Password</th>
                           <th>Pantalla</th>
                           <th>Pin</th>
+                          <th>Comentario</th>
                           <th>Fecha Compra</th>
                           <th>Fecha Solcitud</th>
                           <th>Acciones</th>
@@ -105,12 +106,16 @@
                             </span>
                           </td>
                           <td class="text-capitalize text-center">
-                            <span class="text-muted"><i class="far <%= listaCuentas.estado === 1 ? 'fa-check-circle text-success' : 'fa-minus-square text-warning' %> mr-1"></i><%= listaCuentas.estado === 1 ? 'Gestionada' : 'Sin Gestionar' %></span>
+                            <span class="text-muted"><i class="<%= listaCuentas.estado === 1 ? 'far fa-check-circle text-success' : (listaCuentas.estado === 2) ? 'fa fa-ban text-danger' : 'far fa-minus-square text-warning' %> mr-1"></i><%= listaCuentas.estado === 1 ? 'Gestionada' : (listaCuentas.estado === 2) ? 'Rechazada' : 'Sin gestionar' %></span>
                           </td>
                           <td class="text-left"><%= listaCuentas.user === null ? 'Sin dato ingresado' : listaCuentas.user %></td>
                           <td class="text-left"><%= listaCuentas.password === null ? 'Sin dato ingresado' : listaCuentas.password %></td>
                           <td class="text-left"><%= listaCuentas.pantalla === null ? 'Sin dato ingresado' : listaCuentas.pantalla %></td>
                           <td class="text-left"><%= listaCuentas.pin === null ? 'Sin dato ingresado' : listaCuentas.pin %></td>
+                          <% let comentario = ''; %>
+                          <% let classComentario = ''; %>
+                          <% if(listaCuentas.estado === 2){ comentario = listaCuentas.comentario_rechazo; classComentario = 'text-warning' }else{comentario='Sin comentario'} %>
+                          <td class="text-center <%= listaCuentas.estado === 2 ? 'text-warning' : 'text-muted' %>"><%= comentario %></td>
                           <td class="text-center <%= listaCuentas.fechaCompra === null ? 'text-warning' : '' %>"><%= listaCuentas.fechaCompra === null ? 'Sin fecha de compra' : moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-capitalize">
@@ -118,6 +123,7 @@
                               <a class="btn ripple btn-primary modal-effect" title="Renovar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalPersonalizar" onclick="modalPersonalizar(event, '<%= listaCuentas.idCuenta %>')"><i class="fe fe-upload"></i></a>
                               <a class="btn ripple btn-warning modal-effect" title="Editar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEditar" onclick="modalEditar(event, '<%= listaCuentas.idCuenta %>')"><i class="far fa-edit"></i></a>
                               <a class="btn ripple btn-danger modal-effect" title="Eliminar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEliminar" onclick="modalEliminar(event, '<%= listaCuentas.idCuenta %>')"><i class="far fa-trash-alt"></i></a>
+                              <a class="btn ripple btn-warning modal-effect" title="Rechazar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalRechazar" onclick="modalRechazar(event, '<%= listaCuentas.idCuenta %>')"><i class="fa fa-ban"></i></a>
                             </div>
                           </td>
                         </tr>
@@ -269,6 +275,29 @@
           <p class="mg-b-2 mg-x-20 mb-4">¿Esta seguro de eliminar esta cuenta personalizada?</p>
           <input type="hidden" value="" id="idEliminar">
           <button aria-label="Close" class="btn ripple btn-danger pd-x-25" data-dismiss="modal" type="button" onclick="eliminarCuenta(event)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Rechazar -->
+
+  <div class="modal" id="modalRechazar">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content tx-size-sm">
+        <div class="modal-body tx-center pd-y-20 pd-x-20">
+          <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+          <i class="icon icon ion-ios-close-circle-outline tx-100 tx-warning lh-1 mg-t-20 d-inline-block"></i>
+          <h4 class="tx-warning mg-b-20">¡Hola!</h4>
+          <p class="mg-b-2 mg-x-20 mb-4">Explica la razón del rechazo de la cuenta</p>
+          <input type="hidden" value="" id="idRechazar">
+          <div class="form-group p-3">
+            <div class="row row-sm">
+              <label class="form-label">Razón del rechazo</label>
+              <textarea class="form-control" placeholder="Razón de rechazo" value="" id="razon_rechazo"></textarea>
+            </div>
+          </div>
+          <button aria-label="Close" class="btn ripple btn-warning pd-x-25" data-dismiss="modal" type="button" onclick="rechazarCuenta(event)">Rechazar</button>
         </div>
       </div>
     </div>
@@ -529,6 +558,70 @@
           swal({
             title: 'Request Error',
             text: '500 - Admin Cuentas personalizadas',
+            type: 'error'
+          });
+        })
+
+    }
+
+    function modalRechazar(e, id) {
+      const idRechazar = document.getElementById("idRechazar");
+      idRechazar.value = id;
+    }
+
+    function rechazarCuenta(e) {
+
+      $('#global-loader').addClass("d-block");
+      $('#global-loader').removeClass("d-none");
+
+      const idRechazar = document.getElementById("idRechazar").value.trim();
+      const razon_rechazo = document.getElementById("razon_rechazo").value.trim();
+
+      console.log(idRechazar);
+      console.log(razon_rechazo);
+      fetch('/adminCuentasBajoPedido/rechazarCuenta', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: idRechazar,
+            razon_rechazo: razon_rechazo
+          })
+        })
+        .then(res => res.text())
+        .then(data => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          const respuesta = JSON.parse(data);
+          if (respuesta.resp === 'success') {
+
+            swal({
+                title: respuesta.titulo,
+                text: respuesta.descripcion,
+                type: respuesta.resp,
+                confirmButtonColor: '#57a94f',
+                closeOnClickOutside: false
+              },
+              function(isConfirm) {
+                if (isConfirm) {
+                  location.reload();
+                }
+              });
+
+          } else {
+
+            $('#alertaEditar').fadeIn();
+            const error = '<button aria-label="Close" class="close" data-dismiss="alert" type="button"> <span aria-hidden="true" class="text-danger">×</span> </button> <strong>Oh no!</strong> ' + respuesta.descripcion + '.';
+            $('#alertaEditar').html(error);
+            $('#alertaEditar').delay(15000).fadeOut();
+          }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas bajo pedido',
             type: 'error'
           });
         })

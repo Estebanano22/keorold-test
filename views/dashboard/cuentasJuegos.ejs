@@ -76,6 +76,7 @@
                           <th>ID Usuario Juego</th>
                           <th>Comprobante</th>
                           <th>Fecha Compra</th>
+                          <th>Comentario</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -94,7 +95,7 @@
                             </span>
                           </td>
                           <td class="text-capitalize text-center">
-                            <span class="text-muted"><i class="far <%= listaCuentas.estado === 1 ? 'fa-check-circle text-success' : 'fa-minus-square text-warning' %> mr-1"></i><%= listaCuentas.estado === 1 ? 'Gestionada' : 'Sin Gestionar' %></span>
+                            <span class="text-muted"><i class="<%= listaCuentas.estado === 1 ? 'far fa-check-circle text-success' : (listaCuentas.estado === 2) ? 'fa fa-ban text-danger' : 'far fa-minus-square text-warning' %> mr-1"></i><%= listaCuentas.estado === 1 ? 'Gestionada' : (listaCuentas.estado === 2) ? 'Rechazada' : 'Sin gestionar' %></span>
                           </td>
                           <td class="text-left"><%= listaCuentas.user === null ? 'No aplica' : listaCuentas.user %></td>
                           <td class="text-left"><%= listaCuentas.password === null ? 'No aplica' : listaCuentas.password %></td>
@@ -103,6 +104,10 @@
                             <a data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalComprobante" onclick="modalComprobante(event, '<%= listaCuentas.comprobanteJuego %>')"><%- listaCuentas.comprobanteJuego %></a>
                           </td>
                           <td class="text-center <%= listaCuentas.fechaCompra === null ? 'text-warning' : '' %>"><%= listaCuentas.fechaCompra === null ? 'Sin fecha de compra' : moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
+                          <% let comentario = ''; %>
+                          <% let classComentario = ''; %>
+                          <% if(listaCuentas.estado === 2){ comentario = listaCuentas.comentario_rechazo; classComentario = 'text-warning' }else{comentario='Sin comentario'} %>
+                          <td class="text-center <%= listaCuentas.estado === 2 ? 'text-warning' : 'text-muted' %>"><%= comentario %></td>
                         </tr>
                         <% }) %>
                         <% } %>
