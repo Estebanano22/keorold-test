@@ -23,43 +23,43 @@ const reportesController = require('../controllers/reportesController');
 const gananciasController = require('../controllers/gananciasController');
 const publicidadController = require('../controllers/publicidadController');
 
-module.exports = function() {
+module.exports = function () {
 
     // Inicio
     router.get('/', generalController.inicio);
-    
+
     // Crear y confirmar cuenta usuario
-    router.get('/registro', 
+    router.get('/registro',
         generalController.formRegistro,
     );
     router.post('/registro', generalController.validarRegistro);
     router.post('/registro', generalController.crearRegistro);
     router.get('/confirmar-cuenta/:correo', generalController.confirmarCuenta);
-    
+
     // Ingreso
     router.get('/ingreso', generalController.formIngreso);
     router.post('/ingreso', authController.autenticarUsuario);
     router.post('/ingreso/recuperarPassword', generalController.recuperarPasswords);
-    
+
     // =====================
     //     Dashboard
     // =====================
 
     // Inicio
-    router.get('/dashboard/inicio', 
+    router.get('/dashboard/inicio',
         authController.usuarioAutenticado,
         authController.verifyToken,
         dashboardController.inicio
     );
 
-    router.post('/inicio/asignarPlataformasUsuarios', 
+    router.post('/inicio/asignarPlataformasUsuarios',
         authController.usuarioAutenticado,
         authController.verifyToken,
         dashboardController.asignarPlataformasUsuarios
     );
 
     // Perfil
-    router.get('/dashboard/mi-perfil', 
+    router.get('/dashboard/mi-perfil',
         authController.usuarioAutenticado,
         authController.verifyToken,
         dashboardController.countRed,
@@ -78,7 +78,7 @@ module.exports = function() {
         dashboardController.validarEditarPerfil,
         dashboardController.editarPerfil
     );
-    router.post('/dashboard/mi-perfil/editar-redes/:correo', 
+    router.post('/dashboard/mi-perfil/editar-redes/:correo',
         authController.usuarioAutenticado,
         authController.verifyToken,
         dashboardController.countRed,
@@ -488,6 +488,13 @@ module.exports = function() {
         cuentasController.editarDatosBajoPedido
     );
 
+    router.post('/adminCuentasBajoPedido/rechazarCuenta',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.rechazarCuenta
+    );
+
     router.post('/adminCuentasBajoPedido/eliminarCuentaBajoPedido',
         authController.usuarioAutenticado,
         authController.verifyToken,
@@ -725,7 +732,7 @@ module.exports = function() {
         authController.verifyToken,
         rolController.permisosPaginaSuperdistribuidor,
         consignacionesController.rechazarConsignacion
-    ); 
+    );
 
     // Admin insidencias
 
@@ -749,7 +756,7 @@ module.exports = function() {
         rolController.permisosPaginaSuperdistribuidor,
         insidenciasController.insidenciasSuperdistribuidor
     );
-    
+
     router.post('/adminInsidencias/sinResponderSuperdistribuidor',
         authController.usuarioAutenticado,
         authController.verifyToken,
@@ -906,7 +913,7 @@ module.exports = function() {
         gananciasController.gananciasRed
     );
 
-    router.get('/dashboard/asignacionPlataformas/:id', 
+    router.get('/dashboard/asignacionPlataformas/:id',
         authController.usuarioAutenticado,
         authController.verifyToken,
         rolController.permisosPaginaDistribuidor,
@@ -1031,7 +1038,7 @@ module.exports = function() {
         rolController.permisosPaginaUsuario,
         insidenciasController.insidencias
     );
-    
+
     router.post('/reportarInsidencia/sinResponder',
         authController.usuarioAutenticado,
         authController.verifyToken,

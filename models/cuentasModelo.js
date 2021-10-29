@@ -13,57 +13,61 @@ const Cuentas = db.define('cuentasSubidas', {
     },
     idDistribuidor: {
         type: Sequelize.INTEGER(11),
-        defaultValue : null
+        defaultValue: null
     },
     idSuperdistribuidor: {
         type: Sequelize.INTEGER(11),
-        defaultValue : null
+        defaultValue: null
     },
     user: {
         type: Sequelize.STRING(250),
-        defaultValue : null
+        defaultValue: null
     },
     password: {
         type: Sequelize.STRING(250),
-        defaultValue : null
+        defaultValue: null
     },
     pantalla: {
         type: Sequelize.STRING(50),
-        defaultValue : null
+        defaultValue: null
     },
     pin: {
         type: Sequelize.STRING(50),
-        defaultValue : null
+        defaultValue: null
     },
     idJuego: {
         type: Sequelize.STRING(50),
-        defaultValue : null
+        defaultValue: null
     },
     comprobanteJuego: {
         type: Sequelize.STRING(250),
-        defaultValue : null
+        defaultValue: null
+    },
+    comentario_rechazo: {
+        type: Sequelize.STRING(1500),
+        defaultValue: null
     },
     estado: {
         type: Sequelize.INTEGER(1),
-        defaultValue : 0,
+        defaultValue: 0,
         allowNull: true
     },
     tipoCuenta: {
         type: Sequelize.INTEGER(1),
-        defaultValue : null,
+        defaultValue: null,
         allowNull: true
     },
     valorPagado: {
         type: Sequelize.DECIMAL(20, 2),
-        defaultValue : 0.00
+        defaultValue: 0.00
     },
     cliente: {
         type: Sequelize.STRING(50),
-        defaultValue : null
+        defaultValue: null
     },
     telefono: {
         type: Sequelize.STRING(50),
-        defaultValue : null
+        defaultValue: null
     },
     fechaSubida: {
         type: Sequelize.DATE,
@@ -78,13 +82,13 @@ const Cuentas = db.define('cuentasSubidas', {
 
 Usuarios.hasOne(Cuentas, {
     foreignKey: {
-      name: 'usuarioIdUsuario'
+        name: 'usuarioIdUsuario'
     }
-  });
+});
 Cuentas.belongsTo(Usuarios);
 Plataformas.hasOne(Cuentas, {
     foreignKey: {
-    name: 'plataformaIdPlataforma'
+        name: 'plataformaIdPlataforma'
     }
 });
 Cuentas.belongsTo(Plataformas);
