@@ -69,6 +69,7 @@
                           <th>Distribuidor</th>
                           <th>Vendedor</th>
                           <th>Perfil vendedor</th>
+                          <th>Saldo vendedor</th>
                           <th>Logo</th>
                           <th>Plataforma</th>
                           <th>Tipo plataforma</th>
@@ -96,6 +97,12 @@
                           <td class="text-left text-capitalize"><%= nombre %></td>
                           <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
                           <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaCuentas.usuario.perfil %></td>
+                          <% if(listaCuentas.usuario.pais === 'Colombia') { %>
+                          <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCuentas.usuario.saldo); %>
+                          <% } else { %>
+                          <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaCuentas.usuario.saldo); %>
+                          <% } %>
+                          <td class="text-left text-capitalize text-primary font-weight-bold"><%= valorFormateado %></td>
                           <td class="text-center">
                             <img src="<%= listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaCuentas.plataforma.logo %>" alt="" class="img-circle">
                           </td>
