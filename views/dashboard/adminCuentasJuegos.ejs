@@ -82,6 +82,7 @@
                           <th>Fecha Compra</th>
                           <th>Fecha Solcitud</th>
                           <th>Acciones</th>
+                          <th>Reenviar Whatsapp</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -135,6 +136,7 @@
                               <a class="btn ripple btn-warning modal-effect" title="Rechazar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalRechazar" onclick="modalRechazar(event, '<%= listaCuentas.idCuenta %>')"><i class="fa fa-ban"></i></a>
                             </div>
                           </td>
+                          <td><a class="btn ripple btn-outline-success" id="btnWhatsappNormal" href="https://api.whatsapp.com/send?phone=<%= listaCuentas.telefono %>&text=Hola!%20%F0%9F%98%80%20%20*<%=  listaCuentas.usuario.nombre %>*%2C%20estos%20son%20los%20datos%20de%20tu%20cuenta.%20%0A%0A%F0%9F%93%B2%20%20*PLATAFORMA%3A*%20<%= listaCuentas.plataforma.plataforma %>%20%0A%F0%9F%99%8D%E2%80%8D%E2%99%82%EF%B8%8F%20%20*USUARIO%3A*%20<%= listaCuentas.user === null ? 'Sin dato ingresado' : listaCuentas.user %>%20%0A%F0%9F%94%91%20%20*CONTRASE%C3%91A%3A*%20<%= listaCuentas.user === null ? 'Sin dato ingresado' : listaCuentas.password %>%20%0A%F0%9F%93%8C%20*Pantalla%3A*%20<%= listaCuentas.pantalla === null ? 'Sin dato ingresado' : listaCuentas.pantalla %>%20%0A%F0%9F%93%8C%20*Pin%3A*%20<%= listaCuentas.pin === null ? 'Sin dato ingresado' : listaCuentas.pin %>" target="_blank"><i class="fab fa-whatsapp"></i> Enviar whatsapp</a></td>
                         </tr>
                         <% } %>
                         <% }) %>
