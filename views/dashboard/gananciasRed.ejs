@@ -75,6 +75,7 @@
                         <% moment.locale('es'); %>
                         <% if(ganancias.length) { %>
                         <% ganancias.forEach(listaGanancias => { %>
+                        <% if (listaGanancias.usuario) { %>
                         <% if(listaGanancias.usuario.pais === 'Colombia') { %>
                         <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaGanancias.ganancia); %>
                         <% } else { %>
@@ -112,6 +113,7 @@
                           </td>
                           <td class="text-center"><%= moment(listaGanancias.fecha).format('MMMM Do YYYY, h:mm:ss a') %></td>
                         </tr>
+                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>
