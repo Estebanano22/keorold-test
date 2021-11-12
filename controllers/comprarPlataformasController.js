@@ -148,6 +148,8 @@ exports.compraCuentaNormal = async (req, res) => {
             [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: req.user.id_usuario }]
         }
     });
+    console.log(asignacionUsuario.valor);
+    console.log(req.user.saldo);
 
     // if (Number(asignacionUsuario.valor > Number(req.user.saldo))) {
     //     res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento, debido a que su saldo no es suficiente.' });

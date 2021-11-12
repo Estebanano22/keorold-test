@@ -518,44 +518,46 @@ exports.desplegarPlataformas = async (req, res) => {
                 attributes: ['valor']
             });
 
-            const valorBase = asignaciones.valor;
+            if (asignaciones) {
+                const valorBase = asignaciones.valor;
 
-            const testAsignacionPlataforma = await Asignaciones.findOne({
-                where: {
-                    [Op.and]: [{ usuarioIdUsuario: id_usuario }, { plataformaIdPlataforma: id_plataforma }],
-                }
-            });
-
-
-            if (nombrePlataforma.includes('free fire') || nombrePlataforma.includes('call of duty') || nombrePlataforma.includes('demo')) {
-                var valorUsuario = Number(valorBase);
-            } else {
-                if (usuarios[i].pais === 'Colombia') {
-                    if (usuarios[i].perfil === 'distribuidor') {
-                        var valorUsuario = Number(valorBase) + 1000;
-                    } else if (usuarios[i].perfil === 'reseller') {
-                        var valorUsuario = Number(valorBase) + 2000;
+                const testAsignacionPlataforma = await Asignaciones.findOne({
+                    where: {
+                        [Op.and]: [{ usuarioIdUsuario: id_usuario }, { plataformaIdPlataforma: id_plataforma }],
                     }
-                } else {
-                    if (usuarios[i].perfil === 'distribuidor') {
-                        var valorUsuario = Number(valorBase) + 0.28;
-                    } else if (usuarios[i].perfil === 'reseller') {
-                        var valorUsuario = Number(valorBase) + 0.56;
-                    }
-                }
-            }
-            if (!testAsignacionPlataforma) {
-                await Asignaciones.create({
-                    id_asignacion: uuid_v4(),
-                    valor: valorUsuario,
-                    id_distribuidor: distribuidorAsignacion.id_usuario,
-                    id_superdistribuidor: req.user.id_usuario,
-                    usuarioIdUsuario: id_usuario,
-                    plataformaIdPlataforma: id_plataforma
                 });
-            } else {
-                testAsignacionPlataforma.valor = valorUsuario;
-                testAsignacionPlataforma.save();
+
+
+                if (nombrePlataforma.includes('free fire') || nombrePlataforma.includes('call of duty') || nombrePlataforma.includes('demo')) {
+                    var valorUsuario = Number(valorBase);
+                } else {
+                    if (usuarios[i].pais === 'Colombia') {
+                        if (usuarios[i].perfil === 'distribuidor') {
+                            var valorUsuario = Number(valorBase) + 1000;
+                        } else if (usuarios[i].perfil === 'reseller') {
+                            var valorUsuario = Number(valorBase) + 2000;
+                        }
+                    } else {
+                        if (usuarios[i].perfil === 'distribuidor') {
+                            var valorUsuario = Number(valorBase) + 0.28;
+                        } else if (usuarios[i].perfil === 'reseller') {
+                            var valorUsuario = Number(valorBase) + 0.56;
+                        }
+                    }
+                }
+                if (!testAsignacionPlataforma) {
+                    await Asignaciones.create({
+                        id_asignacion: uuid_v4(),
+                        valor: valorUsuario,
+                        id_distribuidor: distribuidorAsignacion.id_usuario,
+                        id_superdistribuidor: req.user.id_usuario,
+                        usuarioIdUsuario: id_usuario,
+                        plataformaIdPlataforma: id_plataforma
+                    });
+                } else {
+                    testAsignacionPlataforma.valor = valorUsuario;
+                    testAsignacionPlataforma.save();
+                }
             }
         } else {
             console.log('Asignación sin distribuidor ', usuarios[i])

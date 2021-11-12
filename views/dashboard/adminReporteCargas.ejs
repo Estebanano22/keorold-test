@@ -102,7 +102,11 @@
                           <td class="text-center <%= listaCargas.fechaCarga === null ? 'text-warning' : '' %>"><%= listaCargas.fechaCarga === null ? 'Sin fecha de carga' : moment(listaCargas.fechaCarga).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-capitalize"><%= listaCargas.responsableGestion %></td>
                         </tr>
-                        <% }%>
+                        <% } else { %>
+                        <script>
+                          console.log(<% listaCargas %>)
+                        </script>
+                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>
