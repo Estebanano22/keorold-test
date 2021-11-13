@@ -99,6 +99,24 @@
             </div>
           </div>
 
+          <h2 class="main-content-title tx-24 mg-b-5 mt-5">Publicidad PopUp</h2>
+          
+          <!-- Row -->
+          <div class="row row-sm mb-5">
+            <div class="owl-carousel owl-theme">
+              <% if(publicidad.length) { %>
+              <% publicidad.forEach(listaPublicidad => { %>
+              <% if(listaPublicidad.tipo === '3') { %>
+              <div class="item">
+                <button class="btn btn-danger position-absolute" style="top: 1rem; right: 1rem; z-index: 999;" title="Eliminar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEliminar" onclick="modalEliminar(event, '<%= listaPublicidad.idPublicidad %>')"><i class="far fa-trash-alt"></i></button>
+                <img src="<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
+              </div>
+              <% } %>
+              <% }) %>
+              <% } %>
+            </div>
+          </div>
+
           <!-- =============================
 							Fin Componentes Pagina
 						============================== -->
