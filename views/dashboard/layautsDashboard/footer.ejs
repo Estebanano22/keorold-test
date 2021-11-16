@@ -135,8 +135,22 @@
 
         <!-- Js -->
         <script src="/assetsDashboard/js/main.js"></script>
+        
+    <script>
+      const noti = window.localStorage.getItem('noti');
+      if(!noti){
+          // alert('show alert');
+          $('#modalPublicidadPopUp1').modal('show');
+          window.localStorage.setItem('noti', 1); 
+      }
+  </script>
 
         <script>
+          const cerrarSesion = ()=>{
+            localStorage.clear();
+            window.location.href = '/cerrar-sesion';
+          }
+
           function notificaciones() {
             fetch('/notificaciones/notificacionesUsuario', {
                 method: 'POST',
