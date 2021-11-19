@@ -102,7 +102,7 @@ app.get('*', function (req, res) {
 // puerto
 const puerto = process.env.PORT || 5001;
 const server = app.listen(puerto, () => {
-    console.log(`Corriendo correctamente en el puerto ${puerto}`);
+    console.log(`Corriendo correctamente en el puerto - ${puerto}`);
 });
 
 // // Socket
