@@ -239,15 +239,6 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
             const nombrePlataforma = plataforma.plataforma;
             const diferencial = (Number(valorPlataforma) - Number(asignacion.valor));
 
-            console.log('Menor valor');
-            console.log(menorValor);
-
-            console.log('Diferencial')
-            console.log(diferencial);
-
-            console.log('valor plataforma');
-            console.log(valorPlataforma);
-
             if (Number(diferencial) > 1000 && !resellerDiference) {
                 res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
 

@@ -48,6 +48,8 @@
 
             <% if(medios.length) { %>
             <% medios.forEach(listaMedios => { %>
+            <% console.log(listaMedios.titulo) %>
+            <% console.log(listaMedios.idMedio) %>
             <div class="col-md-6 col-lg-3">
               <div class="card overflow-hidden custom-card ">
                 <img alt="Image" class="img-fluid b-img" src="<%- listaMedios.imagen %>">

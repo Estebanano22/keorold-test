@@ -778,7 +778,7 @@ module.exports = function () {
         insidenciasController.responderInsidencia
     );
 
-    // Admin Preguntas Frecuentes
+    // Admin Tutoriales
 
     router.get('/dashboard/adminFaq',
         authController.usuarioAutenticado,

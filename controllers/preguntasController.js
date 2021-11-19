@@ -18,9 +18,9 @@ exports.adminFaq = async (req, res) => {
     });
 
     res.render('dashboard/adminFaq', {
-        nombrePagina : 'Administrar Preguntas Frecuentes',
-        titulo: 'Administrar Preguntas Frecuentes',
-        breadcrumb: 'Administrar Preguntas Frecuentes',
+        nombrePagina : 'Administrar Tutoriales',
+        titulo: 'Administrar Tutoriales',
+        breadcrumb: 'Administrar Tutoriales',
         classActive: req.path.split('/')[2],
         preguntas
     })
@@ -43,7 +43,7 @@ exports.subirPregunta = async (req, res) => {
         video: video
     });
 
-    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Pregunta creada con éxito.' });
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Tutorial creado con éxito.' });
     return;
 
 }
@@ -66,7 +66,7 @@ exports.editarPregunta = async (req, res) => {
     })
 
     if(!preguntas){
-        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No se puede editar la pregunta ya que no exites en nuestros servidores.' });
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No se puede editar el tutorial ya que no exites en nuestros servidores.' });
         return; 
     }
 
@@ -74,7 +74,7 @@ exports.editarPregunta = async (req, res) => {
     preguntas.video = video;
     await preguntas.save();
 
-    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Pregunta editada con éxito.' });
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Tutorial editado con éxito.' });
     return;
 
 }
@@ -86,13 +86,13 @@ exports.eliminarPregunta = async (req, res) => {
     const pregunta = await Preguntas.findOne({ where: { idPregunta: id }});
 
     if(!pregunta) {
-        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible eliminar la pregunta.' });
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible eliminar el tutorial.' });
         return;
     }
 
     await pregunta.destroy({ where: { idPregunta: id }});
 
-    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Pregunta eliminada con éxito.' });
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'tutorial eliminado con éxito.' });
     return;
 
 }
@@ -109,9 +109,9 @@ exports.faq = async (req, res) => {
     });
 
     res.render('dashboard/faq', {
-        nombrePagina : 'Peguntas Fecuentes',
-        titulo: 'Peguntas Fecuentes',
-        breadcrumb: 'Peguntas Fecuentes',
+        nombrePagina : 'Tutoriales',
+        titulo: 'Tutoriales',
+        breadcrumb: 'Tutoriales',
         classActive: req.path.split('/')[2],
         usuario,
         preguntas
