@@ -9,6 +9,7 @@ const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
 const { s3, bucket } = require('../config/awsS3');
 const multerS3 = require('multer-s3');
+const axios = require('axios');
 
 exports.reportarConsignacion = async (req, res) => {
 
@@ -39,6 +40,115 @@ exports.reportarConsignacion = async (req, res) => {
         medios
     })
 
+}
+
+exports.verifyTransaction = async (req, res) =>{
+    const paramRef  = req.query.ref_payco;
+    console.log(paramRef)
+    let reqRaw;
+    try{
+        reqRaw = await axios.get('https://secure.epayco.co/validation/v1/reference/'+paramRef);
+    }catch(e){
+        console.log(e);
+        return res.redirect('/dashboard/inicio');
+    }
+    
+    if(!reqRaw){
+        return res.redirect('/dashboard/inicio');
+    }
+
+    if(!reqRaw.data){
+        return res.redirect('/dashboard/inicio');
+    }
+
+    let status;
+    let reqRef;
+    try {
+        reqRef = reqRaw.data;
+        status = reqRef.data.x_cod_transaction_state;
+    } catch (error) {
+        return res.redirect('/dashboard/inicio');
+    }
+
+    console.log(reqRef)
+
+    if(reqRef.status === false){
+        return res.redirect('/dashboard/inicio');
+    }
+
+    const consignacion = await Consignaciones.findOne({
+        where: {
+            referencia: reqRef.data.x_id_factura
+        }
+    });
+
+    if(!consignacion){
+        return res.redirect('/dashboard/inicio');
+    }
+
+    console.log(consignacion);
+
+    let estadoTransaccion;
+    switch (status) {
+        case 1:
+            estadoTransaccion = 1
+            break;
+        case 2:
+            estadoTransaccion = 2
+            break;
+    
+        default:
+            estadoTransaccion = 0
+            break;
+    }
+
+    consignacion.estado = estadoTransaccion;
+    consignacion.save();
+    return res.redirect('/dashboard/reportarConsignacion');
+}
+
+exports.createEpayco = async (req, res) => {
+    const amountReq = req.body.valor;
+    const refNew = uuid_v4();
+    const usuario = await Usuarios.findOne({ where: { email: req.user.email }});
+
+    const valorConsignado = amountReq;
+    const tipoConsignacion = 'EPAYCO';
+    const referencia = refNew;
+    const telefonoCuenta = req.user.telefono_movil;
+    const fechaHoraConsignacion = new Date();
+
+    const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
+
+    await Consignaciones.create({
+        idConsignacion: uuid_v4(),
+        idSuperdistribuidor: superdistribuidor.id_usuario,
+        valor: valorConsignado,
+        estado: 0,
+        tipoConsignacion: tipoConsignacion,
+        referencia: referencia,
+        comprobante: 'No aplica',
+        usuarioIdUsuario: req.user.id_usuario,
+        celularConsignacion: telefonoCuenta,
+        fechaHoraConsignacion: fechaHoraConsignacion
+    });
+
+    var data = {
+        name: usuario.nombre,
+        description: 'Recargar saldo',
+        invoice: refNew,
+        currency: 'usd',
+        amount: '' + amountReq + '',
+        tax_base: '0',
+        tax: '0',
+        country: 'ec',
+        lang: 'es',
+        external: 'false',
+        test: 'false',
+        keyPrv: '52cb4bbc99ccfe0470426c6a6f7d4ded',
+        publicKey: '7683004bce02a70bdfb7a8cc777c556c'
+    };
+    res.json(data);
 }
 
 const configuracionMulter = ({
@@ -77,7 +187,6 @@ exports.subirConsignacion = async (req, res) => {
     const tipoConsignacion = req.body.tipoConsignacion;
     const referencia = req.body.referencia.toLowerCase();
     const telefonoCuenta = req.body.telefonoCuenta;
-    const comprobante = req.body.comprobante;
     const fechaHoraConsignacion = req.body.fechaHoraConsignacion;
 
     const consignaciones = await Consignaciones.findOne({
@@ -125,7 +234,7 @@ exports.subirConsignacion = async (req, res) => {
 
     const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
 
-    if (valorConsignado === '' || tipoConsignacion === '' || referencia === '' || comprobante === '') {
+    if (valorConsignado === '' || tipoConsignacion === '' || referencia === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Por favor llene todos los campos.' });
         return;
     }

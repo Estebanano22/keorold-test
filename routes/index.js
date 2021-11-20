@@ -979,6 +979,17 @@ module.exports = function () {
         consignacionesController.reportarConsignacion
     );
 
+    router.post('/dashboard/reportarConsignacion/createDataToEpayco',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        consignacionesController.createEpayco
+    );
+
+    router.get('/api/getstatustransaction',
+        consignacionesController.verifyTransaction
+    );
+
     router.post('/reportarConsignacion/subirConsignacion',
         authController.usuarioAutenticado,
         authController.verifyToken,
