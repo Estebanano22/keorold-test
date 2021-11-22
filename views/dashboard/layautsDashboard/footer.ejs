@@ -255,7 +255,10 @@
                       if (bajoPedido[i].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">gestionada</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
-                      } else {
+                      } else if(bajoPedido[i].estado === 2) {
+                        var span1 = `<span class="ml-auto text-danger">Rechazada</span>`;
+                        var span2 = `<span class="ml-auto"><i class="fa fa-ban text-danger"></i></span>`;
+                      }else {
                         var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
                       }
@@ -293,6 +296,9 @@
                       if (personalizadas[e].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">gestionada</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                      } else if(personalizadas[e].estado === 2){
+                        var span1 = `<span class="ml-auto text-danger">Rechazada</span>`;
+                        var span2 = `<span class="ml-auto"><i class="fa fa-ban text-danger"></i></span>`;
                       } else {
                         var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
@@ -334,6 +340,9 @@
                       if (renovaciones[a].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">gestionada</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                      }  else if(renovaciones[a].estado === 2){
+                        var span1 = `<span class="ml-auto text-danger">Rechazada</span>`;
+                        var span2 = `<span class="ml-auto"><i class="fa fa-ban text-danger"></i></span>`;
                       } else {
                         var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
@@ -372,6 +381,9 @@
                       if (juegos[o].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">gestionada</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
+                      } else if(juegos[o].estado === 2){
+                        var span1 = `<span class="ml-auto text-danger">Rechazada</span>`;
+                        var span2 = `<span class="ml-auto"><i class="fa fa-ban text-danger"></i></span>`;
                       } else {
                         var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
@@ -406,10 +418,10 @@
                       if (incidencias[q].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">aprobada</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
-                      } else if (incidencias[q].estado === 2) {
-                        var span1 = `<span class="ml-auto" style="color: #8f9cc0;">rechazada</span>`;
-                        var span2 = `<span class="ml-auto"><i class="fas fa-circle text-danger"></i></span>`;
-                      } else {
+                      } else if(incidencias[q].estado === 2){
+                        var span1 = `<span class="ml-auto text-danger">Rechazada</span>`;
+                        var span2 = `<span class="ml-auto"><i class="fa fa-ban text-danger"></i></span>`;
+                      }  else {
                         var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
                       }
@@ -452,10 +464,10 @@
                       if (iConsignaciones[u].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">aprobada</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
-                      } else if (iConsignaciones[u].estado === 2) {
-                        var span1 = `<span class="ml-auto" style="color: #8f9cc0;">rechazada</span>`;
-                        var span2 = `<span class="ml-auto"><i class="fas fa-circle text-danger"></i></span>`;
-                      } else {
+                      } else if(iConsignaciones[u].estado === 2){
+                        var span1 = `<span class="ml-auto text-danger">Rechazada</span>`;
+                        var span2 = `<span class="ml-auto"><i class="fa fa-ban text-danger"></i></span>`;
+                      }  else {
                         var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
                       }
@@ -495,9 +507,9 @@
                       if (pse[m].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">aprobada</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
-                      } else if (pse[m].estado === 2) {
-                        var span1 = `<span class="ml-auto" style="color: #8f9cc0;">rechazada</span>`;
-                        var span2 = `<span class="ml-auto"><i class="fas fa-circle text-danger"></i></span>`;
+                      } else if(pse[m].estado === 2){
+                        var span1 = `<span class="ml-auto text-danger">Rechazada</span>`;
+                        var span2 = `<span class="ml-auto"><i class="fa fa-ban text-danger"></i></span>`;
                       } else {
                         var span1 = `<span class="ml-auto" style="color: #8f9cc0;">en proceso</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-warning"></i></span>`;
