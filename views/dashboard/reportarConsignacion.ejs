@@ -280,18 +280,18 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
       <div class="modal-content modal-content-demo">
         <div class="modal-header">
-          <h6 class="modal-title">Reportar consignación</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+          <h6 class="modal-title">Realizar consignación</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
           <p class="mb-3">
-            La siguientes casillas son obligatorias para poder realizar un proceso efectivo de carga de saldo, por lo tanto deben coincidir en el comprobante tanto el monto consignado, como la referencia y el tipo de consignación por el que se haya realizado la transaccion.
+            La siguientes casillas son obligatorias para poder realizar un proceso efectivo de carga de saldo, por lo tanto deben confirmar el valor a consignar.
           </p>
           <div class="px-2">
             <div class="form-group ">
               <div class="row row-sm">
                 <label class="form-label">Valor a consignar<br>
                   (
-                  <%= usuario.pais === 'Colombia' ? 'Recuerde esta red esta en COP, no utilice ni puntos ni comas.' : 'Recuerde esta red esta en USD, para los decimales por favor utilice "."'; %>
+                  <%= usuario.pais === 'Colombia' ? 'Recuerde esta red esta en COP, no utilice ni puntos ni comas.' : 'Recuerde esta red esta en USD, para los decimales por favor utilice "." comas.'; %>
                   )</label>
                 <input type="number" class="form-control" placeholder="Valor consignado" value="" id="valorConsignadoe">
               </div>
@@ -299,8 +299,8 @@
             <div class="form-group ">
               <div class="row row-sm">
                 <label class="form-label">Tipo Consignación</label>
-                <select class="form-control" id="tipoConsignacione">
-                  <option value="epayco" selected disabled>EPAYCO</option>
+                <select class="form-control" id="tipoConsignacione" disabled="disabled">
+                  <option value="epayco" selected="true" disabled="disabled">EPAYCO</option>
                 </select>
               </div>
             </div>
@@ -697,11 +697,18 @@
             delete respuesta.publicKey;
             delete respuesta.test;
             respuesta.amount = valorConsignado;
-            respuesta.acepted = 'http://localhost:5001/api/getstatustransaction';
-            respuesta.rejected = 'http://localhost:5001/api/getstatustransaction';
+            respuesta.acepted = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
+            respuesta.rejected = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
+            respuesta.confirmation = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
+            respuesta.response = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
+            respuesta.pending = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
             respuesta.methodsDisable = ["PSE", "SP", "CASH", "DP"]
             console.log(respuesta);
+            console.log(handler);
             handler.open(respuesta);
+            handler.onResponse((resta)=>{
+              console.log(resta);
+            })
             const datas = {
               valorConsignado,
               tipoConsignacion

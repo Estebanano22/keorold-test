@@ -102,9 +102,34 @@ exports.verifyTransaction = async (req, res) =>{
             break;
     }
 
+    if(estadoTransaccion === 1){
+        const idUser = reqRef.data.x_extra1;
+        if(idUser.length > 0 && consignacion.estado === 0){
+            console.log("idUser: " + idUser);
+            const userToAsignSaldo = await Usuarios.findOne({where: {id_usuario: idUser}});
+            const saldoAnterior = userToAsignSaldo.saldo;
+            console.log(Number(saldoAnterior));
+            let saldoNuevoNeto;
+            if(Number(reqRef.data.x_amount) > 29.99999){
+                saldoNuevoNeto = Number(reqRef.data.x_amount) - 0.50;
+            }else{
+                saldoNuevoNeto = Number(reqRef.data.x_amount);
+            }
+            console.log('Saldo a recargar: ' + saldoNuevoNeto);
+            const newSaldo = Number(saldoAnterior) + Number(saldoNuevoNeto); 
+            userToAsignSaldo.saldo = newSaldo;
+            console.log('Nuevo saldo al usuario: ' + userToAsignSaldo.saldo);
+            userToAsignSaldo.save()
+        }
+    }
+
     consignacion.estado = estadoTransaccion;
     consignacion.save();
-    return res.redirect('/dashboard/reportarConsignacion');
+    if(consignacion.estado === 1){
+        return res.redirect('/cerrar-sesion');
+    }else{
+        return res.redirect('/dashboard/reportarConsignacion');
+    }
 }
 
 exports.createEpayco = async (req, res) => {
@@ -120,10 +145,17 @@ exports.createEpayco = async (req, res) => {
 
     const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
 
+    let saldoNuevoNeto;
+    if(Number(valorConsignado) > 29.99999){
+        saldoNuevoNeto = Number(valorConsignado) - 0.50;
+    }else{
+        saldoNuevoNeto = Number(valorConsignado);
+    }
+
     await Consignaciones.create({
         idConsignacion: uuid_v4(),
         idSuperdistribuidor: superdistribuidor.id_usuario,
-        valor: valorConsignado,
+        valor: saldoNuevoNeto,
         estado: 0,
         tipoConsignacion: tipoConsignacion,
         referencia: referencia,
@@ -132,6 +164,8 @@ exports.createEpayco = async (req, res) => {
         celularConsignacion: telefonoCuenta,
         fechaHoraConsignacion: fechaHoraConsignacion
     });
+
+    console.log(req.user);
 
     var data = {
         name: usuario.nombre,
@@ -146,8 +180,10 @@ exports.createEpayco = async (req, res) => {
         external: 'false',
         test: 'false',
         keyPrv: '52cb4bbc99ccfe0470426c6a6f7d4ded',
-        publicKey: '7683004bce02a70bdfb7a8cc777c556c'
+        publicKey: '7683004bce02a70bdfb7a8cc777c556c',
+        extra1: '' + req.user.id_usuario + ''
     };
+    console.log(data);
     res.json(data);
 }
 
