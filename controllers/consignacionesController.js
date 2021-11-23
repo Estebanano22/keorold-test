@@ -111,9 +111,9 @@ exports.verifyTransaction = async (req, res) =>{
             console.log(Number(saldoAnterior));
             let saldoNuevoNeto;
             if(Number(reqRef.data.x_amount) > 29.99999){
-                saldoNuevoNeto = Number(reqRef.data.x_amount) - 0.50;
-            }else{
                 saldoNuevoNeto = Number(reqRef.data.x_amount);
+            }else{
+                saldoNuevoNeto = Number(reqRef.data.x_amount) - 0.50;
             }
             console.log('Saldo a recargar: ' + saldoNuevoNeto);
             const newSaldo = Number(saldoAnterior) + Number(saldoNuevoNeto); 
