@@ -162,30 +162,55 @@ exports.updateEpaycoTransaction = async (req, res) => {
                 },
                 data: {
                     filter:{
-                        referencePayco: "69445630"
+                        referencePayco: refEpayco
                     }
                 }
             }).then(async (rest2) => {
                 console.log(rest2.data);
                 if(rest2.data.data.status === 'Rechazada'){
                     const transaction = await Consignaciones.findOne({ where: {extra_ref1: refEpayco}})
+                
                     transaction.estado = 2;
                     transaction.save();
+                
                     return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'La transacción fue rechazada.' });
-                } 
-                else if(rest2.data.data.status === 'Aceptada') {
-                    const transaction = await Consignaciones.findOne({ where: {extra_ref1: refEpayco}})
+                
+                }else if(rest2.data.data.status === 'Aceptada') {
+                    
+                    const transaction = await Consignaciones.findOne({ where: {extra_ref1: refEpayco}})  
+                    const userToAsignSaldo = await Usuarios.findOne({where: {id_usuario: req.user.id_usuario}});
+                    const saldoAnterior = userToAsignSaldo.saldo;
+                    
+                    let saldoNuevoNeto;
+                    
+                    if(Number(reqRef.data.x_amount) > 29.99999){
+                        saldoNuevoNeto = Number(reqRef.data.x_amount);
+                    }else{
+                        saldoNuevoNeto = Number(reqRef.data.x_amount) - 0.50;
+                    }
+                    
+                    const newSaldo = Number(saldoAnterior) + Number(saldoNuevoNeto); 
+                    
+                    userToAsignSaldo.saldo = newSaldo;
                     transaction.estado = 1;
-                    transaction.save();
-                    return res.json({ titulo: '¡Listo!', resp: 'warning', descripcion: 'La transacción fue Aceptada correctamente.' });
+                    
+                    await transaction.save();
+                    await userToAsignSaldo.save();
+                    
+                    return res.json({ titulo: '¡Listo!', resp: 'success', descripcion: 'La transacción fue Aceptada correctamente.' });
+                } else {
+                    return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'La transacción no fue finalizada.' });
                 }
             }).catch(err2 => {
+                console.log('Error en catch');
                 return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'No se pudo actualizar el estado de la transacción.' });
             })
         }else{
+            console.log('Error de data');
             return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'No se pudo actualizar el estado de la transacción.' });
         }
     }).catch(err => {
+        console.log('Error en catch');
         return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'No se pudo actualizar el estado de la transacción.' });
     })
 }
@@ -198,30 +223,43 @@ exports.newFetchUpdateTransaction = async (req, res) => {
     const tipoConsignacion = 'EPAYCO';
     const telefonoCuenta = req.user.telefono_movil;
     const fechaHoraConsignacion = new Date();
-    
-    const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
-    
-    let saldoNuevoNeto;
-    if(Number(valorConsignado) > 29.99999){
-        saldoNuevoNeto = Number(valorConsignado);
-    }else{
-        saldoNuevoNeto = Number(valorConsignado) - 0.50;
-    }
 
-    const newConsignacion = await Consignaciones.create({
-        idConsignacion: uuid_v4(),
-        idSuperdistribuidor: superdistribuidor.id_usuario,
-        valor: saldoNuevoNeto,
-        estado: estado,
-        tipoConsignacion: tipoConsignacion,
-        referencia: referencia,
-        comprobante: 'No aplica',
-        extra_ref1: recibo,
-        usuarioIdUsuario: req.user.id_usuario,
-        celularConsignacion: telefonoCuenta,
-        fechaHoraConsignacion: fechaHoraConsignacion
-    });
-    console.log(newConsignacion);
+    const existReference = await Consignaciones.findOne({ where : {referencia: referencia} });
+
+    if(!existReference){
+        const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
+        const userToAsignSaldo = await Usuarios.findOne({where: {id_usuario: req.user.id_usuario}});
+        const saldoAnterior = userToAsignSaldo.saldo;       
+        
+        let saldoNuevoNeto;
+        if(Number(valorConsignado) > 29.99999){
+            saldoNuevoNeto = Number(valorConsignado);
+        }else{
+            saldoNuevoNeto = Number(valorConsignado) - 0.50;
+        }
+        console.log('estado: ' + estado);
+        if(estado === 1 || estado === '1'){
+            const newSaldo = Number(saldoAnterior) + Number(saldoNuevoNeto); 
+            userToAsignSaldo.saldo = newSaldo;
+            await userToAsignSaldo.save();
+        }
+
+        const newConsignacion = await Consignaciones.create({
+            idConsignacion: uuid_v4(),
+            idSuperdistribuidor: superdistribuidor.id_usuario,
+            valor: saldoNuevoNeto,
+            estado: estado,
+            tipoConsignacion: tipoConsignacion,
+            referencia: referencia,
+            comprobante: 'No aplica',
+            extra_ref1: recibo,
+            usuarioIdUsuario: req.user.id_usuario,
+            celularConsignacion: telefonoCuenta,
+            fechaHoraConsignacion: fechaHoraConsignacion
+        });
+
+        return res.json({ titulo: 'Listo', resp: 'info', descripcion: 'La transacción creada y asignada al usuario.' });
+    }
 }
 
 exports.createEpayco = async (req, res) => {

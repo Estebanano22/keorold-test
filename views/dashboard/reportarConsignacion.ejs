@@ -48,7 +48,7 @@
           <div class="row row-sm">
             <% if(medios.length) { %>
             <% medios.forEach(listaMedios => { %>
-            <% if(listaMedios.idMedio === "4cad3d26-8ed0-4d8c-ac3a-d83b8e0fc311111"){ %>
+            <% if(listaMedios.idMedio === "4cad3d26-8ed0-4d8c-ac3a-d83b8e0fc311"){ %>
               <div class="col-md-6 col-lg-3">
                 <div class="card overflow-hidden custom-card ">
                   <img alt="Image" class="img-fluid b-img" src="<%- listaMedios.imagen %>">
@@ -137,10 +137,12 @@
                             <%- listaConsignaciones.observaciones === null ? '<span class="text-muted">Sin observaciones</span>' : listaConsignaciones.observaciones %>
                           </td>
                           <td class="text-left">
-                            <% if(listaConsignaciones.estado === 0){ %>
+                            <% if(listaConsignaciones.estado === 0 || listaConsignaciones.estado === 3){ %>
                               <button class="btn btn-primary" onclick="updateFetchTransaction(event, '<%= listaConsignaciones.extra_ref1 %>')">Actualizar transacción</button>
                             <% } else if(listaConsignaciones.estado === 1) { %>
                               <span class="text-muted">Aprobada</span>
+                            <% } else if(listaConsignaciones.estado === 4) { %>
+                              <span class="text-muted">(EPAYCO) Fallida</span>
                             <% } else { %>
                               <span class="text-muted">Rechazada / declinada</span>
                             <% } %>
@@ -402,6 +404,42 @@
 
 
   <script>
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    console.log(params);
+
+    if(params['status'] && params['ref_payco']){
+      switch (params['status']) {
+        case 'pending':
+          swal({
+            title: 'Transacción',
+            text: 'La transacción se encuentra en estado Pendiente',
+            type: 'info'
+          });
+          break;
+        
+        case 'rejected':
+          swal({
+            title: 'Transacción',
+            text: 'La transacción fue Rechazada',
+            type: 'error'
+          });
+          break;
+        
+        case 'acepted':
+          swal({
+            title: 'Transacción',
+            text: 'La transacción fue Aceptada',
+            type: 'success'
+          });
+          break;
+      
+        default:
+          break;
+      }
+    }
+
     function updateFetchTransaction(e, id){
       if(!id){
         swal({
@@ -420,14 +458,15 @@
           body: JSON.stringify({
             ref_epayco: id
           })
-        }).then(res => res.text()).then(rest => {
+        }).then(res => res.json()).then(rest => {
+          console.log(rest);
           $('#global-loader').removeClass("d-block");
           $('#global-loader').addClass("d-none");
           
           swal({
-                title: respuesta.titulo,
-                text: respuesta.descripcion,
-                type: respuesta.resp,
+                title: rest.titulo,
+                text: rest.descripcion,
+                type: rest.resp,
                 confirmButtonColor: '#57a94f',
                 closeOnClickOutside: false
               },
@@ -436,6 +475,8 @@
                   location.reload();
                 }
               });
+        }).catch(err =>{
+          console.log(err);
         })
       }
     }
@@ -747,14 +788,15 @@
             delete respuesta.publicKey;
             delete respuesta.test;
             respuesta.amount = valorConsignado;
-            respuesta.acepted = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
-            respuesta.rejected = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
-            respuesta.confirmation = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
-            respuesta.response = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
-            respuesta.pending = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
+            respuesta.acepted = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=acepted';
+            respuesta.rejected = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=rejected';
+            respuesta.confirmation = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=confirmation';
+            respuesta.response = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=response';
+            respuesta.pending = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=pending';
             respuesta.methodsDisable = ["PSE", "SP", "CASH", "DP"]
             console.log(respuesta);
             handler.open(respuesta);
+            console.log(handler);
             handler.onResponse((resta)=>{
               console.log(resta);
               fetch('/dashboard/reportarConsignacion/updateFetchTransaction', {
