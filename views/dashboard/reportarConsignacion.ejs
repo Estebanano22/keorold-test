@@ -128,7 +128,7 @@
                             <%- listaConsignaciones.extra_ref1 ? listaConsignaciones.extra_ref1 : 'No aplica' %>
                           </td>
                           <td class="text-capitalize text-center">
-                            <span class="text-muted"><i class="far <%= listaConsignaciones.estado === 1 ? 'fa-check-circle text-success' : listaConsignaciones.estado === 2 ? 'fa-times-circle text-danger' : 'fa-circle text-warning' %> mr-1"></i><%= listaConsignaciones.estado === 1 ? 'Aprobada' : listaConsignaciones.estado === 2 ? 'Rechazada' : 'En revisión' %></span>
+                            <span class="text-muted"><i class="far <%= listaConsignaciones.estado === 1 ? 'fa-check-circle text-success' : listaConsignaciones.estado === 3 ? 'fa-check-circle text-warning' : listaConsignaciones.estado === 0 ? 'fa-circle text-warning' : 'fa-times-circle text-danger' %> mr-1"></i><%= listaConsignaciones.estado === 1 ? 'Aprobada' : listaConsignaciones.estado === 3 ? 'En revisión'  : listaConsignaciones.estado === 0 ? 'En revisión' : 'Rechazada' %></span>
                           </td>
                           <td class="text-left">
                             <a data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalComprobante" onclick="modalComprobante(event, '<%= listaConsignaciones.comprobante %>')"><%- listaConsignaciones.comprobante %></a>
