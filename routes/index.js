@@ -986,6 +986,20 @@ module.exports = function () {
         consignacionesController.createEpayco
     );
 
+    router.post('/dashboard/reportarConsignacion/updateEpaycoTransaction',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        consignacionesController.updateEpaycoTransaction
+    );
+
+    router.post('/dashboard/reportarConsignacion/updateFetchTransaction',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        consignacionesController.newFetchUpdateTransaction
+    );
+
     router.get('/api/getstatustransaction',
         consignacionesController.verifyTransaction
     );

@@ -106,18 +106,25 @@ exports.verifyTransaction = async (req, res) =>{
         const idUser = reqRef.data.x_extra1;
         if(idUser.length > 0 && consignacion.estado === 0){
             console.log("idUser: " + idUser);
+
             const userToAsignSaldo = await Usuarios.findOne({where: {id_usuario: idUser}});
             const saldoAnterior = userToAsignSaldo.saldo;
+            
             console.log(Number(saldoAnterior));
+            
             let saldoNuevoNeto;
+            
             if(Number(reqRef.data.x_amount) > 29.99999){
                 saldoNuevoNeto = Number(reqRef.data.x_amount);
             }else{
                 saldoNuevoNeto = Number(reqRef.data.x_amount) - 0.50;
             }
+            
             console.log('Saldo a recargar: ' + saldoNuevoNeto);
             const newSaldo = Number(saldoAnterior) + Number(saldoNuevoNeto); 
+            
             userToAsignSaldo.saldo = newSaldo;
+            
             console.log('Nuevo saldo al usuario: ' + userToAsignSaldo.saldo);
             userToAsignSaldo.save()
         }
@@ -125,48 +132,103 @@ exports.verifyTransaction = async (req, res) =>{
 
     consignacion.estado = estadoTransaccion;
     consignacion.save();
-    if(consignacion.estado === 1){
-        return res.redirect('/cerrar-sesion');
-    }else{
-        return res.redirect('/dashboard/reportarConsignacion');
-    }
+    // if(consignacion.estado === 1){
+    //     return res.redirect('/cerrar-sesion');
+    // }else{
+    //     return res.redirect('/dashboard/reportarConsignacion');
+    // }
+    return res.redirect('/dashboard/reportarConsignacion');
 }
 
-exports.createEpayco = async (req, res) => {
-    const amountReq = req.body.valor;
-    const refNew = uuid_v4();
-    const usuario = await Usuarios.findOne({ where: { email: req.user.email }});
+exports.updateEpaycoTransaction = async (req, res) => {
+    const refEpayco = req.body.ref_epayco;
+    await axios({
+        url: 'https://apify.epayco.co/login/mail',
+        headers: {
+            public_key: '7683004bce02a70bdfb7a8cc777c556c'
+        },
+        auth: {
+            username: 'aclogistica01@gmail.com',
+            password: 'Danna963+'
+        },
+        method: 'POST'
+    }).then( async(rest)=>{
+        if(rest.data.token){
+            await axios({
+                method: 'GET',
+                url: 'https://apify.epayco.co/transaction/detail',
+                headers: { 
+                    Authorization: `Bearer ${rest.data.token}`
+                },
+                data: {
+                    filter:{
+                        referencePayco: "69445630"
+                    }
+                }
+            }).then(async (rest2) => {
+                console.log(rest2.data);
+                if(rest2.data.data.status === 'Rechazada'){
+                    const transaction = await Consignaciones.findOne({ where: {extra_ref1: refEpayco}})
+                    transaction.estado = 2;
+                    transaction.save();
+                    return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'La transacción fue rechazada.' });
+                } 
+                else if(rest2.data.data.status === 'Aceptada') {
+                    const transaction = await Consignaciones.findOne({ where: {extra_ref1: refEpayco}})
+                    transaction.estado = 1;
+                    transaction.save();
+                    return res.json({ titulo: '¡Listo!', resp: 'warning', descripcion: 'La transacción fue Aceptada correctamente.' });
+                }
+            }).catch(err2 => {
+                return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'No se pudo actualizar el estado de la transacción.' });
+            })
+        }else{
+            return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'No se pudo actualizar el estado de la transacción.' });
+        }
+    }).catch(err => {
+        return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'No se pudo actualizar el estado de la transacción.' });
+    })
+}
 
-    const valorConsignado = amountReq;
+exports.newFetchUpdateTransaction = async (req, res) => {
+    const estado = req.body.estado;
+    const referencia = req.body.referencia_factura;
+    const recibo = req.body.recibo;
+    const valorConsignado = req.body.valor_consignado;
     const tipoConsignacion = 'EPAYCO';
-    const referencia = refNew;
     const telefonoCuenta = req.user.telefono_movil;
     const fechaHoraConsignacion = new Date();
-
+    
     const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
-
+    
     let saldoNuevoNeto;
     if(Number(valorConsignado) > 29.99999){
-        saldoNuevoNeto = Number(valorConsignado) - 0.50;
-    }else{
         saldoNuevoNeto = Number(valorConsignado);
+    }else{
+        saldoNuevoNeto = Number(valorConsignado) - 0.50;
     }
 
-    await Consignaciones.create({
+    const newConsignacion = await Consignaciones.create({
         idConsignacion: uuid_v4(),
         idSuperdistribuidor: superdistribuidor.id_usuario,
         valor: saldoNuevoNeto,
-        estado: 0,
+        estado: estado,
         tipoConsignacion: tipoConsignacion,
         referencia: referencia,
         comprobante: 'No aplica',
+        extra_ref1: recibo,
         usuarioIdUsuario: req.user.id_usuario,
         celularConsignacion: telefonoCuenta,
         fechaHoraConsignacion: fechaHoraConsignacion
     });
+    console.log(newConsignacion);
+}
 
-    console.log(req.user);
-
+exports.createEpayco = async (req, res) => {
+    const usuario = await Usuarios.findOne({ where: { email: req.user.email }});
+    const refNew = uuid_v4();
+    const amountReq = req.body.valor;
+    
     var data = {
         name: usuario.nombre,
         description: 'Recargar saldo',
@@ -179,11 +241,9 @@ exports.createEpayco = async (req, res) => {
         lang: 'es',
         external: 'false',
         test: 'false',
-        keyPrv: '52cb4bbc99ccfe0470426c6a6f7d4ded',
         publicKey: '7683004bce02a70bdfb7a8cc777c556c',
         extra1: '' + req.user.id_usuario + ''
     };
-    console.log(data);
     res.json(data);
 }
 

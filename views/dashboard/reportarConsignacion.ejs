@@ -48,7 +48,7 @@
           <div class="row row-sm">
             <% if(medios.length) { %>
             <% medios.forEach(listaMedios => { %>
-            <% if(listaMedios.idMedio === "4cad3d26-8ed0-4d8c-ac3a-d83b8e0fc311"){ %>
+            <% if(listaMedios.idMedio === "4cad3d26-8ed0-4d8c-ac3a-d83b8e0fc311111"){ %>
               <div class="col-md-6 col-lg-3">
                 <div class="card overflow-hidden custom-card ">
                   <img alt="Image" class="img-fluid b-img" src="<%- listaMedios.imagen %>">
@@ -95,9 +95,11 @@
                           <th>Fecha</th>
                           <th>Valor</th>
                           <th>Referencia</th>
+                          <th>Recibo externo</th>
                           <th>Estado</th>
                           <th>Comprobante</th>
                           <th>Observaciones</th>
+                          <th>Revisión</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -122,6 +124,9 @@
                           <td class="text-left text-uppercase">
                             <%- listaConsignaciones.referencia %>
                           </td>
+                          <td class="text-left text-uppercase">
+                            <%- listaConsignaciones.extra_ref1 ? listaConsignaciones.extra_ref1 : 'No aplica' %>
+                          </td>
                           <td class="text-capitalize text-center">
                             <span class="text-muted"><i class="far <%= listaConsignaciones.estado === 1 ? 'fa-check-circle text-success' : listaConsignaciones.estado === 2 ? 'fa-times-circle text-danger' : 'fa-circle text-warning' %> mr-1"></i><%= listaConsignaciones.estado === 1 ? 'Aprobada' : listaConsignaciones.estado === 2 ? 'Rechazada' : 'En revisión' %></span>
                           </td>
@@ -130,6 +135,15 @@
                           </td>
                           <td class="text-left">
                             <%- listaConsignaciones.observaciones === null ? '<span class="text-muted">Sin observaciones</span>' : listaConsignaciones.observaciones %>
+                          </td>
+                          <td class="text-left">
+                            <% if(listaConsignaciones.estado === 0){ %>
+                              <button class="btn btn-primary" onclick="updateFetchTransaction(event, '<%= listaConsignaciones.extra_ref1 %>')">Actualizar transacción</button>
+                            <% } else if(listaConsignaciones.estado === 1) { %>
+                              <span class="text-muted">Aprobada</span>
+                            <% } else { %>
+                              <span class="text-muted">Rechazada / declinada</span>
+                            <% } %>
                           </td>
                         </tr>
                         <% }) %>
@@ -277,10 +291,10 @@
 
   <!-- Modal Consignaciones -->
   <div class="modal" id="modalConsignacionEpayco">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-dialog-centered" data-backdrop="static" data-keyboard="false" role="document">
       <div class="modal-content modal-content-demo">
         <div class="modal-header">
-          <h6 class="modal-title">Realizar consignación</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+          <h6 class="modal-title">Realizar consignación</h6><button aria-label="Close"  class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
           <p class="mb-3">
@@ -388,6 +402,44 @@
 
 
   <script>
+    function updateFetchTransaction(e, id){
+      if(!id){
+        swal({
+          title: 'Espera',
+          text: 'No puede hacer una actualización de esta consignación',
+          type: 'warning'
+        });
+      }else{
+        $('#global-loader').addClass("d-block");
+        $('#global-loader').removeClass("d-none");
+        fetch('/dashboard/reportarConsignacion/updateEpaycoTransaction', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            ref_epayco: id
+          })
+        }).then(res => res.text()).then(rest => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          
+          swal({
+                title: respuesta.titulo,
+                text: respuesta.descripcion,
+                type: respuesta.resp,
+                confirmButtonColor: '#57a94f',
+                closeOnClickOutside: false
+              },
+              function(isConfirm) {
+                if (isConfirm) {
+                  location.reload();
+                }
+              });
+        })
+      }
+    }
+
     function archivoDescargado(e) {
 
       const btnDescargar = document.getElementById('btnDescargar');
@@ -690,10 +742,8 @@
             console.log(respuesta)
             var handler = ePayco.checkout.configure({
               key: respuesta.publicKey,
-              test: false
+              test: true
             });
-  
-            delete respuesta.keyPrv;
             delete respuesta.publicKey;
             delete respuesta.test;
             respuesta.amount = valorConsignado;
@@ -704,16 +754,24 @@
             respuesta.pending = window.location.protocol + '//' +window.location.host + '/api/getstatustransaction';
             respuesta.methodsDisable = ["PSE", "SP", "CASH", "DP"]
             console.log(respuesta);
-            console.log(handler);
             handler.open(respuesta);
             handler.onResponse((resta)=>{
               console.log(resta);
+              fetch('/dashboard/reportarConsignacion/updateFetchTransaction', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  recibo: resta.recibo,
+                  estado: resta.cod_respuesta,
+                  referencia_factura: resta.factura,
+                  valor_consignado: valorConsignado
+                })
+              })
             })
-            const datas = {
-              valorConsignado,
-              tipoConsignacion
-            }
-              }).catch(() => {
+              }).catch((err) => {
+                console.log(err);
                 $('#global-loader').removeClass("d-block");
                 $('#global-loader').addClass("d-none");
                 swal({
@@ -722,12 +780,11 @@
                   type: 'error'
                 });
               })
+              .catch(err =>  {
+                console.log(err);
+              })
 
       }
-
-
-
-
     }
   
 
