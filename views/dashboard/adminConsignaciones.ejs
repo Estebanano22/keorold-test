@@ -123,7 +123,7 @@
                             <%- listaConsignaciones.referencia %>
                           </td>
                           <td class="text-capitalize text-center">
-                            <span class="text-muted"><i class="far <%= listaConsignaciones.estado === 1 ? 'fa-check-circle text-success' : listaConsignaciones.estado === 2 ? 'fa-times-circle text-danger' : 'fa-circle text-warning' %> mr-1"></i><%= listaConsignaciones.estado === 1 ? 'Aprobada' : listaConsignaciones.estado === 2 ? 'Rechazada' : 'En revisión' %></span>
+                            <span class="text-muted"><i class="far <%= listaConsignaciones.estado === 1 ? 'fa-check-circle text-success' : listaConsignaciones.estado === 3 ? 'fa-check-circle text-warning' : listaConsignaciones.estado === 0 ? 'fa-circle text-warning' : 'fa-times-circle text-danger' %> mr-1"></i><%= listaConsignaciones.estado === 1 ? 'Aprobada' : listaConsignaciones.estado === 3 ? 'En revisión'  : listaConsignaciones.estado === 0 ? 'En revisión' : 'Rechazada' %></span>
                           </td>
                           <td class="text-left">
                             <a data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalComprobante" onclick="modalComprobante(event, '<%= listaConsignaciones.comprobante %>')"><%- listaConsignaciones.comprobante %></a>
@@ -135,10 +135,22 @@
                             <%- listaConsignaciones.observaciones === null ? '<span class="text-muted">Sin observaciones</span>' : listaConsignaciones.observaciones %>
                           </td>
                           <td class="text-capitalize">
-                            <div class="btn btn-list">
-                              <button class="btn ripple btn-success modal-effect" title="Aprobar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalAprobar" onclick="modalAprobar(event, '<%= listaConsignaciones.idConsignacion %>')"><i class="fas fa-check-circle"></i></button>
-                              <a class="btn ripple btn-danger modal-effect" title="Rechazar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalRechazar" onclick="modalRechazar(event, '<%= listaConsignaciones.idConsignacion %>')"><i class="fas fa-times-circle"></i></a>
-                            </div>
+                            <% if(!listaConsignaciones.extra_ref1) { %>
+                              <div class="btn btn-list">
+                                <button class="btn ripple btn-success modal-effect" title="Aprobar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalAprobar" onclick="modalAprobar(event, '<%= listaConsignaciones.idConsignacion %>')"><i class="fas fa-check-circle"></i></button>
+                                <a class="btn ripple btn-danger modal-effect" title="Rechazar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalRechazar" onclick="modalRechazar(event, '<%= listaConsignaciones.idConsignacion %>')"><i class="fas fa-times-circle"></i></a>
+                              </div>
+                            <% } else { %>
+                              <% if(listaConsignaciones.estado === 0 || listaConsignaciones.estado === 3){ %>
+                                <span class="text-muted">Solo el usuario puede pedir una actualización del estado a Epayco mediante el botón 'Actualizar consignación'</span>
+                              <% } else if(listaConsignaciones.estado === 1) { %>
+                                <span class="text-muted">No puedes realizar ninguna acción a esta consignación, su estado es Aceptada</span>
+                              <% } else if(listaConsignaciones.estado === 4) { %>
+                                <span class="text-muted">No puedes realizar ninguna acción a esta consignación, su estado es Rechazada</span>
+                              <% } else { %>
+                                <span class="text-muted">No puedes realizar ninguna acción a esta consignación, su estado es Rechazada</span>
+                              <% } %>
+                            <% }%>
                           </td>
                         </tr>
                         <% } %>
