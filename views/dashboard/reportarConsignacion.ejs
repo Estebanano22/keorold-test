@@ -783,7 +783,7 @@
             console.log(respuesta)
             var handler = ePayco.checkout.configure({
               key: respuesta.publicKey,
-              test: true
+              test: false
             });
             delete respuesta.publicKey;
             delete respuesta.test;
