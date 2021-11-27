@@ -41,6 +41,9 @@ module.exports = function () {
     router.post('/ingreso', authController.autenticarUsuario);
     router.post('/ingreso/recuperarPassword', generalController.recuperarPasswords);
 
+    //aplicacion
+    router.get('/aplicacion', generalController.aplicacion)
+
     // =====================
     //     Dashboard
     // =====================
