@@ -682,6 +682,11 @@
           } else {
             noCelular.classList.remove('display-none');
           }
+          swal({
+            title: '¡Espera!',
+            text: 'Señor usuario recuerda que si su transacción es menor a $30 (30 Dolares) se le descontarán 50 Centavos de dolar',
+            type: 'info'
+          });
         }).catch(() => {
           $('#global-loader').removeClass("d-block");
           $('#global-loader').addClass("d-none");
