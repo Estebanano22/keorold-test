@@ -13,9 +13,9 @@ exports.inicio = (req, res) => {
   });
 };
 
-exports.aplicacion = (req, res) => {
-  res.render("aplicacion", {
-    nombrePagina: "aplicacion",
+exports.aplicaciones = (req, res) => {
+  res.render("aplicaciones", {
+    nombrePagina: "aplicaciones",
   });
 };
 
