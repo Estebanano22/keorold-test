@@ -126,8 +126,8 @@
                           <td class="text-capitalize"><%= nombrePlataforma %></td>
                           <td class="text-lowercase"><%= listaCuentas.user%></td>
                           <td><%= listaCuentas.password%></td>
-                          <td class="text-capitalize"><%- listaCuentas.pantalla === 'no aplica' ? '<span class="badge badge-pill badge-primary">N/A</span>' : listaCuentas.pantalla %></td>
-                          <td class="text-capitalize"><%- listaCuentas.pin === 'no aplica' ? '<span class="badge badge-pill badge-primary">N/A</span>' : listaCuentas.pin %></td>
+                          <td><%- listaCuentas.pantalla === 'no aplica' ? '<span class="badge badge-pill badge-primary">N/A</span>' : listaCuentas.pantalla %></td>
+                          <td><%- listaCuentas.pin === 'no aplica' ? '<span class="badge badge-pill badge-primary">N/A</span>' : listaCuentas.pin %></td>
                           <td class="text-capitalize text-center">
                             <span class="text-muted"><i class="far <%= listaCuentas.estado === 1 ? 'fa-check-circle text-success' : 'fa-minus-square text-warning' %> mr-1"></i><%= listaCuentas.estado === 1 ? 'Tomada' : 'Sin Tomar' %></span>
                           </td>
