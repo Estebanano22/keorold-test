@@ -220,7 +220,7 @@ exports.newFetchUpdateTransaction = async (req, res) => {
     const referencia = req.body.referencia_factura;
     const recibo = req.body.recibo;
     const valorConsignado = req.body.valor_consignado;
-    const tipoConsignacion = 'EPAYCO';
+    const tipoConsignacion = 'Epayco Carga Automatica';
     const telefonoCuenta = req.user.telefono_movil;
     const fechaHoraConsignacion = new Date();
 
