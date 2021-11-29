@@ -97,7 +97,7 @@ exports.crearInsidencia = async (req, res) => {
 
     const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
 
-    if (!req.location || req.file === undefined || req.file === null) {
+    if (req.file === undefined || req.file === null) {
         var nombreArchivo = null;
     } else {
         if (req.file.location === 'undefined' || req.file.location === '' || req.file.location === null) {
