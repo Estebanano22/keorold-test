@@ -96,18 +96,18 @@ main h2{
     width: 90%;
 }
 .apps article .apps_article-plataforma{
-    width: 121px;
+    width: 150px;
     height: 121px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 22px;
 }
 .apps article .apps_p{
     color: #6259CA;
     font-weight: 500;
     font-size: 18px;
     margin: 16px 0;
+    text-align: center;
 }
 .apps article .apps_article-plataforma img{
     width: 100%;
@@ -125,7 +125,6 @@ button{
     display: flex;
     width: 100%;
     height: auto;
-    margin-top: 22px;
 }
 .apps article .btn-primary_apps{
     background-color: #6259CA;
@@ -145,14 +144,19 @@ button{
     width: 100%;
     background: transparent;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.438);
-    padding: 10px;
+   height: 40px;
+   padding: 24px 0
 }
 .botones_extra-btn figure img{
-    width: 50px;
+    width: 27px;
+}
+.botones_extra-btn figure img:last-child{
+    width: 25px;
 }
 .botones_extra-btn_a:first-child{
     margin-right: 16px;
 }
+
 .a_btn{
     width: 100%;
 }
@@ -187,5 +191,9 @@ footer{
     }
     .apps{
         width: 74%;
+    }
+    .apps article{
+        padding: 50px 25px;
+        width: 100%;
     }
 }
