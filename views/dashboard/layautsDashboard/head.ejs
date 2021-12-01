@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="main-header-right">
-      <% if(usuario.pais === 'Ecuador') { %>
+      <% if(usuario.pais === 'Ecuador' && usuario.perfil !== 'superdistribuidor')  { %>
         <a href="/dashboard/reportarConsignacion" class="btn btn-primary mr-3" style="border-radius: 30px; background-color: white !important;" data-toggle="tooltip" data-placement="top" title="Consignación con Epayco">
           <img src="/assetsDashboard/img/epayco.png" alt="" style="width: 25px; height: 25px;">
         </a>
