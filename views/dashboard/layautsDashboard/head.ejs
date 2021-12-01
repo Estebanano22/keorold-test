@@ -15,7 +15,7 @@
     </div>
     <div class="main-header-right">
       <% if(usuario.pais === 'Ecuador' && usuario.perfil !== 'superdistribuidor')  { %>
-        <a href="/dashboard/reportarConsignacion" class="btn btn-primary mr-3" style="border-radius: 30px; background-color: white !important;" data-toggle="tooltip" data-placement="top" title="Consignación con Epayco">
+        <a  data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalConsignacionEpayco" class="btn btn-primary mr-3" onclick="modalConsignacionE('4cad3d26-8ed0-4d8c-ac3a-d83b8e0fc311','4cad3d26-8ed0-4d8c-ac3a-d83b8e0fc311')" style="border-radius: 30px; background-color: white !important;" data-toggle="tooltip" data-placement="top" title="Consignación con Epayco">
           <img src="/assetsDashboard/img/epayco.png" alt="" style="width: 25px; height: 25px;">
         </a>
       <% } %>
@@ -42,46 +42,6 @@
           <i class="fe fe-minimize fullscreen-button exit-fullscreen header-icons"></i>
         </a>
       </div>
-      <!-- <div class="dropdown main-header-notification">
-                <a class="nav-link icon" href="">
-                    <i class="fe fe-bell header-icons"></i>
-                    <span class="badge badge-danger nav-link-badge">4</span>
-                </a>
-                <div class="dropdown-menu">
-                    <div class="header-navheading">
-                        <p class="main-notification-text">You have 1 unread notification<span class="badge badge-pill badge-primary ml-3">View all</span></p>
-                    </div>
-                    <div class="main-notification-list">
-                        <div class="media new">
-                            <div class="main-img-user online"><img alt="avatar" src="/assetsDashboard/img/users/5.jpg"></div>
-                            <div class="media-body">
-                                <p>Congratulate <strong>Olivia James</strong> for New template start</p><span>Oct 15 12:32pm</span>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <div class="main-img-user"><img alt="avatar" src="/assetsDashboard/img/users/2.jpg"></div>
-                            <div class="media-body">
-                                <p><strong>Joshua Gray</strong> New Message Received</p><span>Oct 13 02:56am</span>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <div class="main-img-user online"><img alt="avatar" src="/assetsDashboard/img/users/3.jpg"></div>
-                            <div class="media-body">
-                                <p><strong>Elizabeth Lewis</strong> added new schedule realease</p><span>Oct 12 10:40pm</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dropdown-footer">
-                        <a href="#">View All Notifications</a>
-                    </div>
-                </div>
-            </div>
-            <div class="main-header-notification">
-                <a class="nav-link icon" href="chat.html">
-                    <i class="fe fe-message-square header-icons"></i>
-                    <span class="badge badge-success nav-link-badge">6</span>
-                </a>
-            </div> -->
       <div class="dropdown main-profile-menu">
         <a class="d-flex" href="">
           <span class="main-img-user"><img alt="avatar" src="<%= usuario.foto === null ? '/assetsDashboard/img/users/default.jpg' : usuario.foto %>"></span>
@@ -106,5 +66,159 @@
       </div>
     </div>
   </div>
+  <script defer>
+    function modalConsignacionE(e, id) {
+      $('#global-loader').addClass("d-block");
+      $('#global-loader').removeClass("d-none");
+      fetch('/reportarConsignacion/infoMedio', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: id
+          })
+        })
+        .then(res => res.text())
+        .then(data => {
+          console.log(data);
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: '¡Espera!',
+            text: 'Señor usuario recuerda que si su transacción es menor a $30 (30 Dolares) se le descontarán 50 Centavos de dolar',
+            type: 'info'
+          });
+        }).catch((e) => {
+          console.log(e);
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar consignación',
+            type: 'error'
+          });
+        })
+
+    }
+
+    function consignacionEpayco(e) {
+
+const valorConsignado = document.getElementById("valorConsignadoe").value.trim();
+const tipoConsignacion = document.getElementById("tipoConsignacione").value.trim();
+
+if (parseInt(valorConsignado) < 2){
+  return swal({
+      title: '¡Espera!',
+      text: 'El valor minimo de transacción tiene que ser mayor a un dolar',
+      type: 'warning'
+    });
+}else{
+  fetch('/dashboard/reportarConsignacion/createDataToEpayco', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        valor: valorConsignado
+      })
+    })
+    .then(res => res.text())
+    .then(data => {
+      $('#global-loader').removeClass("d-block");
+      $('#global-loader').addClass("d-none");
+      let respuesta = JSON.parse(data);
+      console.log(respuesta)
+      var handler = ePayco.checkout.configure({
+        key: respuesta.publicKey,
+        test: false
+      });
+      delete respuesta.publicKey;
+      delete respuesta.test;
+      respuesta.amount = valorConsignado;
+      respuesta.acepted = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=acepted';
+      respuesta.rejected = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=rejected';
+      respuesta.confirmation = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=confirmation';
+      respuesta.response = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=response';
+      respuesta.pending = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=pending';
+      respuesta.methodsDisable = ["PSE", "SP", "CASH", "DP"]
+      console.log(respuesta);
+      handler.open(respuesta);
+      console.log(handler);
+      handler.onResponse((resta)=>{
+        console.log(resta);
+        fetch('/dashboard/reportarConsignacion/updateFetchTransaction', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            recibo: resta.recibo,
+            estado: resta.cod_respuesta,
+            referencia_factura: resta.factura,
+            valor_consignado: valorConsignado
+          })
+        })
+      })
+        }).catch((err) => {
+          console.log(err);
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar consignación',
+            type: 'error'
+          });
+        })
+        .catch(err =>  {
+          console.log(err);
+        })
+
+  }
+}
+
+
+
+  </script>
 </div>
+
+<!-- Modal Consignaciones -->
+<div class="modal" id="modalConsignacionEpayco">
+  <div class="modal-dialog modal-dialog-centered" data-backdrop="static" data-keyboard="false" role="document">
+    <div class="modal-content modal-content-demo">
+      <div class="modal-header">
+        <h6 class="modal-title">Realizar consignación</h6><button aria-label="Close"  class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-3">
+          La siguientes casillas son obligatorias para poder realizar un proceso efectivo de carga de saldo, por lo tanto deben confirmar el valor a consignar.
+        </p>
+        <div class="px-2">
+          <div class="form-group ">
+            <div class="row row-sm">
+              <label class="form-label">Valor a consignar<br>
+                (
+                <%= usuario.pais === 'Colombia' ? 'Recuerde esta red esta en COP, no utilice ni puntos ni comas.' : 'Recuerde esta red esta en USD, para los decimales por favor utilice "." comas.'; %>
+                )</label>
+              <input type="number" class="form-control" placeholder="Valor consignado" value="" id="valorConsignadoe">
+            </div>
+          </div>
+          <div class="form-group ">
+            <div class="row row-sm">
+              <label class="form-label">Tipo Consignación</label>
+              <select class="form-control" id="tipoConsignacione" disabled="disabled">
+                <option value="Epayco Carga Automatica" selected="true" disabled="disabled">EPAYCO</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn ripple btn-primary" type="button" onclick="consignacionEpayco(event)">Realizar consignación</button>
+        <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- End Main Header-->
