@@ -165,6 +165,16 @@
                         <% } %>
                       </tbody>
                     </table>
+                    <div style="text-align: left;">
+                      <ul class="pagination">
+                        <li class="paginate_button page-item" id="exportexample_previous">
+                          <a href="#" id="anterior" onclick="return anteriorPagina();" class="btn btn-primary">Anterior</a>
+                        </li>
+                        <li class="paginate_button page-item" id="exportexample_next">
+                          <a href="#" id="siguiente" onclick="return siguientePagina();" class="btn btn-secundary">Siguiente</a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -412,6 +422,105 @@
   <% } %>
 
   <script>
+    // let table = document.getElementById('exportexample');
+    $('#exportexample').DataTable().clear();
+    $('#exportexample').DataTable().destroy();
+    
+    async function fetchUsers(){
+      return axios({
+        url: '/api/adminUsuariosSuperdistribuidor_API?page=2',
+        method: 'GET'
+      }).then(rest => {
+        return rest.data;
+      }).catch(err => {
+        swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
+      })
+    }
+
+    let datos = [];
+    let usuariosData = [{
+      'Foto': 'hola',
+      'Nombre': 'Dilancho'
+    },{
+      'Foto': 'hola',
+      'Nombre': 'Dilancho'
+    }];
+    fetchUsers().then(res => {
+      usuarios = res.usuarios;
+      console.log(usuarios);
+      usuarios.forEach(usuario => {
+      console.log(usuario )
+        datos.push({
+          'Foto': (usuario.foto) ? (usuario.foto): '...' ,
+          'Nombre': usuario.nombre, 
+          'Status': usuario.bloqueo === 0 ? 'Activo' : 'Bloqueado',
+          'Pais': usuario.pais,
+          'Email':usuario.email,
+          'Telefono':usuario.telefono_movil ,
+          'Perfil':usuario.perfil,
+          'Cargar':"cargar",
+          'Distribuidor':usuario.distribuidor,
+          'Acciones':usuario.acciones,
+
+
+          
+
+
+        })
+      });
+      console.log(datos);
+      const data = {
+        data: datos,
+        columns: [
+          {data: 'Foto'},
+          {data: 'Nombre'},
+          {data: 'Status'},
+          {data: 'Pais'},
+          {data: 'Email'},
+          {data: 'Teléfono'},
+          {data: 'Perfil'},
+          {data: 'Saldo actual'},
+          {data: 'Cargar'},
+          {data: 'Asignar Platafomas'},
+          {data: 'Código afiliado'},
+          {data: 'Distribuidor'},
+          {data: 'Acciones'},
+        ]
+      }
+
+      $('#exportexample').DataTable(data);
+
+    });
+    
+    if($.fn.dataTable.isDataTable('#exportexample')){
+      console.log('TRue')
+    }else{
+      console.log('False')
+    }
+    // $('#exportexample').DataTable().destroy();
+
+    // const urlSearchParams = new URLSearchParams(window.location.search);
+    // const params = Object.fromEntries(urlSearchParams.entries())
+
+    // const urlOriginal = window.location.protocol + '//' + window.location.host + window.location.pathname;
+
+    // let page = params['page'] ?  parseInt(params['page']) : 0;
+
+    // const siguientePagina = () => {
+    //   document.location.href = urlOriginal + '?page=' + (parseInt(page) + parseInt(1))
+    // }
+    
+    // const anteriorPagina = () => {
+    //   numeroPagina = parseInt(page) <= 0 ? 0 : (parseInt(page) - parseInt(1))
+    //   document.location.href = urlOriginal + '?page=' + numeroPagina
+    // }
+    
+     
+
     // Cargar Saldo
 
     function modalCargar(e, id, nombre) {

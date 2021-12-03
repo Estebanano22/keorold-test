@@ -300,11 +300,22 @@ exports.tablaAsignarPlataformas = async (req, res) => {
 
 // Admin Usuarios
 exports.adminUsuariosSuperdistribuidor = async (req, res) => {
+    const { page } = req.query;
+    let off;
+
+    if(page){
+        off  = parseInt(page);
+    }else{
+        off = 0
+    }
+
     const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario } });
     const usuarios = await Usuarios.findAll({
         where: {
             [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } }, { email: { [Op.ne]: 'sergio27chanona@gmail.com' } }],
-        }
+        },
+        limit: 10,
+        offset: off * 10
     });
     const distribuidores = await Usuarios.findAll();
     const plataformas = await Plataformas.findAll({
@@ -318,6 +329,39 @@ exports.adminUsuariosSuperdistribuidor = async (req, res) => {
         titulo: 'Administrador Usuarios',
         breadcrumb: 'Administrador Usuarios',
         classActive: req.path.split('/')[2],
+        usuario,
+        usuarios,
+        plataformas,
+        distribuidores
+    })
+}
+
+exports.adminUsuariosSuperdistribuidor_API = async(req, res) => {
+    const { page } = req.query;
+    let off;
+
+    if(page){
+        off  = parseInt(page);
+    }else{
+        off = 0
+    }
+
+    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario } });
+    const usuarios = await Usuarios.findAll({
+        where: {
+            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } }, { email: { [Op.ne]: 'sergio27chanona@gmail.com' } }],
+        },
+        limit: 10,
+        offset: (off !== 0) ? off * 10 : 10
+    });
+    const distribuidores = await Usuarios.findAll();
+    const plataformas = await Plataformas.findAll({
+        where: {
+            [Op.and]: [{ estado: 1 }, { id_superdistribuidor: req.user.id_usuario }]
+        }
+    });
+
+    res.json({
         usuario,
         usuarios,
         plataformas,

@@ -104,7 +104,9 @@ $(function () {
       },
       lengthChange: false,
       buttons: ['copy', 'excel', 'pdf', 'colvis'],
-      "bSort": false
+      "bSort": false,
+      pagingType: 'simple',
+      bPaginate: false,
    });
    table.buttons().container()
       .appendTo('#exportexample_wrapper .col-md-6:eq(0)');

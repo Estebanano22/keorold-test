@@ -244,6 +244,14 @@ module.exports = function () {
         usuariosController.adminUsuariosSuperdistribuidor
     );
 
+    router.get('/api/adminUsuariosSuperdistribuidor_API',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        dashboardController.countRed,
+        usuariosController.adminUsuariosSuperdistribuidor_API
+    );
+
     router.post('/adminUsuariosSuperdistribuidor/cambioPefil',
         authController.usuarioAutenticado,
         authController.verifyToken,
