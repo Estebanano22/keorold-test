@@ -57,7 +57,7 @@ exports.gananciasRed = async (req, res) => {
         ],
         order: [['fecha', 'DESC']]
     });
-
+    console.log(ganancias)
     const usuarios = await Usuarios.findAll({ where: { super_patrocinador: req.user.super_patrocinador }});
 
     res.render('dashboard/gananciasRed', {

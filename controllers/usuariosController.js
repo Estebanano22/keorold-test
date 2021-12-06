@@ -369,6 +369,26 @@ exports.adminUsuariosSuperdistribuidor_API = async(req, res) => {
     })
 }
 
+exports.adminUsuariosSuperdistribuidorBusqueda = async(req,res)=>{
+    const datosBusqueda = req.body.busquedaValor
+    const busqueda = await Usuarios.findAll({
+        where:{
+            [Op.or]: [
+                {nombre: {[Op.like]: `%${datosBusqueda}%`}},
+                {telefono_movil: {[Op.like]: `%${datosBusqueda}%`}},
+                {patrocinador: {[Op.like]: `%${datosBusqueda}%`}},
+                {perfil: {[Op.like]: `%${datosBusqueda}%`}},
+                {email: {[Op.like]: `%${datosBusqueda}%`}},
+                {pais : {[Op.like]: `%${datosBusqueda}%`}},
+                {saldo : {[Op.like]: `%${datosBusqueda}%`}},
+            ]
+        }
+    })
+    res.json({
+        busqueda
+    })
+}
+
 // Cargar saldo
 exports.cargarSaldo = async (req, res) => {
     const idUsuario = req.body.id;
@@ -485,6 +505,8 @@ exports.usuarios = async (req, res) => {
     const plataformas = await Plataformas.findAll({
         where: { estado: 1 }
     });
+    
+    console.log(usuarios);
 
     res.render('dashboard/usuarios', {
         nombrePagina: 'Administrador Usuarios',

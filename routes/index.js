@@ -251,6 +251,13 @@ module.exports = function () {
         dashboardController.countRed,
         usuariosController.adminUsuariosSuperdistribuidor_API
     );
+    router.post('/dashboard/adminUsuariosSuperdistribuidorBusqueda',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        dashboardController.countRed,
+        usuariosController.adminUsuariosSuperdistribuidorBusqueda
+    )
 
     router.post('/adminUsuariosSuperdistribuidor/cambioPefil',
         authController.usuarioAutenticado,

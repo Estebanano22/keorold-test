@@ -73526,6 +73526,8 @@ body.horizontalmenu {
 .img-circle {
     width: 33px;
     border-radius: 100%;
+    height: 33px;
+    object-fit: cover;
 }
 
 .img-flags {

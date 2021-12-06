@@ -79,12 +79,16 @@
             <div class="col-lg-12">
               <div class="card custom-card">
                 <div class="card-body">
-                  <div>
-                    <h6 class="main-content-label mb-1">Total Usuarios en Plataforma</h6>
-                    <p class="text-muted card-sub-title">A continuación encontrara un reporte detallado con la información de todos los usuarios registrados en la plataforma.</p>
-                  </div>
+                    <div>
+                      <h6 class="main-content-label mb-1">Total Usuarios en Plataforma</h6>
+                      <p class="text-muted card-sub-title">A continuación encontrara un reporte detallado con la información de todos los usuarios registrados en la plataforma.</p>
+                    </div>
                   <div class="table-responsive">
-                    <table class="table table-bordered text-nowrap w-100" id="exportexample">
+                    <label>
+                      <input type="search" class="form-control form-control-sm" placeholder="Buscar..." aria-controls="exportexample" x id="busquedaD">
+                      <button class="btn btn-primary" onclick="busqueda()">Buscar</button>
+                    </label>
+                    <table class="table table-bordered text-nowrap w-100" id="exportexample13">
                       <thead>
                         <tr>
                           <th>Foto</th>
@@ -113,51 +117,30 @@
                         <% } %>
                         <tr>
                           <td class="text-center">
-                            <img src="<%= listaUsuario.foto === null ? '/assetsDashboard/img/users/default.jpg' : listaUsuario.foto %>" alt="" class="img-circle">
                           </td>
-                          <td class="text-capitalize"><%= listaUsuario.nombre %></td>
+                          <td class="text-capitalize">
+                          </td>
                           <td class="text-capitalize text-center">
-                            <span class="text-muted"><i class="far <%= listaUsuario.bloqueo === 0 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' %> mr-1"></i><%= listaUsuario.bloqueo === 0 ? 'Activo' : 'Bloqueado' %></span>
+                            
                           </td>
                           <td class="text-capitalize">
-                            <% paises.data.forEach(pais => { %>
-                            <% if(pais.name === listaUsuario.pais) { %>
-                            <img src="/assetsDashboard/img/flags/<%= pais.cca2 %>.svg" alt="" class="img-flags">
-                            <span class="ml-2"><%= listaUsuario.pais %></span>
-                            <% } %>
-                            <% }) %>
+                            
                           </td>
-                          <td class="text-lowercase"><%= listaUsuario.email %></td>
-                          <td class="text-capitalize"><%= listaUsuario.telefono_movil %></td>
+                          <td class="text-lowercase"></td>
+                          <td class="text-capitalize"></td>
                           <td class="text-capitalize">
-                            <select class="form-control select-sm select2-no-search" name="row-2-office" onchange="cambioPerfil(this, '<%= listaUsuario.id_usuario %>')" data-id="<%= listaUsuario.id_usuario %>">
-                              <option class="text-capitalize" value="<%= listaUsuario.perfil %>" selected><%= listaUsuario.perfil %></option>
-                              <option class="text-capitalize" value="distribuidor">Distribuidor</option>
-                              <option class="text-capitalize" value="reseller">Reseller</option>
-                            </select>
                           </td>
-                          <td class="text-capitalize"><%= valorFormateado %></td>
+                          <td class="text-capitalize"></td>
                           <td class="text-capitalize">
-                            <button class="btn ripple btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCargar" onclick="modalCargar(event, '<%= listaUsuario.id_usuario %>', '<%= listaUsuario.nombre %>')"><i class="ti ti-wallet"></i><span class="ml-2">Cargar saldo</span></button>
+                            </button>
                           </td>
                           <td class="text-capitalize">
-                            <button class="btn ripple btn-secondary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalAsignar" onclick="modalAsignar(event, '<%= listaUsuario.id_usuario %>', '<%= listaUsuario.nombre %>')"><i class="ti ti-view-grid"></i><span class="ml-2">Asignar plataformas</span></button>
+                           
                           </td>
-                          <td class="text-capitalize"><%= listaUsuario.enlace_afiliado %></td>
-                          <% distribuidorName = '' %>
-                          <% distribuidores.forEach(listaDistribuidor => { %>
-                          <% if(listaDistribuidor.enlace_afiliado === listaUsuario.patrocinador) { %>
-                          <% distribuidorName = listaDistribuidor.nombre %>
-                          <% } %>
-                          <% }) %>
-                          <td class="text-capitalize"><%= distribuidorName || '...' %></td>
-
+                          <td class="text-capitalize"></td>
+                          <td class="text-capitalize"></td>
                           <td class="text-capitalize">
-                            <div class="btn btn-list">
-                              <button class="btn ripple btn-light" title="Bloquear" onclick="bloqueoUsuario(event, '<%= listaUsuario.id_usuario %>')"><i class="ti-na"></i></button>
-                              <a class="btn ripple btn-warning modal-effect" title="Editar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEditar" onclick="modalEditar(event, '<%= listaUsuario.id_usuario %>', '<%= listaUsuario.nombre %>', '<%= listaUsuario.direccion %>', '<%= listaUsuario.telefono_movil %>', '<%= listaUsuario.pais %>', '<%= listaUsuario.email %>')"><i class="far fa-edit"></i></a>
-                              <a class="btn ripple btn-danger modal-effect" title="Eliminar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEliminar" onclick="modalEliminar(event, '<%= listaUsuario.id_usuario %>', '<%= listaUsuario.nombre %>')"><i class="far fa-trash-alt"></i></a>
-                            </div>
+                            
                           </td>
                         </tr>
                         <% } %>
@@ -167,11 +150,11 @@
                     </table>
                     <div style="text-align: left;">
                       <ul class="pagination">
-                        <li class="paginate_button page-item" id="exportexample_previous">
-                          <a href="#" id="anterior" onclick="return anteriorPagina();" class="btn btn-primary">Anterior</a>
+                        <li class="paginate_button page-item" id="exportexample13_previous">
+                          <a href="#" id="anterior" onclick="return siguienteTabla(contador === 1 ? contador == 1: contador--);" class="btn btn-secundary">Anterior</a>
                         </li>
-                        <li class="paginate_button page-item" id="exportexample_next">
-                          <a href="#" id="siguiente" onclick="return siguientePagina();" class="btn btn-secundary">Siguiente</a>
+                        <li class="paginate_button page-item" id="exportexample13_next">
+                          <a href="#" id="siguiente" onclick="siguienteTabla(contador++)" class="btn btn-primary">Siguiente</a>
                         </li>
                       </ul>
                     </div>
@@ -422,13 +405,17 @@
   <% } %>
 
   <script>
-    // let table = document.getElementById('exportexample');
-    $('#exportexample').DataTable().clear();
-    $('#exportexample').DataTable().destroy();
+    let contador = 0
+    function siguienteTabla(contadorParametro) {
+    var table = document.getElementById('exportexample13');
+    $('#exportexample13').DataTable().clear();
+    $('#exportexample13').DataTable().destroy();
+    contadorParametro
     
     async function fetchUsers(){
+      $('#global-loader').addClass("d-block");
       return axios({
-        url: '/api/adminUsuariosSuperdistribuidor_API?page=2',
+        url: `/api/adminUsuariosSuperdistribuidor_API?page=${contador}`,
         method: 'GET'
       }).then(rest => {
         return rest.data;
@@ -440,86 +427,209 @@
           });
       })
     }
-
-    let datos = [];
-    let usuariosData = [{
-      'Foto': 'hola',
-      'Nombre': 'Dilancho'
-    },{
-      'Foto': 'hola',
-      'Nombre': 'Dilancho'
-    }];
+    let paises 
     fetchUsers().then(res => {
-      usuarios = res.usuarios;
-      console.log(usuarios);
-      usuarios.forEach(usuario => {
-      console.log(usuario )
-        datos.push({
-          'Foto': (usuario.foto) ? (usuario.foto): '...' ,
-          'Nombre': usuario.nombre, 
-          'Status': usuario.bloqueo === 0 ? 'Activo' : 'Bloqueado',
-          'Pais': usuario.pais,
-          'Email':usuario.email,
-          'Telefono':usuario.telefono_movil ,
-          'Perfil':usuario.perfil,
-          'Cargar':"cargar",
-          'Distribuidor':usuario.distribuidor,
-          'Acciones':usuario.acciones,
+      $.getJSON( "/assetsDashboard/json/paises.json", function( json ) {
+        paises = json;
+        var datos = []
+       usuarios = res.usuarios;
+       console.log(usuarios)
+       distribuidores = res.distribuidores;
+       usuarios.forEach(usuario => {
+         var distribuidorName = ''
+         distribuidores.forEach(listaD =>{
+           if (listaD.enlace_afiliado === usuario.patrocinador) {
+               distribuidorName = listaD.nombre
+           }
+         })
+         datos.push({
+           'Foto': (usuario.foto) ? (usuario.foto): '...' ,
+           'Nombre': usuario.nombre, 
+           'Status': usuario.bloqueo === 0 ? 'Activo' : 'Bloqueado',
+           'Pais': usuario.pais,
+           'Email':usuario.email,
+           'Teléfono':usuario.telefono_movil,
+           'Perfil':usuario.perfil,
+           'Saldo actual': usuario.saldo,
+           'Cargar': usuario,
+           'Asignar Plataformas': usuario,
+           'Código afiliado': usuario.patrocinador,
+           'Distribuidor': distribuidorName,
+           'Acciones':usuario,
+         })
+        });
+        $('#exportexample13').DataTable({
+          paging: false,
+          searching: false,
+          info: false,
+          data: datos,
+          destroy: true,
+      responsive: true,
+      columns: [
+        { title: "Foto", data: 'Foto', "render": function(data, type, row){
+          if (data !== '...') {
+            return `<img src="${data}" alt="" class="img-circle">`;
+          }else{
+            return `<img src="/assetsDashboard/img/users/default.jpg" alt="" class="img-circle">`;
+          }
+        } },
+        { title: "Nombre", data: 'Nombre' },
+        { title: "Status", data: 'Status' },
+        { title: "Pais", data: 'Pais', "render": function (data, type, row) {
+          let seleccionPaises = paises.find(item => item.name === data)
+          return `<img class="img-flags" src="/assetsDashboard/img/flags/${seleccionPaises.cca2}.svg" >`
+        } },
+        { title: "Email", data: 'Email' },
+        { title: "Teléfono", data: 'Teléfono' },
+        { title: "Perfil", data: 'Perfil' },
+        { title: "Saldo actual", data: 'Saldo actual' },
+        { title: "Cargar", 
+          data: 'Cargar', 
+          "render": function(data,type, row) {
+           return `<button class="btn ripple btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCargar" onclick="modalCargar(event, '${data.id_usuario}', '${data.nombre}')">Cargar saldo</span></button>`
+        } },
+        { title: "Asignar Plataformas", 
+          data: 'Asignar Plataformas', 
+          "render": function(data,type, row) {
+           return `<button class="btn ripple btn-secondary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalAsignar" onclick="modalAsignar(event, '${data.id_usuario}', '${data.nombre}')">Asignar plataformas</span></button>`
+        } },
+        { title: "Código afiliado", data: 'Código afiliado' },
+        { title: "Distribuidor", data: 'Distribuidor' },
+        { title: "Acciones", 
+          data: 'Acciones', 
+          "render": function(data,type, row) {
+            return `<div class="btn btn-list">
+                              <button class="btn ripple btn-light" title="Bloquear" onclick="bloqueoUsuario(event, '${data.id_usuario}')"><i class="ti-na"></i></button>
+                              <a class="btn ripple btn-warning modal-effect" title="Editar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEditar" onclick="modalEditar(event, '${data.id_usuario}', '${data.nombre}', '${data.direccion}', '${data.direccion.telefono_movil}', '${data.pais}', '${data.email}')"><i class="far fa-edit"></i></a>
+                              <a class="btn ripple btn-danger modal-effect" title="Eliminar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEliminar" onclick="modalEliminar(event, '${data.id_usuario}', '${data.nombre}')"><i class="far fa-trash-alt"></i></a>
+                            </div>`
+          }
+           },
+      ]
+    });
+    $('#global-loader').removeClass("d-block");
 
+      });
+  })
+    }
+  siguienteTabla()
 
-          
-
+  function busqueda() {
+    const busquedaValor = document.getElementById("busquedaD").value
+    if (busquedaValor == '') {
+      console.log()
+      swal({
+        title: "Agrega un valor para realizar la busqueda",
+        type: 'error'
+      })
+    }else{
+      function fetchBusqueta() {
+        $('#global-loader').addClass("d-block");
+        return axios({
+          method: 'POST',
+          url: `/dashboard/adminUsuariosSuperdistribuidorBusqueda`,
+          data: {busquedaValor:busquedaValor},
+        }).then(rest => {
+          console.log(rest.data)
+          return rest.data;
+        }).catch(err => {
+           swal({
+               title: 'Request Error',
+               text: '500 - Admin Usuarios Superdistribuidor',
+               type: 'error'
+             });
+          console.log(err)
+        })
+      }
+      fetchBusqueta().then(res =>{
+        var table = document.getElementById('exportexample13');
+        $('#exportexample13').DataTable().clear();
+        $('#exportexample13').DataTable().destroy();
+        const busqueda = res
+        console.log(busqueda)
+        $.getJSON( "/assetsDashboard/json/paises.json", function( json ) {
+          paises = json
+          var datos = []
+        busqueda.busqueda.forEach(usuario=>{
+          var distribuidorName = ''
+         distribuidores.forEach(listaD =>{
+           if (listaD.enlace_afiliado === usuario.patrocinador) {
+               distribuidorName = listaD.nombre
+           }
+         })
+          datos.push({
+           'Foto': (usuario.foto) ? (usuario.foto): '...' ,
+           'Nombre': usuario.nombre, 
+           'Status': usuario.bloqueo === 0 ? 'Activo' : 'Bloqueado',
+           'Pais': usuario.pais,
+           'Email':usuario.email,
+           'Teléfono':usuario.telefono_movil,
+           'Perfil':usuario.perfil,
+           'Saldo actual': usuario.saldo,
+           'Cargar': usuario,
+           'Asignar Plataformas': usuario,
+           'Código afiliado': usuario.patrocinador,
+           'Distribuidor': distribuidorName,
+           'Acciones':usuario,
+         })
+        })
+        $('#exportexample13').DataTable({
+          paging: false,
+          searching: false,
+          info: false,
+          data: datos,
+          destroy: true,
+      responsive: true,
+      columns: [
+        { title: "Foto", data: 'Foto', "render": function(data, type, row){
+          if (data !== '...') {
+            return `<img src="${data}" alt="" class="img-circle">`;
+          }else{
+            return `<img src="/assetsDashboard/img/users/default.jpg" alt="" class="img-circle">`;
+          }
+        } },
+        { title: "Nombre", data: 'Nombre' },
+        { title: "Status", data: 'Status' },
+        { title: "Pais", data: 'Pais', "render": function (data, type, row) {
+          let seleccionPaises = paises.find(item => item.name === data)
+          return `<img class="img-flags" src="/assetsDashboard/img/flags/${seleccionPaises.cca2}.svg" >`
+        } },
+        { title: "Email", data: 'Email' },
+        { title: "Teléfono", data: 'Teléfono' },
+        { title: "Perfil", data: 'Perfil' },
+        { title: "Saldo actual", data: 'Saldo actual' },
+        { title: "Cargar", 
+          data: 'Cargar', 
+          "render": function(data,type, row) {
+           return `<button class="btn ripple btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCargar" onclick="modalCargar(event, '${data.id_usuario}', '${data.nombre}')">Cargar saldo</span></button>`
+        } },
+        { title: "Asignar Plataformas", 
+          data: 'Asignar Plataformas', 
+          "render": function(data,type, row) {
+           return `<button class="btn ripple btn-secondary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalAsignar" onclick="modalAsignar(event, '${data.id_usuario}', '${data.nombre}')">Asignar plataformas</span></button>`
+        } },
+        { title: "Código afiliado", data: 'Código afiliado' },
+        { title: "Distribuidor", data: 'Distribuidor' },
+        { title: "Acciones", 
+          data: 'Acciones', 
+          "render": function(data,type, row) {
+            return `<div class="btn btn-list">
+                              <button class="btn ripple btn-light" title="Bloquear" onclick="bloqueoUsuario(event, '${data.id_usuario}')"><i class="ti-na"></i></button>
+                              <a class="btn ripple btn-warning modal-effect" title="Editar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEditar" onclick="modalEditar(event, '${data.id_usuario}', '${data.nombre}', '${data.direccion}', '${data.direccion.telefono_movil}', '${data.pais}', '${data.email}')"><i class="far fa-edit"></i></a>
+                              <a class="btn ripple btn-danger modal-effect" title="Eliminar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEliminar" onclick="modalEliminar(event, '${data.id_usuario}', '${data.nombre}')"><i class="far fa-trash-alt"></i></a>
+                            </div>`
+          }
+           },
+      ]
+    });
+    $('#global-loader').removeClass("d-block");
 
         })
-      });
-      console.log(datos);
-      const data = {
-        data: datos,
-        columns: [
-          {data: 'Foto'},
-          {data: 'Nombre'},
-          {data: 'Status'},
-          {data: 'Pais'},
-          {data: 'Email'},
-          {data: 'Teléfono'},
-          {data: 'Perfil'},
-          {data: 'Saldo actual'},
-          {data: 'Cargar'},
-          {data: 'Asignar Platafomas'},
-          {data: 'Código afiliado'},
-          {data: 'Distribuidor'},
-          {data: 'Acciones'},
-        ]
-      }
-
-      $('#exportexample').DataTable(data);
-
-    });
-    
-    if($.fn.dataTable.isDataTable('#exportexample')){
-      console.log('TRue')
-    }else{
-      console.log('False')
+        
+        })
     }
-    // $('#exportexample').DataTable().destroy();
-
-    // const urlSearchParams = new URLSearchParams(window.location.search);
-    // const params = Object.fromEntries(urlSearchParams.entries())
-
-    // const urlOriginal = window.location.protocol + '//' + window.location.host + window.location.pathname;
-
-    // let page = params['page'] ?  parseInt(params['page']) : 0;
-
-    // const siguientePagina = () => {
-    //   document.location.href = urlOriginal + '?page=' + (parseInt(page) + parseInt(1))
-    // }
+  }
     
-    // const anteriorPagina = () => {
-    //   numeroPagina = parseInt(page) <= 0 ? 0 : (parseInt(page) - parseInt(1))
-    //   document.location.href = urlOriginal + '?page=' + numeroPagina
-    // }
-    
-     
 
     // Cargar Saldo
 
