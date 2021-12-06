@@ -14,6 +14,13 @@
         <a class="nav-link" href="/dashboard/inicio"><span class="shape1"></span><span class="shape2"></span><i class="ti-home sidemenu-icon"></i><span class="sidemenu-label">Inicio</span></a>
       </li>
 
+      <!-- aplicaciones -->
+      <li class="nav-header"><span class="nav-label">aplicaciones</span></li>
+      <li class="nav-item <%= classActive === 'aplicaciones' ? 'active' : '' %>">
+        <a class="nav-link" href="../aplicaciones"><span class="shape1"></span><span class="shape2"></span><i class="ti-link sidemenu-icon"></i><span class="sidemenu-label">Aplicaciones</span></a>
+      </li>
+      
+
       <% if(usuario.perfil === 'admin') { %>
 
       <!-- Usuarios -->
