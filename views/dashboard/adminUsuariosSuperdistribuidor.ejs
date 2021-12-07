@@ -433,7 +433,6 @@
         paises = json;
         var datos = []
        usuarios = res.usuarios;
-       console.log(usuarios)
        distribuidores = res.distribuidores;
        usuarios.forEach(usuario => {
          var distribuidorName = ''
@@ -546,7 +545,6 @@
         $('#exportexample13').DataTable().clear();
         $('#exportexample13').DataTable().destroy();
         const busqueda = res
-        console.log(busqueda)
         $.getJSON( "/assetsDashboard/json/paises.json", function( json ) {
           paises = json
           var datos = []
@@ -921,7 +919,6 @@
         id: item,
         valor: objetoValores[ix]
       }]);
-      console.log(resultado)
       const id = document.getElementById("idUserAsignar").value;
 
       $('#global-loader').addClass("d-block");
