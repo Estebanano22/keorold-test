@@ -346,10 +346,10 @@ exports.adminUsuariosSuperdistribuidor_API = async(req, res) => {
         off = 0
     }
 
-    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario } });
+    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario },  } );
     const usuarios = await Usuarios.findAll({
         where: {
-            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } }, { email: { [Op.ne]: 'sergio27chanona@gmail.com' } }],
+            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } },],
         },
         limit: 10,
         offset: (off !== 0) ? off * 10 : 10
@@ -357,7 +357,7 @@ exports.adminUsuariosSuperdistribuidor_API = async(req, res) => {
     const distribuidores = await Usuarios.findAll();
     const plataformas = await Plataformas.findAll({
         where: {
-            [Op.and]: [{ estado: 1 }, { id_superdistribuidor: req.user.id_usuario }]
+            [Op.and]: [{ estado: 1 }, { id_superdistribuidor: req.user.id_usuario }],
         }
     });
 
@@ -381,6 +381,9 @@ exports.adminUsuariosSuperdistribuidorBusqueda = async(req,res)=>{
                 {email: {[Op.like]: `%${datosBusqueda}%`}},
                 {pais : {[Op.like]: `%${datosBusqueda}%`}},
                 {saldo : {[Op.like]: `%${datosBusqueda}%`}},
+            ],
+            [Op.and]:[
+                [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } },]
             ]
         }
     })
