@@ -360,7 +360,6 @@ exports.adminUsuariosSuperdistribuidor_API = async(req, res) => {
             [Op.and]: [{ estado: 1 }, { id_superdistribuidor: req.user.id_usuario }],
         }
     });
-
     res.json({
         usuario,
         usuarios,
