@@ -142,6 +142,7 @@ exports.verifyTransaction = async (req, res) =>{
 
 exports.updateEpaycoTransaction = async (req, res) => {
     const refEpayco = req.body.ref_epayco;
+    const newRefEpayco = refEpayco.substr(0, 8)
     await axios({
         url: 'https://apify.epayco.co/login/mail',
         headers: {
@@ -162,7 +163,7 @@ exports.updateEpaycoTransaction = async (req, res) => {
                 },
                 data: {
                     filter:{
-                        referencePayco: refEpayco
+                        referencePayco: newRefEpayco
                     }
                 }
             }).then(async (rest2) => {
