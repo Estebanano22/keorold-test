@@ -441,7 +441,7 @@
                distribuidorName = listaD.nombre
            }
          })
-         datos.push({
+           datos.push({
            'Foto': (usuario.foto) ? (usuario.foto): '...' ,
            'Nombre': usuario.nombre, 
            'Status': usuario.bloqueo === 0 ? 'Activo' : 'Bloqueado',
@@ -487,11 +487,20 @@
         } },
         { title: "Email", data: 'Email' },
         { title: "Teléfono", data: 'Teléfono' },
-        { title: "Perfil", data: 'Perfil' },
+        { title: "Perfil", 
+          data: 'Cargar',
+          "render": function(data,type, row) {
+           return `<select class="form-control select-sm select2-no-search" name="row-2-office" onchange="cambioPerfil(this, '${data.id_usuario}')" data-id="${data.id_usuario}">
+                              <option class="text-capitalize" value="${data.perfil}" selected>${data.perfil}</option>
+                              <option class="text-capitalize" value="distribuidor">Distribuidor</option>
+                              <option class="text-capitalize" value="reseller">Reseller</option>
+                            </select>`
+          } },
         { title: "Saldo actual", data: 'Saldo actual' },
         { title: "Cargar", 
           data: 'Cargar', 
           "render": function(data,type, row) {
+            console.log(data)
            return `<button class="btn ripple btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCargar" onclick="modalCargar(event, '${data.id_usuario}', '${data.nombre}')">Cargar saldo</span></button>`
         } },
         { title: "Asignar Plataformas", 
@@ -607,7 +616,15 @@
         } },
         { title: "Email", data: 'Email' },
         { title: "Teléfono", data: 'Teléfono' },
-        { title: "Perfil", data: 'Perfil' },
+        { title: "Perfil", 
+          data: 'Cargar',
+          "render": function(data,type, row) {
+           return `<select class="form-control select-sm select2-no-search" name="row-2-office" onchange="cambioPerfil(this, '${data.id_usuario}')" data-id="${data.id_usuario}">
+                              <option class="text-capitalize" value="${data.perfil}" selected>${data.perfil}</option>
+                              <option class="text-capitalize" value="distribuidor">Distribuidor</option>
+                              <option class="text-capitalize" value="reseller">Reseller</option>
+                            </select>`
+          } },
         { title: "Saldo actual", data: 'Saldo actual' },
         { title: "Cargar", 
           data: 'Cargar', 
