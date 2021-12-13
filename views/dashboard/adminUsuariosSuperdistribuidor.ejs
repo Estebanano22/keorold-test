@@ -445,7 +445,7 @@
            'Foto': (usuario.foto) ? (usuario.foto): '...' ,
            'Nombre': usuario.nombre, 
            'Status': usuario.bloqueo === 0 ? 'Activo' : 'Bloqueado',
-           'Pais': usuario.pais,
+           'Pais': usuario.pais === 'Seleccione un pais' ? 'co' : usuario.pais,
            'Email':usuario.email,
            'Teléfono':usuario.telefono_movil,
            'Perfil':usuario.perfil,
@@ -476,6 +476,13 @@
         { title: "Status", data: 'Status' },
         { title: "Pais", data: 'Pais', "render": function (data, type, row) {
           let seleccionPaises = paises.find(item => item.name === data)
+          if (seleccionPaises == undefined || null) {
+            seleccionPaises = {
+              "cca2": "co",
+              "name": "Colombia"
+            }
+          }
+
           return `<img class="img-flags" src="/assetsDashboard/img/flags/${seleccionPaises.cca2}.svg" >`
         } },
         { title: "Email", data: 'Email' },
@@ -559,7 +566,7 @@
            'Foto': (usuario.foto) ? (usuario.foto): '...' ,
            'Nombre': usuario.nombre, 
            'Status': usuario.bloqueo === 0 ? 'Activo' : 'Bloqueado',
-           'Pais': usuario.pais,
+           'Pais': usuario.pais.cca2 === 'Seleccione un pais' ? 'co' : usuario.pais ,
            'Email':usuario.email,
            'Teléfono':usuario.telefono_movil,
            'Perfil':usuario.perfil,
@@ -590,6 +597,12 @@
         { title: "Status", data: 'Status' },
         { title: "Pais", data: 'Pais', "render": function (data, type, row) {
           let seleccionPaises = paises.find(item => item.name === data)
+          if (seleccionPaises == undefined || null) {
+            seleccionPaises = {
+              "cca2": "co",
+              "name": "Colombia"
+            }
+          }
           return `<img class="img-flags" src="/assetsDashboard/img/flags/${seleccionPaises.cca2}.svg" >`
         } },
         { title: "Email", data: 'Email' },
