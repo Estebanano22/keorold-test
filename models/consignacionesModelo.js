@@ -39,6 +39,10 @@ const Consignaciones = db.define('consignaciones', {
         type: Sequelize.STRING(50),
         defaultValue : null
     },
+    extra_ref1: {
+        type: Sequelize.STRING(300),
+        defaultValue : null
+    },
     celularConsignacion: {
         type: Sequelize.STRING(50),
         defaultValue : null

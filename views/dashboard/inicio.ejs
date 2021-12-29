@@ -57,11 +57,40 @@
                     <% publicidad.forEach(listaPublicidad => { %>
                     <% if(listaPublicidad.tipo === '1') { %>
                     <div class="carousel-item">
-                      <img src="<%= listaPublicidad.imagen%>" class="d-block w-100" alt="..." style="border-radius: 15px;">
+                      <img src="<%= listaPublicidad.imagen %>" class="d-block w-100" alt="..." style="border-radius: 15px;">
                     </div>
                     <% } %>
                     <% }) %>
                     <% } %>
+
+                    <% let asign = 0; %>
+                    <% if(publicidad.length) { %>
+                    <% publicidad.forEach(listaPublicidad => { %>
+                    <% if(listaPublicidad.tipo === '3' && asign < 1) { %>
+                    <% asign++; %>
+                    <!-- Modal Subir -->
+                    <div class="modal" id="modalPublicidadPopUp<%= asign %>">
+                      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                        <div class="modal-content modal-content-demo">
+                          <div class="modal-body p-0">
+                            <p style="background-color: white; position: absolute; padding: 7px; right: 0; border-bottom-left-radius: 10px;">
+                              <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                            </p>
+                            <img src="<%= listaPublicidad.imagen %>" alt="...">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <% } %>
+                    <% }) %>
+                    <% } %>
+                    <script>
+                      if(document.getElementById('modalPublicidadPopUp1')){
+                        console.log('Si encontré la imagen');
+                      }else{
+                        console.log('no c mamo');
+                      }
+                    </script>
                   </div>
                   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

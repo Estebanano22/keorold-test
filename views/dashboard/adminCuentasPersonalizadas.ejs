@@ -69,6 +69,7 @@
                           <th>Distribuidor</th>
                           <th>Vendedor</th>
                           <th>Perfil vendedor</th>
+                          <th>Saldo vendedor</th>
                           <th>Logo</th>
                           <th>Plataforma</th>
                           <th>Tipo plataforma</th>
@@ -77,9 +78,11 @@
                           <th>Password</th>
                           <th>Pantalla</th>
                           <th>Pin</th>
+                          <th>Comentario</th>
                           <th>Fecha Compra</th>
                           <th>Fecha Solcitud</th>
                           <th>Acciones</th>
+                          <th>Reenviar Whatsapp</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -95,6 +98,12 @@
                           <td class="text-left text-capitalize"><%= nombre %></td>
                           <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
                           <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaCuentas.usuario.perfil %></td>
+                          <% if(listaCuentas.usuario.pais === 'Colombia') { %>
+                          <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCuentas.usuario.saldo); %>
+                          <% } else { %>
+                          <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaCuentas.usuario.saldo); %>
+                          <% } %>
+                          <td class="text-left text-capitalize text-primary font-weight-bold"><%= valorFormateado %></td>
                           <td class="text-center">
                             <img src="<%= listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaCuentas.plataforma.logo %>" alt="" class="img-circle">
                           </td>
@@ -105,12 +114,16 @@
                             </span>
                           </td>
                           <td class="text-capitalize text-center">
-                            <span class="text-muted"><i class="far <%= listaCuentas.estado === 1 ? 'fa-check-circle text-success' : 'fa-minus-square text-warning' %> mr-1"></i><%= listaCuentas.estado === 1 ? 'Gestionada' : 'Sin Gestionar' %></span>
+                            <span class="text-muted"><i class="<%= listaCuentas.estado === 1 ? 'far fa-check-circle text-success' : (listaCuentas.estado === 2) ? 'fa fa-ban text-danger' : 'far fa-minus-square text-warning' %> mr-1"></i><%= listaCuentas.estado === 1 ? 'Gestionada' : (listaCuentas.estado === 2) ? 'Rechazada' : 'Sin gestionar' %></span>
                           </td>
                           <td class="text-left"><%= listaCuentas.user === null ? 'Sin dato ingresado' : listaCuentas.user %></td>
                           <td class="text-left"><%= listaCuentas.password === null ? 'Sin dato ingresado' : listaCuentas.password %></td>
                           <td class="text-left"><%= listaCuentas.pantalla === null ? 'Sin dato ingresado' : listaCuentas.pantalla %></td>
                           <td class="text-left"><%= listaCuentas.pin === null ? 'Sin dato ingresado' : listaCuentas.pin %></td>
+                          <% let comentario = ''; %>
+                          <% let classComentario = ''; %>
+                          <% if(listaCuentas.estado === 2){ comentario = listaCuentas.comentario_rechazo; classComentario = 'text-warning' }else{comentario='Sin comentario'} %>
+                          <td class="text-center <%= listaCuentas.estado === 2 ? 'text-warning' : 'text-muted' %>"><%= comentario %></td>
                           <td class="text-center <%= listaCuentas.fechaCompra === null ? 'text-warning' : '' %>"><%= listaCuentas.fechaCompra === null ? 'Sin fecha de compra' : moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-capitalize">
@@ -118,8 +131,10 @@
                               <a class="btn ripple btn-primary modal-effect" title="Renovar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalPersonalizar" onclick="modalPersonalizar(event, '<%= listaCuentas.idCuenta %>')"><i class="fe fe-upload"></i></a>
                               <a class="btn ripple btn-warning modal-effect" title="Editar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEditar" onclick="modalEditar(event, '<%= listaCuentas.idCuenta %>')"><i class="far fa-edit"></i></a>
                               <a class="btn ripple btn-danger modal-effect" title="Eliminar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalEliminar" onclick="modalEliminar(event, '<%= listaCuentas.idCuenta %>')"><i class="far fa-trash-alt"></i></a>
+                              <a class="btn ripple btn-warning modal-effect" title="Rechazar" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalRechazar" onclick="modalRechazar(event, '<%= listaCuentas.idCuenta %>')"><i class="fa fa-ban"></i></a>
                             </div>
                           </td>
+                          <td><a class="btn ripple btn-outline-success" id="btnWhatsappNormal" href="https://api.whatsapp.com/send?phone=<%= listaCuentas.telefono %>&text=Hola!%20%F0%9F%98%80%20%20*<%=  listaCuentas.usuario.nombre %>*%2C%20estos%20son%20los%20datos%20de%20tu%20cuenta.%20%0A%0A%F0%9F%93%B2%20%20*PLATAFORMA%3A*%20<%= listaCuentas.plataforma.plataforma %>%20%0A%F0%9F%99%8D%E2%80%8D%E2%99%82%EF%B8%8F%20%20*USUARIO%3A*%20<%= listaCuentas.user === null ? 'Sin dato ingresado' : listaCuentas.user %>%20%0A%F0%9F%94%91%20%20*CONTRASE%C3%91A%3A*%20<%= listaCuentas.user === null ? 'Sin dato ingresado' : listaCuentas.password %>%20%0A%F0%9F%93%8C%20*Pantalla%3A*%20<%= listaCuentas.pantalla === null ? 'Sin dato ingresado' : listaCuentas.pantalla %>%20%0A%F0%9F%93%8C%20*Pin%3A*%20<%= listaCuentas.pin === null ? 'Sin dato ingresado' : listaCuentas.pin %>" target="_blank"><i class="fab fa-whatsapp"></i> Enviar whatsapp</a></td>
                         </tr>
                         <% } %>
                         <% }) %>
@@ -269,6 +284,29 @@
           <p class="mg-b-2 mg-x-20 mb-4">¿Esta seguro de eliminar esta cuenta personalizada?</p>
           <input type="hidden" value="" id="idEliminar">
           <button aria-label="Close" class="btn ripple btn-danger pd-x-25" data-dismiss="modal" type="button" onclick="eliminarCuenta(event)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Rechazar -->
+
+  <div class="modal" id="modalRechazar">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content tx-size-sm">
+        <div class="modal-body tx-center pd-y-20 pd-x-20">
+          <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+          <i class="icon icon ion-ios-close-circle-outline tx-100 tx-warning lh-1 mg-t-20 d-inline-block"></i>
+          <h4 class="tx-warning mg-b-20">¡Hola!</h4>
+          <p class="mg-b-2 mg-x-20 mb-4">Explica la razón del rechazo de la cuenta</p>
+          <input type="hidden" value="" id="idRechazar">
+          <div class="form-group p-3">
+            <div class="row row-sm">
+              <label class="form-label">Razón del rechazo</label>
+              <textarea class="form-control" placeholder="Razón de rechazo" value="" id="razon_rechazo"></textarea>
+            </div>
+          </div>
+          <button aria-label="Close" class="btn ripple btn-warning pd-x-25" data-dismiss="modal" type="button" onclick="rechazarCuenta(event)">Rechazar</button>
         </div>
       </div>
     </div>
@@ -529,6 +567,70 @@
           swal({
             title: 'Request Error',
             text: '500 - Admin Cuentas personalizadas',
+            type: 'error'
+          });
+        })
+
+    }
+
+    function modalRechazar(e, id) {
+      const idRechazar = document.getElementById("idRechazar");
+      idRechazar.value = id;
+    }
+
+    function rechazarCuenta(e) {
+
+      $('#global-loader').addClass("d-block");
+      $('#global-loader').removeClass("d-none");
+
+      const idRechazar = document.getElementById("idRechazar").value.trim();
+      const razon_rechazo = document.getElementById("razon_rechazo").value.trim();
+
+      console.log(idRechazar);
+      console.log(razon_rechazo);
+      fetch('/adminCuentasBajoPedido/rechazarCuenta', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: idRechazar,
+            razon_rechazo: razon_rechazo
+          })
+        })
+        .then(res => res.text())
+        .then(data => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          const respuesta = JSON.parse(data);
+          if (respuesta.resp === 'success') {
+
+            swal({
+                title: respuesta.titulo,
+                text: respuesta.descripcion,
+                type: respuesta.resp,
+                confirmButtonColor: '#57a94f',
+                closeOnClickOutside: false
+              },
+              function(isConfirm) {
+                if (isConfirm) {
+                  location.reload();
+                }
+              });
+
+          } else {
+
+            $('#alertaEditar').fadeIn();
+            const error = '<button aria-label="Close" class="close" data-dismiss="alert" type="button"> <span aria-hidden="true" class="text-danger">×</span> </button> <strong>Oh no!</strong> ' + respuesta.descripcion + '.';
+            $('#alertaEditar').html(error);
+            $('#alertaEditar').delay(15000).fadeOut();
+          }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Cuentas bajo pedido',
             type: 'error'
           });
         })

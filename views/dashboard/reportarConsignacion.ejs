@@ -41,23 +41,38 @@
 
           <!-- =============================
 							Inicio Componentes Pagina
+              4cad3d26-8ed0-4d8c-ac3a-d83b8e0fc311
 						============================== -->
 
           <!-- Row -->
           <div class="row row-sm">
             <% if(medios.length) { %>
             <% medios.forEach(listaMedios => { %>
-            <div class="col-md-6 col-lg-3">
-              <div class="card overflow-hidden custom-card ">
-                <img alt="Image" class="img-fluid b-img" src="<%- listaMedios.imagen %>">
-                <div class="card-body">
-                  <p class="text-uppercase font-weight-bold"><%- listaMedios.titulo %></p>
-                  <p class="card-text"><%- listaMedios.descripcionCorta %></p>
-                  <button class="btn btn-secondary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaMedios.idMedio %>')"><i class="fe fe-eye"></i></button>
-                  <button class="btn btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalConsignacion" onclick="modalConsignacion(event, '<%= listaMedios.idMedio %>')">Reportar consignación</button>
+            <% if(listaMedios.idMedio === "4cad3d26-8ed0-4d8c-ac3a-d83b8e0fc311" && usuario.pais === 'Ecuador'){ %>
+              <div class="col-md-6 col-lg-3">
+                <div class="card overflow-hidden custom-card ">
+                  <img alt="Image" class="img-fluid b-img" src="<%- listaMedios.imagen %>">
+                  <div class="card-body">
+                    <p class="text-uppercase font-weight-bold"><%- listaMedios.titulo %></p>
+                    <p class="card-text"><%- listaMedios.descripcionCorta %></p>
+                    <button class="btn btn-secondary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaMedios.idMedio %>')"><i class="fe fe-eye"></i></button>
+                    <button class="btn btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalConsignacionEpayco" onclick="modalConsignacionE(event, '<%= listaMedios.idMedio %>')">Reportar consignación</button>
+                  </div>
                 </div>
               </div>
-            </div>
+            <% } else { %>
+              <div class="col-md-6 col-lg-3">
+                <div class="card overflow-hidden custom-card ">
+                  <img alt="Image" class="img-fluid b-img" src="<%- listaMedios.imagen %>">
+                  <div class="card-body">
+                    <p class="text-uppercase font-weight-bold"><%- listaMedios.titulo %></p>
+                    <p class="card-text"><%- listaMedios.descripcionCorta %></p>
+                    <button class="btn btn-secondary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '<%= listaMedios.idMedio %>')"><i class="fe fe-eye"></i></button>
+                    <button class="btn btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalConsignacion" onclick="modalConsignacion(event, '<%= listaMedios.idMedio %>')">Reportar consignación</button>
+                  </div>
+                </div>
+              </div>
+            <% } %>
             <% }) %>
             <% } %>
           </div>
@@ -80,9 +95,11 @@
                           <th>Fecha</th>
                           <th>Valor</th>
                           <th>Referencia</th>
+                          <th>Recibo externo</th>
                           <th>Estado</th>
                           <th>Comprobante</th>
                           <th>Observaciones</th>
+                          <th>Revisión</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -107,14 +124,28 @@
                           <td class="text-left text-uppercase">
                             <%- listaConsignaciones.referencia %>
                           </td>
+                          <td class="text-left text-uppercase">
+                            <%- listaConsignaciones.extra_ref1 ? listaConsignaciones.extra_ref1 : 'No aplica' %>
+                          </td>
                           <td class="text-capitalize text-center">
-                            <span class="text-muted"><i class="far <%= listaConsignaciones.estado === 1 ? 'fa-check-circle text-success' : listaConsignaciones.estado === 2 ? 'fa-times-circle text-danger' : 'fa-circle text-warning' %> mr-1"></i><%= listaConsignaciones.estado === 1 ? 'Aprobada' : listaConsignaciones.estado === 2 ? 'Rechazada' : 'En revisión' %></span>
+                            <span class="text-muted"><i class="far <%= listaConsignaciones.estado === 1 ? 'fa-check-circle text-success' : listaConsignaciones.estado === 3 ? 'fa-check-circle text-warning' : listaConsignaciones.estado === 0 ? 'fa-circle text-warning' : 'fa-times-circle text-danger' %> mr-1"></i><%= listaConsignaciones.estado === 1 ? 'Aprobada' : listaConsignaciones.estado === 3 ? 'En revisión'  : listaConsignaciones.estado === 0 ? 'En revisión' : 'Rechazada' %></span>
                           </td>
                           <td class="text-left">
                             <a data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalComprobante" onclick="modalComprobante(event, '<%= listaConsignaciones.comprobante %>')"><%- listaConsignaciones.comprobante %></a>
                           </td>
                           <td class="text-left">
                             <%- listaConsignaciones.observaciones === null ? '<span class="text-muted">Sin observaciones</span>' : listaConsignaciones.observaciones %>
+                          </td>
+                          <td class="text-left">
+                            <% if(listaConsignaciones.estado === 0 || listaConsignaciones.estado === 3){ %>
+                              <button class="btn btn-primary" onclick="updateFetchTransaction(event, '<%= listaConsignaciones.extra_ref1 %>')">Actualizar transacción</button>
+                            <% } else if(listaConsignaciones.estado === 1) { %>
+                              <span class="text-muted">Aprobada</span>
+                            <% } else if(listaConsignaciones.estado === 4) { %>
+                              <span class="text-muted">(EPAYCO) Fallida</span>
+                            <% } else { %>
+                              <span class="text-muted">Rechazada / declinada</span>
+                            <% } %>
                           </td>
                         </tr>
                         <% }) %>
@@ -260,6 +291,45 @@
     </div>
   </div>
 
+  <!-- Modal Consignaciones -->
+  <div class="modal" id="modalConsignacionEpayco">
+    <div class="modal-dialog modal-dialog-centered" data-backdrop="static" data-keyboard="false" role="document">
+      <div class="modal-content modal-content-demo">
+        <div class="modal-header">
+          <h6 class="modal-title">Realizar consignación</h6><button aria-label="Close"  class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3">
+            La siguientes casillas son obligatorias para poder realizar un proceso efectivo de carga de saldo, por lo tanto deben confirmar el valor a consignar.
+          </p>
+          <div class="px-2">
+            <div class="form-group ">
+              <div class="row row-sm">
+                <label class="form-label">Valor a consignar<br>
+                  (
+                  <%= usuario.pais === 'Colombia' ? 'Recuerde esta red esta en COP, no utilice ni puntos ni comas.' : 'Recuerde esta red esta en USD, para los decimales por favor utilice "." comas.'; %>
+                  )</label>
+                <input type="number" class="form-control" placeholder="Valor consignado" value="" id="valorConsignadoe">
+              </div>
+            </div>
+            <div class="form-group ">
+              <div class="row row-sm">
+                <label class="form-label">Tipo Consignación</label>
+                <select class="form-control" id="tipoConsignacione" disabled="disabled">
+                  <option value="Epayco Carga Automatica" selected="true" disabled="disabled">EPAYCO</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn ripple btn-primary" type="button" onclick="consignacionEpayco(event)">Realizar consignación</button>
+          <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal Informacion -->
   <div class="modal" id="modalInformacion">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -334,6 +404,83 @@
 
 
   <script>
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    console.log(params);
+
+    if(params['status'] && params['ref_payco']){
+      switch (params['status']) {
+        case 'pending':
+          swal({
+            title: 'Transacción',
+            text: 'La transacción se encuentra en estado Pendiente',
+            type: 'info'
+          });
+          break;
+        
+        case 'rejected':
+          swal({
+            title: 'Transacción',
+            text: 'La transacción fue Rechazada',
+            type: 'error'
+          });
+          break;
+        
+        case 'acepted':
+          swal({
+            title: 'Transacción',
+            text: 'La transacción fue Aceptada',
+            type: 'success'
+          });
+          break;
+      
+        default:
+          break;
+      }
+    }
+
+    function updateFetchTransaction(e, id){
+      if(!id){
+        swal({
+          title: 'Espera',
+          text: 'No puede hacer una actualización de esta consignación',
+          type: 'warning'
+        });
+      }else{
+        $('#global-loader').addClass("d-block");
+        $('#global-loader').removeClass("d-none");
+        fetch('/dashboard/reportarConsignacion/updateEpaycoTransaction', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            ref_epayco: id
+          })
+        }).then(res => res.json()).then(rest => {
+          console.log(rest);
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          
+          swal({
+                title: rest.titulo,
+                text: rest.descripcion,
+                type: rest.resp,
+                confirmButtonColor: '#57a94f',
+                closeOnClickOutside: false
+              },
+              function(isConfirm) {
+                if (isConfirm) {
+                  location.reload();
+                }
+              });
+        }).catch(err =>{
+          console.log(err);
+        })
+      }
+    }
+
     function archivoDescargado(e) {
 
       const btnDescargar = document.getElementById('btnDescargar');
@@ -469,7 +616,6 @@
     }
 
     function modalConsignacion(e, id) {
-
       $('#global-loader').addClass("d-block");
       $('#global-loader').removeClass("d-none");
       fetch('/reportarConsignacion/infoMedio', {
@@ -496,6 +642,51 @@
           } else {
             noCelular.classList.remove('display-none');
           }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Reportar consignación',
+            type: 'error'
+          });
+        })
+
+    }
+
+    function modalConsignacionE(e, id) {
+      $('#global-loader').addClass("d-block");
+      $('#global-loader').removeClass("d-none");
+      fetch('/reportarConsignacion/infoMedio', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: id
+          })
+        })
+        .then(res => res.text())
+        .then(data => {
+          console.log(data);
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          const respuesta = JSON.parse(data);
+          const tipoConsignacion = document.getElementById("tipoConsignacion");
+          tipoConsignacion.value = respuesta.medio.titulo.toLowerCase();
+          tipoConsignacion.disabled = true;
+          const noCelular = document.getElementById("noCelular");
+
+          if (respuesta.medio.titulo.toLowerCase() === 'tarjeta de recaudo' || respuesta.medio.titulo.toLowerCase() === 'efecty') {
+            noCelular.classList.add('display-none');
+          } else {
+            noCelular.classList.remove('display-none');
+          }
+          swal({
+            title: '¡Espera!',
+            text: 'Señor usuario recuerda que si su transacción es menor a $30 (30 Dolares) se le descontarán 50 Centavos de dolar',
+            type: 'info'
+          });
         }).catch(() => {
           $('#global-loader').removeClass("d-block");
           $('#global-loader').addClass("d-none");
@@ -568,4 +759,80 @@
           });
         })
     }
+    function consignacionEpayco(e) {
+
+      const valorConsignado = document.getElementById("valorConsignadoe").value.trim();
+      const tipoConsignacion = document.getElementById("tipoConsignacione").value.trim();
+
+      if (parseInt(valorConsignado) < 2){
+        return swal({
+            title: '¡Espera!',
+            text: 'El valor minimo de transacción tiene que ser mayor a un dolar',
+            type: 'warning'
+          });
+      }else{
+        fetch('/dashboard/reportarConsignacion/createDataToEpayco', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              valor: valorConsignado
+            })
+          })
+          .then(res => res.text())
+          .then(data => {
+            $('#global-loader').removeClass("d-block");
+            $('#global-loader').addClass("d-none");
+            let respuesta = JSON.parse(data);
+            console.log(respuesta)
+            var handler = ePayco.checkout.configure({
+              key: respuesta.publicKey,
+              test: false
+            });
+            delete respuesta.publicKey;
+            delete respuesta.test;
+            respuesta.amount = valorConsignado;
+            respuesta.acepted = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=acepted';
+            respuesta.rejected = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=rejected';
+            respuesta.confirmation = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=confirmation';
+            respuesta.response = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=response';
+            respuesta.pending = window.location.protocol + '//' +window.location.host + '/dashboard/reportarConsignacion/?status=pending';
+            respuesta.methodsDisable = ["PSE", "SP", "CASH", "DP"]
+            console.log(respuesta);
+            handler.open(respuesta);
+            console.log(handler);
+            handler.onResponse((resta)=>{
+              console.log(resta);
+              fetch('/dashboard/reportarConsignacion/updateFetchTransaction', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  recibo: resta.recibo,
+                  estado: resta.cod_respuesta,
+                  referencia_factura: resta.factura,
+                  valor_consignado: valorConsignado
+                })
+              })
+            })
+              }).catch((err) => {
+                console.log(err);
+                $('#global-loader').removeClass("d-block");
+                $('#global-loader').addClass("d-none");
+                swal({
+                  title: 'Request Error',
+                  text: '500 - Reportar consignación',
+                  type: 'error'
+                });
+              })
+              .catch(err =>  {
+                console.log(err);
+              })
+
+      }
+    }
+  
+
   </script>

@@ -6,7 +6,7 @@ const Asignaciones = require('../models/asignacionesModelo');
 const Ganancias = require('../models/gananciasModelo');
 const Consignaciones = require('../models/consignacionesModelo');
 const { Op } = require("sequelize");
-const {body, validationResult} = require('express-validator');
+const { body, validationResult } = require('express-validator');
 const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
@@ -21,29 +21,29 @@ exports.adminReporteCargas = async (req, res) => {
 
     const cargas = await Cargas.findAll({
         where: {
-            [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}]
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }]
         },
         include: [
-            {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+            { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
         ],
         order: [['fechaCarga', 'DESC']]
     })
 
     const usuarios = await Usuarios.findAll({
         where: {
-            [Op.and]:[{super_patrocinador: req.user.enlace_afiliado}]
+            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }]
         }
     })
 
     res.render('dashboard/adminReporteCargas', {
-        nombrePagina : 'Reporte de Cargas',
+        nombrePagina: 'Reporte de Cargas',
         titulo: 'Reporte de Cargas',
         breadcrumb: 'Reporte de Cargas',
         classActive: req.path.split('/')[2],
         cargas,
         usuarios
     })
-    
+
 }
 
 exports.reporteConsignaciones = async (req, res) => {
@@ -53,23 +53,23 @@ exports.reporteConsignaciones = async (req, res) => {
     const fecha1 = moment(fecha[0]).format("YYYY-MM-DD");
     const fecha2 = moment(fecha[1]).format("YYYY-MM-DD");
 
-    if(idUsuarioReporte === '0') {
+    if (idUsuarioReporte === '0') {
         var consignaciones = await Consignaciones.findAll({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, {fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}]
+                [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { fecha: { [Op.gte]: fecha1 } }, { fecha: { [Op.lte]: fecha2 } }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
             ],
             order: [['fecha', 'DESC']]
         });
     } else {
         var consignaciones = await Consignaciones.findAll({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, {usuarioIdUsuario: idUsuarioReporte}, {fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}]
+                [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { usuarioIdUsuario: idUsuarioReporte }, { fecha: { [Op.gte]: fecha1 } }, { fecha: { [Op.lte]: fecha2 } }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
             ],
             order: [['fecha', 'DESC']]
         });
@@ -89,7 +89,7 @@ exports.reporteConsignaciones = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: 'eaedf7', 
+            fgColor: 'eaedf7',
         },
         border: {
             left: {
@@ -140,8 +140,8 @@ exports.reporteConsignaciones = async (req, res) => {
 
     const style3 = workbook.createStyle({
         font: {
-          color: '#000000',
-          size: 12
+            color: '#000000',
+            size: 12
         },
         numberFormat: '$#,##0.00; ($#,##0.00); -',
         border: {
@@ -174,7 +174,7 @@ exports.reporteConsignaciones = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: '6259ca', 
+            fgColor: '6259ca',
         },
         alignment: {
             wrapText: true,
@@ -251,16 +251,16 @@ exports.reporteConsignaciones = async (req, res) => {
     worksheet.cell(2, 9).string('Fecha de consignación').style(style1);
 
     for (let i = 0; i < consignaciones.length; i += 1) {
-    
-        if(consignaciones[i].estado === 1) {
+
+        if (consignaciones[i].estado === 1) {
             var estados = 'Aprobada';
-        } else if(consignaciones[i].estado === 2) {
+        } else if (consignaciones[i].estado === 2) {
             var estados = 'Rechazada';
         } else {
             var estados = 'Sin procesar';
         }
 
-        if(consignaciones[i].observaciones !== null) {
+        if (consignaciones[i].observaciones !== null) {
             var observaciones = consignaciones[i].observaciones;
         } else {
             var observaciones = '-';
@@ -289,14 +289,14 @@ exports.reporteConsignaciones = async (req, res) => {
     //     }
     // });
 
-    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    res.json({ resp: 'success', url: nameTemp, nombre: nombreArchivo });
     return;
 
 }
 
 exports.eliminarArchivo = async (req, res) => {
 
-    fs.unlink(__dirname+'/../public'+req.body.data, () => {
+    fs.unlink(__dirname + '/../public' + req.body.data, () => {
     });
 
 }
@@ -308,23 +308,23 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
     const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
     const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
-    if(idUsuarioReporte === '0') {
+    if (idUsuarioReporte === '0') {
         var cargas = await Cargas.findAll({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, {fechaCarga: {[Op.gte]: fecha1}}, {fechaCarga: {[Op.lte]: fecha2}}]
+                [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { fechaCarga: { [Op.gte]: fecha1 } }, { fechaCarga: { [Op.lte]: fecha2 } }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
             ],
             order: [['fechaCarga', 'DESC']]
         });
     } else {
         var cargas = await Cargas.findAll({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, {usuarioIdUsuario: idUsuarioReporte}, {fechaCarga: {[Op.gte]: fecha1}}, {fechaCarga: {[Op.lte]: fecha2}}]
+                [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { usuarioIdUsuario: idUsuarioReporte }, { fechaCarga: { [Op.gte]: fecha1 } }, { fechaCarga: { [Op.lte]: fecha2 } }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
             ],
             order: [['fechaCarga', 'DESC']]
         });
@@ -344,7 +344,7 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: 'eaedf7', 
+            fgColor: 'eaedf7',
         },
         border: {
             left: {
@@ -395,8 +395,8 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
 
     const style3 = workbook.createStyle({
         font: {
-          color: '#000000',
-          size: 12
+            color: '#000000',
+            size: 12
         },
         numberFormat: '$#,##0.00; ($#,##0.00); -',
         border: {
@@ -429,7 +429,7 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: '6259ca', 
+            fgColor: '6259ca',
         },
         alignment: {
             wrapText: true,
@@ -506,22 +506,22 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
     worksheet.cell(2, 9).string('Responsable gestión').style(style1);
 
     for (let i = 0; i < cargas.length; i += 1) {
-    
-        if(cargas[i].estado === 1) {
+
+        if (cargas[i].estado === 1) {
             var estados = 'Aprobada';
-        } else if(cargas[i].estado === 2) {
+        } else if (cargas[i].estado === 2) {
             var estados = 'Rechazada';
         } else {
             var estados = 'Sin procesar';
         }
 
-        if(cargas[i].observaciones !== null) {
+        if (cargas[i].observaciones !== null) {
             var observaciones = cargas[i].observaciones;
         } else {
             var observaciones = '-';
         }
 
-        if(cargas[i].usuario !== null){
+        if (cargas[i].usuario !== null) {
             worksheet.cell(i + 3, 1).string(cargas[i].idCarga).style(style2);
             worksheet.cell(i + 3, 2).string(cargas[i].usuario.nombre).style(style2);
             worksheet.cell(i + 3, 3).number(Number(cargas[i].valor)).style(style3);
@@ -539,7 +539,7 @@ exports.reporteCargasSuperdistribuidor = async (req, res) => {
     const url = `${__dirname}/../public${nameTemp}`;
     workbook.write(url);
 
-    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    res.json({ resp: 'success', url: nameTemp, nombre: nombreArchivo });
     return;
 
 }
@@ -551,25 +551,25 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
     const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
     const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
-    if(idUsuarioReporte === '0') {
+    if (idUsuarioReporte === '0') {
         var cuentas = await Cuentas.findAll({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, {estado:1}, {fechaSubida: {[Op.gte]: fecha1}}, {fechaSubida: {[Op.lte]: fecha2}}]
+                [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }, { fechaSubida: { [Op.gte]: fecha1 } }, { fechaSubida: { [Op.lte]: fecha2 } }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
-                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
+                { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
             ],
             order: [['fechaSubida', 'DESC']]
         });
     } else {
         var cuentas = await Cuentas.findAll({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, {estado:1}, {usuarioIdUsuario: idUsuarioReporte}, {fechaSubida: {[Op.gte]: fecha1}}, {fechaSubida: {[Op.lte]: fecha2}}]
+                [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }, { usuarioIdUsuario: idUsuarioReporte }, { fechaSubida: { [Op.gte]: fecha1 } }, { fechaSubida: { [Op.lte]: fecha2 } }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
-                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
+                { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
             ],
             order: [['fechaSubida', 'DESC']]
         });
@@ -577,7 +577,7 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: {
-            [Op.and]:[{super_patrocinador: req.user.enlace_afiliado}]
+            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }]
         }
     })
 
@@ -595,7 +595,7 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: 'eaedf7', 
+            fgColor: 'eaedf7',
         },
         border: {
             left: {
@@ -646,8 +646,8 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
 
     const style3 = workbook.createStyle({
         font: {
-          color: '#000000',
-          size: 12
+            color: '#000000',
+            size: 12
         },
         numberFormat: '$#,##0.00; ($#,##0.00); -',
         border: {
@@ -680,7 +680,7 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: '6259ca', 
+            fgColor: '6259ca',
         },
         alignment: {
             wrapText: true,
@@ -767,48 +767,55 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
     worksheet.cell(2, 14).string('Fecha de subida').style(style1);
 
     for (let i = 0; i < cuentas.length; i += 1) {
-    
-        if(cuentas[i].estado === 1) {
+
+        if (cuentas[i].estado === 1) {
             var estados = 'Aprobada';
-        } else if(cuentas[i].estado === 2) {
+        } else if (cuentas[i].estado === 2) {
             var estados = 'Rechazada';
         } else {
             var estados = 'Sin procesar';
         }
 
-        if(cuentas[i].observaciones !== null) {
+        if (cuentas[i].observaciones !== null) {
             var observaciones = cuentas[i].observaciones;
         } else {
             var observaciones = '-';
         }
 
-        if(cuentas[i].plataforma.tipo_plataforma === 1) {
-            var tipoPlataforma = 'Normal';
-        } else if(cuentas[i].plataforma.tipo_plataforma === 2) {
-            var tipoPlataforma = 'Bajo Pedido';
-        } else if(cuentas[i].plataforma.tipo_plataforma === 3) {
-            var tipoPlataforma = 'Personalizada';
-        } else if(cuentas[i].plataforma.tipo_plataforma === 4) {
-            var tipoPlataforma = 'Renovaciones';
-        } else if(cuentas[i].plataforma.tipo_plataforma === 5) {
-            var tipoPlataforma = 'Juegos';
+        if (cuentas[i].plataforma) {
+            if (cuentas[i].plataforma.tipo_plataforma === 1) {
+                var tipoPlataforma = 'Normal';
+            } else if (cuentas[i].plataforma.tipo_plataforma === 2) {
+                var tipoPlataforma = 'Bajo Pedido';
+            } else if (cuentas[i].plataforma.tipo_plataforma === 3) {
+                var tipoPlataforma = 'Personalizada';
+            } else if (cuentas[i].plataforma.tipo_plataforma === 4) {
+                var tipoPlataforma = 'Renovaciones';
+            } else if (cuentas[i].plataforma.tipo_plataforma === 5) {
+                var tipoPlataforma = 'Juegos';
+            } else {
+                var tipoPlataforma = 'N/A';
+            }
         } else {
-            var tipoPlataforma = 'N/A';
+            var tipoPlataforma = 'N/A'
         }
 
         const distribuidor = await Usuarios.findOne({
             where: {
-                [Op.and]:[{id_usuario: cuentas[i].idDistribuidor}]
+                [Op.and]: [{ id_usuario: cuentas[i].idDistribuidor }]
             }
         })
 
         const nombreDistribuidor = distribuidor.nombre;
+        let usuario_nombre = (cuentas[i].usuario) ? cuentas[i].usuario.nombre : '';
+        let usuario_perfil = (cuentas[i].usuario) ? cuentas[i].usuario.perfil : '';
+        let plataforma_nombre = (cuentas[i].plataforma) ? cuentas[i].plataforma.plataforma : '';
 
         worksheet.cell(i + 3, 1).string(cuentas[i].idCuenta).style(style2);
         worksheet.cell(i + 3, 2).string(nombreDistribuidor).style(style2);
-        worksheet.cell(i + 3, 3).string(cuentas[i].usuario.nombre).style(style2);
-        worksheet.cell(i + 3, 4).string(cuentas[i].usuario.perfil).style(style2);
-        worksheet.cell(i + 3, 5).string(cuentas[i].plataforma.plataforma).style(style2);
+        worksheet.cell(i + 3, 3).string(usuario_nombre).style(style2);
+        worksheet.cell(i + 3, 4).string(usuario_perfil).style(style2);
+        worksheet.cell(i + 3, 5).string(plataforma_nombre).style(style2);
         worksheet.cell(i + 3, 6).number(Number(cuentas[i].valorPagado)).style(style3);
         worksheet.cell(i + 3, 7).string(tipoPlataforma).style(style2);
         worksheet.cell(i + 3, 8).string(cuentas[i].user).style(style2);
@@ -825,7 +832,7 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
     const url = `${__dirname}/../public${nameTemp}`;
     workbook.write(url);
 
-    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    res.json({ resp: 'success', url: nameTemp, nombre: nombreArchivo });
     return;
 
 }
@@ -838,11 +845,11 @@ exports.reporteCuentas = async (req, res) => {
 
     const cuentas = await Cuentas.findAll({
         where: {
-            [Op.and]: [{usuarioIdUsuario: req.user.id_usuario}, {estado:1}, {fechaSubida: {[Op.gte]: fecha1}}, {fechaSubida: {[Op.lte]: fecha2}}]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }, { estado: 1 }, { fechaSubida: { [Op.gte]: fecha1 } }, { fechaSubida: { [Op.lte]: fecha2 } }]
         },
         include: [
-            {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
-            {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
+            { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
+            { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
         order: [['fechaSubida', 'DESC']]
     });
@@ -861,7 +868,7 @@ exports.reporteCuentas = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: 'eaedf7', 
+            fgColor: 'eaedf7',
         },
         border: {
             left: {
@@ -912,8 +919,8 @@ exports.reporteCuentas = async (req, res) => {
 
     const style3 = workbook.createStyle({
         font: {
-          color: '#000000',
-          size: 12
+            color: '#000000',
+            size: 12
         },
         numberFormat: '$#,##0.00; ($#,##0.00); -',
         border: {
@@ -946,7 +953,7 @@ exports.reporteCuentas = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: '6259ca', 
+            fgColor: '6259ca',
         },
         alignment: {
             wrapText: true,
@@ -1027,53 +1034,53 @@ exports.reporteCuentas = async (req, res) => {
     worksheet.cell(2, 11).string('Fecha de subida').style(style1);
 
     for (let i = 0; i < cuentas.length; i += 1) {
-    
-        if(cuentas[i].estado === 1) {
+
+        if (cuentas[i].estado === 1) {
             var estados = 'Aprobada';
-        } else if(cuentas[i].estado === 2) {
+        } else if (cuentas[i].estado === 2) {
             var estados = 'Rechazada';
         } else {
             var estados = 'Sin procesar';
         }
 
-        if(cuentas[i].observaciones !== null) {
+        if (cuentas[i].observaciones !== null) {
             var observaciones = cuentas[i].observaciones;
         } else {
             var observaciones = '-';
         }
 
-        if(cuentas[i].plataforma.tipo_plataforma === 1) {
+        if (cuentas[i].plataforma.tipo_plataforma === 1) {
             var tipoPlataforma = 'Normal';
-        } else if(cuentas[i].plataforma.tipo_plataforma === 2) {
+        } else if (cuentas[i].plataforma.tipo_plataforma === 2) {
             var tipoPlataforma = 'Bajo Pedido';
-        } else if(cuentas[i].plataforma.tipo_plataforma === 3) {
+        } else if (cuentas[i].plataforma.tipo_plataforma === 3) {
             var tipoPlataforma = 'Personalizada';
-        } else if(cuentas[i].plataforma.tipo_plataforma === 4) {
+        } else if (cuentas[i].plataforma.tipo_plataforma === 4) {
             var tipoPlataforma = 'Renovaciones';
-        } else if(cuentas[i].plataforma.tipo_plataforma === 5) {
+        } else if (cuentas[i].plataforma.tipo_plataforma === 5) {
             var tipoPlataforma = 'Juegos';
         } else {
             var tipoPlataforma = 'N/A';
         }
 
-       if(cuentas[i].plataforma.tipo_plataforma === 5) {
-           if(cuentas[i].user !== null || cuentas[i].password !== null) {
-               const user_analizado = /^([^]+)@(\w+).(\w+)$/.exec(cuentas[i].user);
-               const [,prefijo,servidor,dominio] = user_analizado;
-               const reemplazo = prefijo.replace(/./g,"*");
-               var nuevo_email_user = `${reemplazo}@${servidor}.${dominio}`;
-               var nuevo_password = cuentas[i].password.replace(/./g,"*");
-               var idJuego = 'no aplica' 
-           } else {
-               var nuevo_email_user = 'no aplica'
-               var nuevo_password = 'no aplica'
-               var idJuego = cuentas[i].idJuego 
-           }   
-       } else {
-           var nuevo_email_user = cuentas[i].user;
-           var nuevo_password = cuentas[i].password;
-           var idJuego = 'no aplica' 
-       }
+        if (cuentas[i].plataforma.tipo_plataforma === 5) {
+            if (cuentas[i].user !== null || cuentas[i].password !== null) {
+                const user_analizado = /^([^]+)@(\w+).(\w+)$/.exec(cuentas[i].user);
+                const [, prefijo, servidor, dominio] = user_analizado;
+                const reemplazo = prefijo.replace(/./g, "*");
+                var nuevo_email_user = `${reemplazo}@${servidor}.${dominio}`;
+                var nuevo_password = cuentas[i].password.replace(/./g, "*");
+                var idJuego = 'no aplica'
+            } else {
+                var nuevo_email_user = 'no aplica'
+                var nuevo_password = 'no aplica'
+                var idJuego = cuentas[i].idJuego
+            }
+        } else {
+            var nuevo_email_user = cuentas[i].user;
+            var nuevo_password = cuentas[i].password;
+            var idJuego = 'no aplica'
+        }
 
         worksheet.cell(i + 3, 1).string(cuentas[i].idCuenta).style(style2);
         worksheet.cell(i + 3, 2).string(cuentas[i].plataforma.plataforma).style(style2);
@@ -1093,7 +1100,7 @@ exports.reporteCuentas = async (req, res) => {
     const url = `${__dirname}/../public${nameTemp}`;
     workbook.write(url);
 
-    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    res.json({ resp: 'success', url: nameTemp, nombre: nombreArchivo });
     return;
 
 }
@@ -1106,10 +1113,10 @@ exports.reporteConsignacionesUser = async (req, res) => {
 
     const consignaciones = await Consignaciones.findAll({
         where: {
-            [Op.and]: [{usuarioIdUsuario: req.user.id_usuario}, {fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }, { fecha: { [Op.gte]: fecha1 } }, { fecha: { [Op.lte]: fecha2 } }]
         },
         include: [
-            {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+            { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
         ],
         order: [['fecha', 'DESC']]
     });
@@ -1128,7 +1135,7 @@ exports.reporteConsignacionesUser = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: 'eaedf7', 
+            fgColor: 'eaedf7',
         },
         border: {
             left: {
@@ -1179,8 +1186,8 @@ exports.reporteConsignacionesUser = async (req, res) => {
 
     const style3 = workbook.createStyle({
         font: {
-          color: '#000000',
-          size: 12
+            color: '#000000',
+            size: 12
         },
         numberFormat: '$#,##0.00; ($#,##0.00); -',
         border: {
@@ -1213,7 +1220,7 @@ exports.reporteConsignacionesUser = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: '6259ca', 
+            fgColor: '6259ca',
         },
         alignment: {
             wrapText: true,
@@ -1290,16 +1297,16 @@ exports.reporteConsignacionesUser = async (req, res) => {
     worksheet.cell(2, 9).string('Fecha de consignación').style(style1);
 
     for (let i = 0; i < consignaciones.length; i += 1) {
-    
-        if(consignaciones[i].estado === 1) {
+
+        if (consignaciones[i].estado === 1) {
             var estados = 'Aprobada';
-        } else if(consignaciones[i].estado === 2) {
+        } else if (consignaciones[i].estado === 2) {
             var estados = 'Rechazada';
         } else {
             var estados = 'Sin procesar';
         }
 
-        if(consignaciones[i].observaciones !== null) {
+        if (consignaciones[i].observaciones !== null) {
             var observaciones = consignaciones[i].observaciones;
         } else {
             var observaciones = '-';
@@ -1321,7 +1328,7 @@ exports.reporteConsignacionesUser = async (req, res) => {
     const url = `${__dirname}/../public${nameTemp}`;
     workbook.write(url);
 
-    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    res.json({ resp: 'success', url: nameTemp, nombre: nombreArchivo });
     return;
 
 }
@@ -1330,16 +1337,16 @@ exports.reporteCompras = async (req, res) => {
 
     const cargas = await Cargas.findAll({
         where: {
-            [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
         include: [
-            {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+            { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
         ],
         order: [['fechaCarga', 'DESC']]
     })
 
     res.render('dashboard/reporteCompras', {
-        nombrePagina : 'Reporte de Compras de saldo',
+        nombrePagina: 'Reporte de Compras de saldo',
         titulo: 'Reporte de Compras de saldo',
         breadcrumb: 'Reporte de Compras de saldo',
         classActive: req.path.split('/')[2],
@@ -1356,10 +1363,10 @@ exports.reporteComprasSaldo = async (req, res) => {
 
     const cargas = await Cargas.findAll({
         where: {
-            [Op.and]: [{usuarioIdUsuario: req.user.id_usuario}, {fechaCarga: {[Op.gte]: fecha1}}, {fechaCarga: {[Op.lte]: fecha2}}]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }, { fechaCarga: { [Op.gte]: fecha1 } }, { fechaCarga: { [Op.lte]: fecha2 } }]
         },
         include: [
-            {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+            { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
         ],
         order: [['fechaCarga', 'DESC']]
     });
@@ -1378,7 +1385,7 @@ exports.reporteComprasSaldo = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: 'eaedf7', 
+            fgColor: 'eaedf7',
         },
         border: {
             left: {
@@ -1429,8 +1436,8 @@ exports.reporteComprasSaldo = async (req, res) => {
 
     const style3 = workbook.createStyle({
         font: {
-          color: '#000000',
-          size: 12
+            color: '#000000',
+            size: 12
         },
         numberFormat: '$#,##0.00; ($#,##0.00); -',
         border: {
@@ -1463,7 +1470,7 @@ exports.reporteComprasSaldo = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: '6259ca', 
+            fgColor: '6259ca',
         },
         alignment: {
             wrapText: true,
@@ -1538,16 +1545,16 @@ exports.reporteComprasSaldo = async (req, res) => {
     worksheet.cell(2, 8).string('Fecha de carga').style(style1);
 
     for (let i = 0; i < cargas.length; i += 1) {
-    
-        if(cargas[i].estado === 1) {
+
+        if (cargas[i].estado === 1) {
             var estados = 'Aprobada';
-        } else if(cargas[i].estado === 2) {
+        } else if (cargas[i].estado === 2) {
             var estados = 'Rechazada';
         } else {
             var estados = 'Sin procesar';
         }
 
-        if(cargas[i].observaciones !== null) {
+        if (cargas[i].observaciones !== null) {
             var observaciones = cargas[i].observaciones;
         } else {
             var observaciones = '-';
@@ -1568,7 +1575,7 @@ exports.reporteComprasSaldo = async (req, res) => {
     const url = `${__dirname}/../public${nameTemp}`;
     workbook.write(url);
 
-    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    res.json({ resp: 'success', url: nameTemp, nombre: nombreArchivo });
     return;
 
 }
@@ -1577,22 +1584,22 @@ exports.reporteVentas = async (req, res) => {
 
     const cargas = await Cargas.findAll({
         where: {
-            [Op.and]:[{responsableGestion: req.user.nombre}]
+            [Op.and]: [{ responsableGestion: req.user.nombre }]
         },
         include: [
-            {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+            { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
         ],
         order: [['fechaCarga', 'DESC']]
     })
 
     const usuarios = await Usuarios.findAll({
         where: {
-            [Op.and]:[{patrocinador: req.user.enlace_afiliado}]
+            [Op.and]: [{ patrocinador: req.user.enlace_afiliado }]
         }
     })
 
     res.render('dashboard/reporteVentas', {
-        nombrePagina : 'Reporte ventas de saldo',
+        nombrePagina: 'Reporte ventas de saldo',
         titulo: 'Reporte ventas de saldo',
         breadcrumb: 'Reporte ventas de saldo',
         classActive: req.path.split('/')[2],
@@ -1609,23 +1616,23 @@ exports.reporteVentasSaldo = async (req, res) => {
     const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
     const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
-    if(idUsuarioReporte === '0') {
+    if (idUsuarioReporte === '0') {
         var cargas = await Cargas.findAll({
             where: {
-                [Op.and]: [{responsableGestion: req.user.nombre}, {fechaCarga: {[Op.gte]: fecha1}}, {fechaCarga: {[Op.lte]: fecha2}}]
+                [Op.and]: [{ responsableGestion: req.user.nombre }, { fechaCarga: { [Op.gte]: fecha1 } }, { fechaCarga: { [Op.lte]: fecha2 } }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
             ],
             order: [['fechaCarga', 'DESC']]
         });
     } else {
         var cargas = await Cargas.findAll({
             where: {
-                [Op.and]: [{responsableGestion: req.user.nombre}, {usuarioIdUsuario: idUsuarioReporte}, {fechaCarga: {[Op.gte]: fecha1}}, {fechaCarga: {[Op.lte]: fecha2}}]
+                [Op.and]: [{ responsableGestion: req.user.nombre }, { usuarioIdUsuario: idUsuarioReporte }, { fechaCarga: { [Op.gte]: fecha1 } }, { fechaCarga: { [Op.lte]: fecha2 } }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'}
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
             ],
             order: [['fechaCarga', 'DESC']]
         });
@@ -1645,7 +1652,7 @@ exports.reporteVentasSaldo = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: 'eaedf7', 
+            fgColor: 'eaedf7',
         },
         border: {
             left: {
@@ -1696,8 +1703,8 @@ exports.reporteVentasSaldo = async (req, res) => {
 
     const style3 = workbook.createStyle({
         font: {
-          color: '#000000',
-          size: 12
+            color: '#000000',
+            size: 12
         },
         numberFormat: '$#,##0.00; ($#,##0.00); -',
         border: {
@@ -1730,7 +1737,7 @@ exports.reporteVentasSaldo = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: '6259ca', 
+            fgColor: '6259ca',
         },
         alignment: {
             wrapText: true,
@@ -1807,16 +1814,16 @@ exports.reporteVentasSaldo = async (req, res) => {
     worksheet.cell(2, 9).string('Responsable gestión').style(style1);
 
     for (let i = 0; i < cargas.length; i += 1) {
-    
-        if(cargas[i].estado === 1) {
+
+        if (cargas[i].estado === 1) {
             var estados = 'Aprobada';
-        } else if(cargas[i].estado === 2) {
+        } else if (cargas[i].estado === 2) {
             var estados = 'Rechazada';
         } else {
             var estados = 'Sin procesar';
         }
 
-        if(cargas[i].observaciones !== null) {
+        if (cargas[i].observaciones !== null) {
             var observaciones = cargas[i].observaciones;
         } else {
             var observaciones = '-';
@@ -1838,7 +1845,7 @@ exports.reporteVentasSaldo = async (req, res) => {
     const url = `${__dirname}/../public${nameTemp}`;
     workbook.write(url);
 
-    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    res.json({ resp: 'success', url: nameTemp, nombre: nombreArchivo });
     return;
 
 }
@@ -1850,25 +1857,25 @@ exports.reporteGanancias = async (req, res) => {
     const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
     const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
-    if(idUsuarioReporte === '0' || idUsuarioReporte === 0) {
+    if (idUsuarioReporte === '0' || idUsuarioReporte === 0) {
         var ganancias = await Ganancias.findAll({
             where: {
-                [Op.and]: [{fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}, {distribuidor: req.user.id_usuario}]
+                [Op.and]: [{ fecha: { [Op.gte]: fecha1 } }, { fecha: { [Op.lte]: fecha2 } }, { distribuidor: req.user.id_usuario }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
-                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'},
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
+                { model: Plataformas, foreignKey: 'plataformaIdPlataforma' },
             ],
             order: [['fecha', 'DESC']]
         });
     } else {
         var ganancias = await Ganancias.findAll({
             where: {
-                [Op.and]: [{usuarioIdUsuario: idUsuarioReporte}, {fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}, {distribuidor: req.user.id_usuario}]
+                [Op.and]: [{ usuarioIdUsuario: idUsuarioReporte }, { fecha: { [Op.gte]: fecha1 } }, { fecha: { [Op.lte]: fecha2 } }, { distribuidor: req.user.id_usuario }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
-                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'},
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
+                { model: Plataformas, foreignKey: 'plataformaIdPlataforma' },
             ],
             order: [['fecha', 'DESC']]
         });
@@ -1888,7 +1895,7 @@ exports.reporteGanancias = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: 'eaedf7', 
+            fgColor: 'eaedf7',
         },
         border: {
             left: {
@@ -1939,8 +1946,8 @@ exports.reporteGanancias = async (req, res) => {
 
     const style3 = workbook.createStyle({
         font: {
-          color: '#000000',
-          size: 12
+            color: '#000000',
+            size: 12
         },
         numberFormat: '$#,##0.00; ($#,##0.00); -',
         border: {
@@ -1973,7 +1980,7 @@ exports.reporteGanancias = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: '6259ca', 
+            fgColor: '6259ca',
         },
         alignment: {
             wrapText: true,
@@ -2047,16 +2054,20 @@ exports.reporteGanancias = async (req, res) => {
 
         const distribuidor = await Usuarios.findOne({
             where: {
-                [Op.and]:[{id_usuario: ganancias[i].distribuidor}]
+                [Op.and]: [{ id_usuario: ganancias[i].distribuidor }]
             }
         })
-    
+
         const nombreDistribuidor = distribuidor.nombre;
-        if(ganancias[i].usuario !== null || ganancias[i].plataforma !== null){
+        if (ganancias[i].usuario !== null && ganancias[i].plataforma !== null) {
             worksheet.cell(i + 3, 1).string(nombreDistribuidor).style(style2);
             worksheet.cell(i + 3, 2).string(ganancias[i].usuario.nombre).style(style2);
             worksheet.cell(i + 3, 3).string(ganancias[i].usuario.perfil).style(style2);
-            worksheet.cell(i + 3, 4).string(ganancias[i].plataforma.plataforma).style(style2);
+            if (ganancias[i].plataforma) {
+                worksheet.cell(i + 3, 4).string(ganancias[i].plataforma.plataforma).style(style2);
+            } else {
+                worksheet.cell(i + 3, 4).string("").style(style2);
+            }
             worksheet.cell(i + 3, 5).number(Number(ganancias[i].ganancia)).style(style3);
             worksheet.cell(i + 3, 6).date(ganancias[i].fecha).style(style5);
         }
@@ -2067,7 +2078,7 @@ exports.reporteGanancias = async (req, res) => {
     const url = `${__dirname}/../public${nameTemp}`;
     workbook.write(url);
 
-    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    res.json({ resp: 'success', url: nameTemp, nombre: nombreArchivo });
     return;
 
 }
@@ -2079,25 +2090,25 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
     const fecha1 = moment(new Date(fecha[0])).format("YYYY-MM-DD");
     const fecha2 = moment(new Date(fecha[1])).format("YYYY-MM-DD");
 
-    if(idUsuarioReporte === '0' || idUsuarioReporte === 0) {
+    if (idUsuarioReporte === '0' || idUsuarioReporte === 0) {
         var ganancias = await Ganancias.findAll({
             where: {
-                [Op.and]: [{fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}, {distribuidor: req.user.id_usuario}]
+                [Op.and]: [{ fecha: { [Op.gte]: fecha1 } }, { fecha: { [Op.lte]: fecha2 } }, { distribuidor: req.user.id_usuario }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
-                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'},
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
+                { model: Plataformas, foreignKey: 'plataformaIdPlataforma' },
             ],
             order: [['fecha', 'DESC']]
         });
     } else {
         var ganancias = await Ganancias.findAll({
             where: {
-                [Op.and]: [{usuarioIdUsuario: idUsuarioReporte}, {fecha: {[Op.gte]: fecha1}}, {fecha: {[Op.lte]: fecha2}}, {distribuidor: req.user.id_usuario}]
+                [Op.and]: [{ usuarioIdUsuario: idUsuarioReporte }, { fecha: { [Op.gte]: fecha1 } }, { fecha: { [Op.lte]: fecha2 } }, { distribuidor: req.user.id_usuario }]
             },
             include: [
-                {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
-                {model: Plataformas, foreignKey: 'plataformaIdPlataforma'},
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
+                { model: Plataformas, foreignKey: 'plataformaIdPlataforma' },
             ],
             order: [['fecha', 'DESC']]
         });
@@ -2117,7 +2128,7 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: 'eaedf7', 
+            fgColor: 'eaedf7',
         },
         border: {
             left: {
@@ -2168,8 +2179,8 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
 
     const style3 = workbook.createStyle({
         font: {
-          color: '#000000',
-          size: 12
+            color: '#000000',
+            size: 12
         },
         numberFormat: '$#,##0.00; ($#,##0.00); -',
         border: {
@@ -2202,7 +2213,7 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
         fill: {
             type: 'pattern',
             patternType: 'solid',
-            fgColor: '6259ca', 
+            fgColor: '6259ca',
         },
         alignment: {
             wrapText: true,
@@ -2272,7 +2283,7 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
 
     for (let i = 0; i < ganancias.length; i += 1) {
 
-        if(ganancias[i].usuario !== null || ganancias[i].plataforma !== null){
+        if (ganancias[i].usuario !== null || ganancias[i].plataforma !== null) {
             worksheet.cell(i + 3, 1).string(ganancias[i].usuario.nombre).style(style2);
             worksheet.cell(i + 3, 2).string(ganancias[i].usuario.perfil).style(style2);
             worksheet.cell(i + 3, 3).string(ganancias[i].plataforma.plataforma).style(style2);
@@ -2286,7 +2297,7 @@ exports.reporteConsignacionesDistribuidor = async (req, res) => {
     const url = `${__dirname}/../public${nameTemp}`;
     workbook.write(url);
 
-    res.json({resp: 'success', url: nameTemp, nombre: nombreArchivo});
+    res.json({ resp: 'success', url: nameTemp, nombre: nombreArchivo });
     return;
 
 }

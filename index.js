@@ -73,8 +73,8 @@ app.use(passport.session());
 app.use(flash());
 
 // Middleware's (usuario logueado, flash messages, fecha actual)
-app.use(async(req, res, next) => {
-    res.locals.usuario = {...req.user } || null;
+app.use(async (req, res, next) => {
+    res.locals.usuario = { ...req.user } || null;
     res.locals.mensajes = req.flash();
     const paises = await axios.get('http://' + req.headers.host + '/assetsDashboard/json/paises.json');
     res.locals.paises = paises;
@@ -93,7 +93,7 @@ app.use(express.json());
 app.use('/', routes());
 
 // Error 404
-app.get('*', function(req, res) {
+app.get('*', function (req, res) {
     res.status(404).render('404', {
         nombrePagina: 'Pagina no encontrada'
     })
@@ -102,7 +102,7 @@ app.get('*', function(req, res) {
 // puerto
 const puerto = process.env.PORT || 5001;
 const server = app.listen(puerto, () => {
-    console.log(`Corriendo correctamente en el puerto ${puerto}`);
+    console.log(`Corriendo correctamente en el puerto - ${puerto}`);
 });
 
 // // Socket

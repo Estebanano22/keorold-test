@@ -11,7 +11,7 @@ const { s3, bucket } = require('../config/awsS3');
 const multerS3 = require('multer-s3');
 
 // Admin
-exports.adminPlataformas = async(req, res) => {
+exports.adminPlataformas = async (req, res) => {
 
     const plataformas = await Plataformas.findAll();
     const countNormales = await Plataformas.count({
@@ -64,9 +64,9 @@ const configuracionMulter = ({
 
 const upload = multer(configuracionMulter).single('files');
 
-exports.uploadFoto = async(req, res, next) => {
+exports.uploadFoto = async (req, res, next) => {
 
-    upload(req, res, function(error) {
+    upload(req, res, function (error) {
         if (error) {
             res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Hubo un error con el archivo que desea subir.' });
             return;
@@ -76,7 +76,7 @@ exports.uploadFoto = async(req, res, next) => {
     })
 }
 
-exports.crearPlataforma = async(req, res) => {
+exports.crearPlataforma = async (req, res) => {
 
     if (!req.file) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen para el logo de la plataforma.' });
@@ -119,7 +119,7 @@ exports.crearPlataforma = async(req, res) => {
 
 }
 
-exports.editarPlataforma = async(req, res) => {
+exports.editarPlataforma = async (req, res) => {
 
     const id_plataforma = req.body.id.trim();
     const nombrePlataforma = req.body.plataforma.trim();
@@ -144,7 +144,7 @@ exports.editarPlataforma = async(req, res) => {
 
 }
 
-exports.eliminarPlataforma = async(req, res) => {
+exports.eliminarPlataforma = async (req, res) => {
 
     const id_plataforma = req.body.id.trim();
 
@@ -167,7 +167,7 @@ exports.eliminarPlataforma = async(req, res) => {
 
 }
 
-exports.cambioEstado = async(req, res) => {
+exports.cambioEstado = async (req, res) => {
 
     const id_plataforma = req.body.id.trim();
 
@@ -199,7 +199,7 @@ exports.cambioEstado = async(req, res) => {
 //                      Superdistribuidores controller
 // ============================================================================
 
-exports.adminPlataformasSuperdistribuidor = async(req, res) => {
+exports.adminPlataformasSuperdistribuidor = async (req, res) => {
 
     const plataformas = await Plataformas.findAll({
         where: {
@@ -259,7 +259,7 @@ exports.adminPlataformasSuperdistribuidor = async(req, res) => {
     })
 }
 
-exports.subirValor = async(req, res) => {
+exports.subirValor = async (req, res) => {
 
     const id_plataforma = req.body.id.trim();
     const valor = req.body.valor.trim();
@@ -292,7 +292,7 @@ exports.subirValor = async(req, res) => {
 
 }
 
-exports.bajarValor = async(req, res) => {
+exports.bajarValor = async (req, res) => {
 
     const id_plataforma = req.body.id.trim();
     const valor = req.body.valor.trim();
@@ -325,7 +325,7 @@ exports.bajarValor = async(req, res) => {
 
 }
 
-exports.editarLogo = async(req, res) => {
+exports.editarLogo = async (req, res) => {
 
     if (!req.file) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen para el logo de la plataforma.' });
@@ -358,7 +358,7 @@ exports.editarLogo = async(req, res) => {
 
 }
 
-exports.crearPlataformaSuperdistribuidor = async(req, res) => {
+exports.crearPlataformaSuperdistribuidor = async (req, res) => {
 
     if (!req.file) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe subir una imagen para el logo de la plataforma.' });
@@ -447,7 +447,7 @@ exports.crearPlataformaSuperdistribuidor = async(req, res) => {
 
 }
 
-exports.eliminarPlataformaSuperdistribuidor = async(req, res) => {
+exports.eliminarPlataformaSuperdistribuidor = async (req, res) => {
 
     const id_plataforma = req.body.id.trim();
 
@@ -473,7 +473,7 @@ exports.eliminarPlataformaSuperdistribuidor = async(req, res) => {
 
 }
 
-exports.desplegarPlataformas = async(req, res) => {
+exports.desplegarPlataformas = async (req, res) => {
     const id_asignacion = req.body.id;
     const asignacion = await Asignaciones.findOne({
         where: { id_asignacion: id_asignacion }
@@ -503,59 +503,64 @@ exports.desplegarPlataformas = async(req, res) => {
     });
 
     for (var i = 0; i < usuarios.length; i++) {
-        // console.log(usuarios[i].nombre);
+        console.log(`Filtro ${i}`);
         const id_usuario = usuarios[i].id_usuario;
         const distribuidorAsignacion = await Usuarios.findOne({
             where: { enlace_afiliado: usuarios[i].patrocinador },
             attributes: ['id_usuario', 'nombre']
         });
 
-        const asignaciones = await Asignaciones.findOne({
-            where: {
-                [Op.and]: [{ usuarioIdUsuario: distribuidorAsignacion.id_usuario }, { plataformaIdPlataforma: id_plataforma }],
-            },
-            attributes: ['valor']
-        });
-
-        const valorBase = asignaciones.valor;
-
-        const testAsignacionPlataforma = await Asignaciones.findOne({
-            where: {
-                [Op.and]: [{ usuarioIdUsuario: id_usuario }, { plataformaIdPlataforma: id_plataforma }],
-            }
-        });
-        
-
-        if (nombrePlataforma.includes('free fire') || nombrePlataforma.includes('call of duty') || nombrePlataforma.includes('demo')) {
-            var valorUsuario = Number(valorBase);
-        } else {
-            if (usuarios[i].pais === 'Colombia') {
-                if (usuarios[i].perfil === 'distribuidor') {
-                    var valorUsuario = Number(valorBase) + 1000;
-                } else if (usuarios[i].perfil === 'reseller') {
-                    var valorUsuario = Number(valorBase) + 2000;
-                }
-            } else {
-                if (usuarios[i].perfil === 'distribuidor') {
-                    var valorUsuario = Number(valorBase) + 0.28;
-                } else if (usuarios[i].perfil === 'reseller') {
-                    var valorUsuario = Number(valorBase) + 0.56;
-                }
-            }
-        }
-
-        if(!testAsignacionPlataforma){
-            await Asignaciones.create({
-                id_asignacion: uuid_v4(),
-                valor: valorUsuario,
-                id_distribuidor: distribuidorAsignacion.id_usuario,
-                id_superdistribuidor: req.user.id_usuario,
-                usuarioIdUsuario: id_usuario,
-                plataformaIdPlataforma: id_plataforma
+        if (distribuidorAsignacion) {
+            const asignaciones = await Asignaciones.findOne({
+                where: {
+                    [Op.and]: [{ usuarioIdUsuario: distribuidorAsignacion.id_usuario }, { plataformaIdPlataforma: id_plataforma }],
+                },
+                attributes: ['valor']
             });
-        }else{
-            testAsignacionPlataforma.valor = valorUsuario;
-            testAsignacionPlataforma.save();
+
+            if (asignaciones) {
+                const valorBase = asignaciones.valor;
+
+                const testAsignacionPlataforma = await Asignaciones.findOne({
+                    where: {
+                        [Op.and]: [{ usuarioIdUsuario: id_usuario }, { plataformaIdPlataforma: id_plataforma }],
+                    }
+                });
+
+
+                if (nombrePlataforma.includes('free fire') || nombrePlataforma.includes('call of duty') || nombrePlataforma.includes('demo')) {
+                    var valorUsuario = Number(valorBase);
+                } else {
+                    if (usuarios[i].pais === 'Colombia') {
+                        if (usuarios[i].perfil === 'distribuidor') {
+                            var valorUsuario = Number(valorBase) + 1000;
+                        } else if (usuarios[i].perfil === 'reseller') {
+                            var valorUsuario = Number(valorBase) + 2000;
+                        }
+                    } else {
+                        if (usuarios[i].perfil === 'distribuidor') {
+                            var valorUsuario = Number(valorBase) + 0.28;
+                        } else if (usuarios[i].perfil === 'reseller') {
+                            var valorUsuario = Number(valorBase) + 0.56;
+                        }
+                    }
+                }
+                if (!testAsignacionPlataforma) {
+                    await Asignaciones.create({
+                        id_asignacion: uuid_v4(),
+                        valor: valorUsuario,
+                        id_distribuidor: distribuidorAsignacion.id_usuario,
+                        id_superdistribuidor: req.user.id_usuario,
+                        usuarioIdUsuario: id_usuario,
+                        plataformaIdPlataforma: id_plataforma
+                    });
+                } else {
+                    testAsignacionPlataforma.valor = valorUsuario;
+                    testAsignacionPlataforma.save();
+                }
+            }
+        } else {
+            console.log('Asignación sin distribuidor ', usuarios[i])
         }
     }
 

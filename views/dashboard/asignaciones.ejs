@@ -173,6 +173,7 @@
 
             ChecksAsignaciones = $(".btnAsignar").attr("arrayAsignacion").split(",");
             ChecksAsignaciones.push($(this).attr("id-asignacion"));
+            console.log(ChecksAsignaciones);
             $(".btnAsignar").attr("arrayAsignacion", ChecksAsignaciones.toString());
 
           } else {

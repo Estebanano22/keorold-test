@@ -9,6 +9,7 @@ const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
 const { s3, bucket } = require('../config/awsS3');
 const multerS3 = require('multer-s3');
+const axios = require('axios');
 
 exports.reportarConsignacion = async (req, res) => {
 
@@ -39,6 +40,250 @@ exports.reportarConsignacion = async (req, res) => {
         medios
     })
 
+}
+
+exports.verifyTransaction = async (req, res) =>{
+    const paramRef  = req.query.ref_payco;
+    console.log(paramRef)
+    let reqRaw;
+    try{
+        reqRaw = await axios.get('https://secure.epayco.co/validation/v1/reference/'+paramRef);
+    }catch(e){
+        console.log(e);
+        return res.redirect('/dashboard/inicio');
+    }
+    
+    if(!reqRaw){
+        return res.redirect('/dashboard/inicio');
+    }
+
+    if(!reqRaw.data){
+        return res.redirect('/dashboard/inicio');
+    }
+
+    let status;
+    let reqRef;
+    try {
+        reqRef = reqRaw.data;
+        status = reqRef.data.x_cod_transaction_state;
+    } catch (error) {
+        return res.redirect('/dashboard/inicio');
+    }
+
+    console.log(reqRef)
+
+    if(reqRef.status === false){
+        return res.redirect('/dashboard/inicio');
+    }
+
+    const consignacion = await Consignaciones.findOne({
+        where: {
+            referencia: reqRef.data.x_id_factura
+        }
+    });
+
+    if(!consignacion){
+        return res.redirect('/dashboard/inicio');
+    }
+
+    console.log(consignacion);
+
+    let estadoTransaccion;
+    switch (status) {
+        case 1:
+            estadoTransaccion = 1
+            break;
+        case 2:
+            estadoTransaccion = 2
+            break;
+    
+        default:
+            estadoTransaccion = 0
+            break;
+    }
+
+    if(estadoTransaccion === 1){
+        const idUser = reqRef.data.x_extra1;
+        if(idUser.length > 0 && consignacion.estado === 0){
+            console.log("idUser: " + idUser);
+
+            const userToAsignSaldo = await Usuarios.findOne({where: {id_usuario: idUser}});
+            const saldoAnterior = userToAsignSaldo.saldo;
+            
+            console.log(Number(saldoAnterior));
+            
+            let saldoNuevoNeto;
+            
+            if(Number(reqRef.data.x_amount) > 29.99999){
+                saldoNuevoNeto = Number(reqRef.data.x_amount);
+            }else{
+                saldoNuevoNeto = Number(reqRef.data.x_amount) - 0.50;
+            }
+            
+            console.log('Saldo a recargar: ' + saldoNuevoNeto);
+            const newSaldo = Number(saldoAnterior) + Number(saldoNuevoNeto); 
+            
+            userToAsignSaldo.saldo = newSaldo;
+            
+            console.log('Nuevo saldo al usuario: ' + userToAsignSaldo.saldo);
+            userToAsignSaldo.save()
+        }
+    }
+
+    consignacion.estado = estadoTransaccion;
+    consignacion.save();
+    // if(consignacion.estado === 1){
+    //     return res.redirect('/cerrar-sesion');
+    // }else{
+    //     return res.redirect('/dashboard/reportarConsignacion');
+    // }
+    return res.redirect('/dashboard/reportarConsignacion');
+}
+
+exports.updateEpaycoTransaction = async (req, res) => {
+    const refEpayco = req.body.ref_epayco;
+    const newRefEpayco = refEpayco.substr(0, 8)
+    await axios({
+        url: 'https://apify.epayco.co/login/mail',
+        headers: {
+            public_key: '7683004bce02a70bdfb7a8cc777c556c'
+        },
+        auth: {
+            username: 'aclogistica01@gmail.com',
+            password: 'Danna963+'
+        },
+        method: 'POST'
+    }).then( async(rest)=>{
+        if(rest.data.token){
+            await axios({
+                method: 'GET',
+                url: 'https://apify.epayco.co/transaction/detail',
+                headers: { 
+                    Authorization: `Bearer ${rest.data.token}`
+                },
+                data: {
+                    filter:{
+                        referencePayco: newRefEpayco
+                    }
+                }
+            }).then(async (rest2) => {
+                console.log(rest2.data);
+                if(rest2.data.data.status === 'Rechazada'){
+                    const transaction = await Consignaciones.findOne({ where: {extra_ref1: refEpayco}})
+                
+                    transaction.estado = 2;
+                    transaction.save();
+                
+                    return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'La transacción fue rechazada.' });
+                
+                }else if(rest2.data.data.status === 'Aceptada') {
+                    
+                    const transaction = await Consignaciones.findOne({ where: {extra_ref1: refEpayco}})  
+                    const userToAsignSaldo = await Usuarios.findOne({where: {id_usuario: req.user.id_usuario}});
+                    const saldoAnterior = userToAsignSaldo.saldo;
+                    
+                    let saldoNuevoNeto;
+                    
+                    if(Number(reqRef.data.x_amount) > 29.99999){
+                        saldoNuevoNeto = Number(reqRef.data.x_amount);
+                    }else{
+                        saldoNuevoNeto = Number(reqRef.data.x_amount) - 0.50;
+                    }
+                    
+                    const newSaldo = Number(saldoAnterior) + Number(saldoNuevoNeto); 
+                    
+                    userToAsignSaldo.saldo = newSaldo;
+                    transaction.estado = 1;
+                    
+                    await transaction.save();
+                    await userToAsignSaldo.save();
+                    
+                    return res.json({ titulo: '¡Listo!', resp: 'success', descripcion: 'La transacción fue Aceptada correctamente.' });
+                } else {
+                    return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'La transacción no fue finalizada.' });
+                }
+            }).catch(err2 => {
+                console.log('Error en catch');
+                return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'No se pudo actualizar el estado de la transacción.' });
+            })
+        }else{
+            console.log('Error de data');
+            return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'No se pudo actualizar el estado de la transacción.' });
+        }
+    }).catch(err => {
+        console.log('Error en catch');
+        return res.json({ titulo: '¡Lo Sentimos!', resp: 'warning', descripcion: 'No se pudo actualizar el estado de la transacción.' });
+    })
+}
+
+exports.newFetchUpdateTransaction = async (req, res) => {
+    const estado = req.body.estado;
+    const referencia = req.body.referencia_factura;
+    const recibo = req.body.recibo;
+    const valorConsignado = req.body.valor_consignado;
+    const tipoConsignacion = 'Epayco Carga Automatica';
+    const telefonoCuenta = req.user.telefono_movil;
+    const fechaHoraConsignacion = new Date();
+
+    const existReference = await Consignaciones.findOne({ where : {referencia: referencia} });
+
+    if(!existReference){
+        const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
+        const userToAsignSaldo = await Usuarios.findOne({where: {id_usuario: req.user.id_usuario}});
+        const saldoAnterior = userToAsignSaldo.saldo;       
+        
+        let saldoNuevoNeto;
+        if(Number(valorConsignado) > 29.99999){
+            saldoNuevoNeto = Number(valorConsignado);
+        }else{
+            saldoNuevoNeto = Number(valorConsignado) - 0.50;
+        }
+        console.log('estado: ' + estado);
+        if(estado === 1 || estado === '1'){
+            const newSaldo = Number(saldoAnterior) + Number(saldoNuevoNeto); 
+            userToAsignSaldo.saldo = newSaldo;
+            await userToAsignSaldo.save();
+        }
+
+        const newConsignacion = await Consignaciones.create({
+            idConsignacion: uuid_v4(),
+            idSuperdistribuidor: superdistribuidor.id_usuario,
+            valor: saldoNuevoNeto,
+            estado: estado,
+            tipoConsignacion: tipoConsignacion,
+            referencia: referencia,
+            comprobante: 'No aplica',
+            extra_ref1: recibo,
+            usuarioIdUsuario: req.user.id_usuario,
+            celularConsignacion: telefonoCuenta,
+            fechaHoraConsignacion: fechaHoraConsignacion
+        });
+
+        return res.json({ titulo: 'Listo', resp: 'info', descripcion: 'La transacción creada y asignada al usuario.' });
+    }
+}
+
+exports.createEpayco = async (req, res) => {
+    const usuario = await Usuarios.findOne({ where: { email: req.user.email }});
+    const refNew = uuid_v4();
+    const amountReq = req.body.valor;
+    
+    var data = {
+        name: usuario.nombre,
+        description: 'Recargar saldo',
+        invoice: refNew,
+        currency: 'usd',
+        amount: '' + amountReq + '',
+        tax_base: '0',
+        tax: '0',
+        country: 'ec',
+        lang: 'es',
+        external: 'false',
+        test: 'false',
+        publicKey: '7683004bce02a70bdfb7a8cc777c556c',
+        extra1: '' + req.user.id_usuario + ''
+    };
+    res.json(data);
 }
 
 const configuracionMulter = ({
@@ -77,7 +322,6 @@ exports.subirConsignacion = async (req, res) => {
     const tipoConsignacion = req.body.tipoConsignacion;
     const referencia = req.body.referencia.toLowerCase();
     const telefonoCuenta = req.body.telefonoCuenta;
-    const comprobante = req.body.comprobante;
     const fechaHoraConsignacion = req.body.fechaHoraConsignacion;
 
     const consignaciones = await Consignaciones.findOne({
@@ -125,7 +369,7 @@ exports.subirConsignacion = async (req, res) => {
 
     const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
 
-    if (valorConsignado === '' || tipoConsignacion === '' || referencia === '' || comprobante === '') {
+    if (valorConsignado === '' || tipoConsignacion === '' || referencia === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Por favor llene todos los campos.' });
         return;
     }

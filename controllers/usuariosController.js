@@ -239,15 +239,6 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
             const nombrePlataforma = plataforma.plataforma;
             const diferencial = (Number(valorPlataforma) - Number(asignacion.valor));
 
-            console.log('Menor valor');
-            console.log(menorValor);
-
-            console.log('Diferencial')
-            console.log(diferencial);
-
-            console.log('valor plataforma');
-            console.log(valorPlataforma);
-
             if (Number(diferencial) > 1000 && !resellerDiference) {
                 res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: `No es posible aumentar el valor a la plataforma ${nombrePlataforma} debido a que excede el valor permitido de aumento.` });
 
@@ -309,11 +300,22 @@ exports.tablaAsignarPlataformas = async (req, res) => {
 
 // Admin Usuarios
 exports.adminUsuariosSuperdistribuidor = async (req, res) => {
+    const { page } = req.query;
+    let off;
+
+    if(page){
+        off  = parseInt(page);
+    }else{
+        off = 0
+    }
+
     const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario } });
     const usuarios = await Usuarios.findAll({
         where: {
             [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } }, { email: { [Op.ne]: 'sergio27chanona@gmail.com' } }],
-        }
+        },
+        limit: 10,
+        offset: off * 10
     });
     const distribuidores = await Usuarios.findAll();
     const plataformas = await Plataformas.findAll({
@@ -331,6 +333,61 @@ exports.adminUsuariosSuperdistribuidor = async (req, res) => {
         usuarios,
         plataformas,
         distribuidores
+    })
+}
+
+exports.adminUsuariosSuperdistribuidor_API = async(req, res) => {
+    const { page } = req.query;
+    let off;
+
+    if(page){
+        off  = parseInt(page);
+    }else{
+        off = 0
+    }
+
+    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario },  } );
+    const usuarios = await Usuarios.findAll({
+        where: {
+            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } },],
+        },
+        limit: 10,
+        offset: (off !== 0) ? off * 10 : 10
+    });
+    const distribuidores = await Usuarios.findAll();
+    const plataformas = await Plataformas.findAll({
+        where: {
+            [Op.and]: [{ estado: 1 }, { id_superdistribuidor: req.user.id_usuario }],
+        }
+    });
+    res.json({
+        usuario,
+        usuarios,
+        plataformas,
+        distribuidores
+    })
+}
+
+exports.adminUsuariosSuperdistribuidorBusqueda = async(req,res)=>{
+    const datosBusqueda = req.body.busquedaValor
+    const busqueda = await Usuarios.findAll({
+        where:{
+            [Op.or]: [
+                {nombre: {[Op.like]: `%${datosBusqueda}%`}},
+                {telefono_movil: {[Op.like]: `%${datosBusqueda}%`}},
+                {patrocinador: {[Op.like]: `%${datosBusqueda}%`}},
+                {perfil: {[Op.like]: `%${datosBusqueda}%`}},
+                {email: {[Op.like]: `%${datosBusqueda}%`}},
+                {pais : {[Op.like]: `%${datosBusqueda}%`}},
+                {saldo : {[Op.like]: `%${datosBusqueda}%`}},
+            ],
+            [Op.and]:[
+                [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } },]
+            ]
+        }
+    })
+    res.json({
+        busqueda
     })
 }
 
@@ -450,6 +507,8 @@ exports.usuarios = async (req, res) => {
     const plataformas = await Plataformas.findAll({
         where: { estado: 1 }
     });
+    
+    console.log(usuarios);
 
     res.render('dashboard/usuarios', {
         nombrePagina: 'Administrador Usuarios',

@@ -175,6 +175,34 @@ exports.editarCuenta = async (req, res) => {
 
 }
 
+exports.rechazarCuenta = async (req, res) => {
+
+    const idCuenta = req.body.id.trim();
+    const razon_rechazo = req.body.razon_rechazo.trim();
+
+    const cuenta = await Cuentas.findOne({ where: { idCuenta: idCuenta } });
+
+    if (razon_rechazo === '') {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No debe haber campos vacios.' });
+        return;
+    }
+
+    if (!cuenta) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible editar la cuenta.' });
+        return;
+    }
+
+    cuenta.comentario_rechazo = razon_rechazo;
+    cuenta.estado = 2;
+
+    await cuenta.save();
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Cuenta rechazada con éxito.' });
+    return;
+
+}
+
+
 exports.eliminarCuenta = async (req, res) => {
 
     const id = req.body.id.trim();

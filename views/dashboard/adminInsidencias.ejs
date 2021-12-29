@@ -82,17 +82,17 @@
                       <tbody>
                         <% if(insidencias.length) { %>
                         <% insidencias.forEach(listaInsidencias => { %>
-                        <% if(!(listaInsidencias.length < 1 || !listaInsidencias || !listaInsidencias.plataforma )) {%>
+                        <% const nombre_usuario = (listaInsidencias.usuario!==null) ? listaInsidencias.usuario.nombre : '---' %>
+                        <% const nombre_plataforma = (listaInsidencias.plataforma !== null) ? listaInsidencias.plataforma.plataforma : '---' %>
                         <% moment.locale('es'); %>
                         <% const fecha = moment(listaInsidencias.fecha).format('MMMM Do YYYY, h:mm:ss a'); %>
                         <tr class="">
                           <td class="inbox-small-cells <%= listaInsidencias.estado === 1 ? 'text-success' : 'text-danger' %>"><i class="fas fa-circle mr-2"></i><%= listaInsidencias.estado === 1 ? 'Respondida' : 'Sin responder' %></td>
                           <td class="view-message dont-show font-weight-semibold asunto_limitado" style="cursor: pointer;" onclick="informaciónInsidencia(event, '<%- listaInsidencias.idInsidencia %>')"><%- listaInsidencias.asunto %></td>
-                          <td class="view-message text-left"><%- listaInsidencias.plataforma.plataforma %></td>
-                          <td class="view-message text-left"><%- listaInsidencias.usuario.nombre %></td>
+                          <td class="view-message text-left"><%- nombre_plataforma  %></td>
+                          <td class="view-message text-left"><%- nombre_usuario %></td>
                           <td class="view-message text-right font-weight-semibold"><%= fecha %></td>
                         </tr>
-                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>
