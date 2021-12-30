@@ -11,7 +11,9 @@ exports.autenticarUsuario = passport.authenticate('local', {
 
 // revisar si el ususario esta utenticado
 exports.usuarioAutenticado = async (req, res, next) => {
-    
+
+    console.log(req.isAuthenticated());
+
     // si el usuario esta autenticado, adelante
     if(req.isAuthenticated()) {
         const token = await jwt.sign({user: req.user}, process.env.SECRETKEYTOKEN, {
@@ -27,6 +29,8 @@ exports.usuarioAutenticado = async (req, res, next) => {
 
 // Authorization: Bearer <token>
 exports.verifyToken = async (req, res, next) => {
+
+    console.log(req.user);
 
     const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario, bloqueo: 0 }});
 
