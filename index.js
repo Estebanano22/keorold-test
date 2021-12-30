@@ -84,10 +84,10 @@ app.use(session({
     genid: (req) => {
         return genuuid.v4();
     },
-    store: new redisStore({ 
-        host: REDIS_CLIENT_HOST, 
-        port: REDIS_CLIENT_PORT, 
-        client: redisClient 
+    store: new redisStore({
+        host: REDIS_CLIENT_HOST,
+        port: REDIS_CLIENT_PORT,
+        client: redisClient
     }),
     name: 'x-sotken',
     secret: process.env.SECRETO,
@@ -96,7 +96,7 @@ app.use(session({
     cookie: {
         secure: false,
         httpOnly: false,
-        maxAge: 600000,
+        maxAge: 3600000,
     },
     saveUninitialized: true
 }));

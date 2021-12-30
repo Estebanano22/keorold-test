@@ -80,7 +80,7 @@
                         <% if(!(listaLinks.usuarioIdUsuario === null)) { %>
                         <tr>
                           <td class="text-left text-capitalize">
-                            <%= listaLinks.usuario.nombre;%>
+                            <%= listaLinks.usuario === undefined ? 'NN' : listaLinks.usuario === null ? 'NN': listaLinks.usuario.nombre;%>
                           </td>
                           <td class="text-center">
                             <%= moment(listaLinks.fecha).format('DD:MM:YYYY HH:MM:SS')%>
