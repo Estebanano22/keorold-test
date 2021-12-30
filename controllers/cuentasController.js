@@ -422,7 +422,8 @@ exports.adminCuentasBajoPedido = async (req, res) => {
     })
 
     const usuarios = await Usuarios.findAll({
-        where: { super_patrocinador: req.user.enlace_afiliado }
+        where: { super_patrocinador: req.user.enlace_afiliado },
+        limit: 1000
     })
 
     res.render('dashboard/adminCuentasBajoPedido', {
@@ -629,7 +630,8 @@ exports.adminCuentasRenovaciones = async (req, res) => {
     })
 
     const usuarios = await Usuarios.findAll({
-        where: { super_patrocinador: req.user.enlace_afiliado }
+        where: { super_patrocinador: req.user.enlace_afiliado },
+        limit: 1000
     })
 
     res.render('dashboard/adminCuentasRenovaciones', {
@@ -819,7 +821,8 @@ exports.adminCuentasPersonalizadas = async (req, res) => {
     })
 
     const usuarios = await Usuarios.findAll({
-        where: { super_patrocinador: req.user.enlace_afiliado }
+        where: { super_patrocinador: req.user.enlace_afiliado },
+        limit: 1000
     })
 
     res.render('dashboard/adminCuentasPersonalizadas', {
@@ -1009,7 +1012,8 @@ exports.adminCuentasJuegos = async (req, res) => {
     })
 
     const usuarios = await Usuarios.findAll({
-        where: { super_patrocinador: req.user.enlace_afiliado }
+        where: { super_patrocinador: req.user.enlace_afiliado },
+        limit: 1000
     })
 
     res.render('dashboard/adminCuentasJuegos', {
