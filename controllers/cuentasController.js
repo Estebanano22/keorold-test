@@ -416,7 +416,8 @@ exports.adminCuentasBajoPedido = async (req, res) => {
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
-        order: [['fechaSubida', 'DESC']]
+        order: [['fechaSubida', 'DESC']],
+        limit: 1000
     })
 
     const cuentasBajoPedido = await Cuentas.count({
@@ -1000,7 +1001,8 @@ exports.adminCuentasJuegos = async (req, res) => {
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
-        order: [['fechaSubida', 'DESC']]
+        order: [['fechaSubida', 'DESC']],
+        limit: 1000
     })
 
     const cuentasJuegos = await Cuentas.count({
