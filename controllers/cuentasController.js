@@ -264,15 +264,6 @@ exports.cuentasSinTomar = async (req, res) => {
 }
 
 exports.adminCuentasVendidas = async (req, res) => {
-    const { page } = req.query;
-    let off;
-
-    if (page) {
-        off = parseInt(page);
-    } else {
-        off = 0
-    }
-
 
     const cuentas = await Cuentas.findAll({
         where: {
