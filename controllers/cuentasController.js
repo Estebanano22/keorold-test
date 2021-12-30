@@ -1025,6 +1025,48 @@ exports.adminCuentasJuegos = async (req, res) => {
 
 }
 
+exports.adminCuentasJuegos_API = async (req, res) => {
+
+    const { page } = req.query;
+    let off;
+
+    if (page) {
+        off = parseInt(page);
+    } else {
+        off = 0
+    }
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { tipoCuenta: 5 }]
+        },
+        include: [
+            { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
+            { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
+        ],
+        order: [['fechaSubida', 'DESC']],
+        limit: 10,
+        offset: (off !== 0) ? off * 10 : 10
+    })
+
+    const cuentasJuegos = await Cuentas.count({
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 0 }, { tipoCuenta: 5 }]
+        }
+    })
+
+    const usuarios = await Usuarios.findAll({
+        where: { super_patrocinador: req.user.enlace_afiliado }
+    })
+
+    res.json({
+        cuentasJuegos,
+        cuentas,
+        usuarios
+    })
+
+}
+
 const configuracionMulter2 = ({
     storage: multerS3({
         s3,

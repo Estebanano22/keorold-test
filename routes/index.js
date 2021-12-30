@@ -609,6 +609,13 @@ module.exports = function () {
         cuentasController.adminCuentasJuegos
     );
 
+    router.get('/dashboard/adminCuentasJuegos_API',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.adminCuentasJuegos_API
+    );
+
     router.post('/adminCuentasJuegos/infoCuenta',
         authController.usuarioAutenticado,
         authController.verifyToken,
