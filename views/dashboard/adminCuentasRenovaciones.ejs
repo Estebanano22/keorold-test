@@ -93,7 +93,8 @@
                         <% const distribuidor = usuarios.filter(function(element){ %>
                         <% return element.id_usuario == listaCuentas.idDistribuidor; %>
                         <% }); %>
-                        <% const nombre = distribuidor[0].nombre; %>
+                        <% const nombre =  distribuidor === undefined ? 'NN' : distribuidor[0] === undefined ? 'NN' : distribuidor[0].nombre; %>
+
                         <tr>
                           <td class="text-left text-capitalize"><%= nombre %></td>
                           <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
