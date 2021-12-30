@@ -78,6 +78,7 @@ app.use(express.static('public'));
 // habilitar cookie parser
 app.use(cookieParser());
 
+
 // Asignando redis para la sesión
 app.use(session({
     genid: (req) => {
