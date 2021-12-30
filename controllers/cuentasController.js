@@ -1067,6 +1067,38 @@ exports.adminCuentasJuegos_API = async (req, res) => {
 
 }
 
+exports.adminCuentasJuegosBusqueda = async (req, res) => {
+    const datosBusqueda = req.body.busquedaValor
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.or]: [
+                { user: { [Op.like]: `%${datosBusqueda}%` } },
+                { password: { [Op.like]: `%${datosBusqueda}%` } },
+                { pantalla: { [Op.like]: `%${datosBusqueda}%` } },
+                { pin: { [Op.like]: `%${datosBusqueda}%` } },
+                { idJuego: { [Op.like]: `%${datosBusqueda}%` } },
+                { comentario_rechazo: { [Op.like]: `%${datosBusqueda}%` } },
+                { estado: { [Op.like]: `%${datosBusqueda}%` } },
+                { tipoCuenta: { [Op.like]: `%${datosBusqueda}%` } },
+                { valorPagado: { [Op.like]: `%${datosBusqueda}%` } },
+                { cliente: { [Op.like]: `%${datosBusqueda}%` } },
+                { telefono: { [Op.like]: `%${datosBusqueda}%` } }
+            ],
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 0 }, { tipoCuenta: 5 }]
+        },
+        order: [['fechaSubida', 'DESC']]
+    });
+
+    const usuarios = await Usuarios.findAll({
+        where: { super_patrocinador: req.user.enlace_afiliado }
+    })
+
+    res.json({
+        cuentas,
+        usuarios
+    })
+
+}
 const configuracionMulter2 = ({
     storage: multerS3({
         s3,
