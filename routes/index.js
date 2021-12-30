@@ -475,6 +475,12 @@ module.exports = function () {
         rolController.permisosPaginaSuperdistribuidor,
         cuentasController.adminCuentasVendidas
     );
+    router.get('/dashboard/adminCuentasVendidas_API',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        cuentasController.adminCuentasVendidas_API
+    );
 
     // Administracion cuentas bajo pedido
 

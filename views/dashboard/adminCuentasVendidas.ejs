@@ -197,7 +197,7 @@
                         </tr>
                         <% }%>
                         <% }) %>
-                        <% } %>
+                        <% } %> 
                       </tbody>
                     </table>
                   </div>
@@ -271,7 +271,107 @@
   <!-- Footer -->
   <%- include('layautsDashboard/footer') %>
 
+<script>
+  function siguienteTabla() {
+    var table = document.getElementById('tablageneralsinfiltro');
+    $('#tablageneralsinfiltro').DataTable().clear();
+    $('#tablageneralsinfiltro').DataTable().destroy();
+    let contador = 0
+    
+    async function fetchUsers(){
+      $('#global-loader').addClass("d-block");
+      return axios({
+        url: `adminCuentasVendidas_API?page=${contador}`,
+        method: 'GET'
+      }).then(rest => {
+        return rest.data;
+      }).catch(err => {
+        swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
+      })
+    }
+    let paises 
+    fetchUsers().then(res=>{
+      console.log(res)
+    $('#global-loader').removeClass("d-block");
+    var datos =[]
+      let usuarios = res.usuarios
+      let cuentas = res.cuentas
+      cuentas.forEach(listaCuentas =>  {
+        if(!(listaCuentas.usuario == null || listaCuentas.plataforma == null)) {
+          const distribuidor = usuarios.find(element => element.id_usuario === listaCuentas.idDistribuidor)
+          const nombre = distribuidor === undefined ? 'NN' : distribuidor.nombre
+          if(listaCuentas.usuario.pais === 'Colombia') {
+            var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCuentas.valorPagado);
+          }else{
+            var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaCuentas.valorPagado);
+          }
+          if (listaCuentas.plataforma.tipo_plataforma === 5)  {
+            if(listaCuentas.user !== null || listaCuentas.password !== null) { 
+              var nuevo_email_user = listaCuentas.user;
+              var nuevo_password = listaCuentas.password;
+              var idJuego = 'no aplica'
+            }else{
+              var nuevo_email_user = 'no aplica'
+              var nuevo_password = 'no aplica'
+              var idJuego = listaCuentas.idJuego
+            }
+          }else{
+            var nuevo_email_user = listaCuentas.user
+            var nuevo_password = listaCuentas.password
+            var idJuego = 'no aplica'
+          }
+          datos.push({
+            'Distribuidor': nombre,
+            'Vendedor': listaCuentas.usuario.nombre,
+            'Perfil vendedor':  listaCuentas.usuario.perfil,
+            'Logo': listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaCuentas.plataforma.logo ,
+            'Plataforma': listaCuentas.plataforma.plataforma  ,
+            'Valor pagado': valorFormateado ,
+            'Tipo plataforma':  listaCuentas.plataforma.tipo_plataforma === 1 ? 'Normal' : listaCuentas.plataforma.tipo_plataforma === 2 ? 'Bajo Pedido' : listaCuentas.plataforma.tipo_plataforma === 3 ? 'Personalizada' : listaCuentas.plataforma.tipo_plataforma === 4 ? 'Renovaciones' : listaCuentas.plataforma.tipo_plataforma === 5 ? 'Juegos' : 'N/A',
+            'Usuario': nuevo_email_user ,
+            'Password': nuevo_password ,
+            'Pantalla': listaCuentas.pantalla ,
+            'Pin':  listaCuentas.pin,
+            'ID Jugador':  idJuego,
+            'Fecha compra':  moment(listaCuentas.fechaCompra).format('MMMM Do YYYY, h:mm:ss a'),
+            'Fecha subida':  moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a'),
+            'Reenviar whatsapp':  "Enviar whatsap",
+          })
 
+        }
+      }); 
+      console.log(listaCuentas.fechaCompra)
+      $('#tablageneralsinfiltro').DataTable({
+          paging: false,
+          searching: false,
+          info: false,
+          data: datos,
+          destroy: true,
+      responsive: true,
+      columns:[
+      {title: "Distribuidor", data: "Distribuidor"},
+      {title: "Vendedor", data: "Vendedor"},
+      {title: "Perfil vendedor", data: "Perfil vendedor"},
+      {title: "Logo", data: "Logo"},
+      {title: "Plataforma", data: "Plataforma"},
+      {title: "Valor pagado", data: "Valor pagado"},
+      {title: "Tipo plataforma", data: "Tipo plataforma"},
+      {title: "Usuario", data: "Usuario"},
+      {title: "Password", data: "Password"},
+      {title: "Pantalla", data: "Pantalla"},
+      {title: "Pin", data: "Pin"},
+      {title: "ID Jugador", data: "ID Jugador"},
+      {title: "Fecha Compra", data: "Fecha Compra"},
+      {title: "Fecha Subida", data: "Fecha Subida"},
+      {title: "Reenviar Whatsapp", data: "Reenviar Whatsapp"},
+      ]})
+    })}
+  siguienteTabla()
+</script> -->
   <!-- Scripts Personalizados -->
 
   <% if(locals.mensajes) { %>
@@ -348,7 +448,7 @@
           if (respuesta.resp === 'success') {
             btnDescargar.setAttribute('data-file', respuesta.url);
             btnDescargar.href = respuesta.url;
-            btnDescargar.setAttribute("download", respuesta.url);
+            btnDescargar.setAttribute("download", respuesta.url); 
             btnDescargar.classList.remove('display-none');
 
           } else {

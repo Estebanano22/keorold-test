@@ -260,6 +260,15 @@ exports.cuentasSinTomar = async (req, res) => {
 }
 
 exports.adminCuentasVendidas = async (req, res) => {
+    const { page } = req.query;
+    let off;
+
+    if (page) {
+        off = parseInt(page);
+    } else {
+        off = 0
+    }
+
 
     const cuentas = await Cuentas.findAll({
         where: {
@@ -269,7 +278,9 @@ exports.adminCuentasVendidas = async (req, res) => {
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
-        order: [['fechaSubida', 'DESC']]
+        order: [['fechaSubida', 'DESC']],
+        limit: 10,
+        offset: (off !== 0) ? off * 10 : 10
     })
 
     const cuentasNormales = await Cuentas.count({
@@ -312,6 +323,78 @@ exports.adminCuentasVendidas = async (req, res) => {
         titulo: 'Cuentas Vendidas',
         breadcrumb: 'Cuentas Vendidas',
         classActive: req.path.split('/')[2],
+        cuentasNormales,
+        cuentasBajoPedido,
+        cuentasPersonalizadas,
+        cuentasRenovaciones,
+        cuentasJuegos,
+        cuentas,
+        usuarios
+    })
+
+}
+
+exports.adminCuentasVendidas_API = async (req, res) => {
+    const { page } = req.query;
+    let off;
+
+    if (page) {
+        off = parseInt(page);
+    } else {
+        off = 0
+    }
+
+
+    const cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }]
+        },
+        include: [
+            { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
+            { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
+        ],
+        order: [['fechaSubida', 'DESC']],
+        limit: 10,
+        offset: (off !== 0) ? off * 10 : 10
+    })
+
+    const cuentasNormales = await Cuentas.count({
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }, { tipoCuenta: 1 }]
+        }
+    })
+
+    const cuentasBajoPedido = await Cuentas.count({
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }, { tipoCuenta: 2 }]
+        }
+    })
+
+    const cuentasPersonalizadas = await Cuentas.count({
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }, { tipoCuenta: 3 }]
+        }
+    })
+
+    const cuentasRenovaciones = await Cuentas.count({
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }, { tipoCuenta: 4 }]
+        }
+    })
+
+    const cuentasJuegos = await Cuentas.count({
+        where: {
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }, { tipoCuenta: 5 }]
+        }
+    })
+
+    const usuarios = await Usuarios.findAll({
+        where: { super_patrocinador: req.user.enlace_afiliado }
+    })
+    console.log(usuarios.length)
+
+
+    res.json({
         cuentasNormales,
         cuentasBajoPedido,
         cuentasPersonalizadas,

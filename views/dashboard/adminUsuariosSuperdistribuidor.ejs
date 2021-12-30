@@ -406,11 +406,11 @@
 
   <script>
     let contador = 0
-    function siguienteTabla(contadorParametro) {
+    function siguienteTabla() {
     var table = document.getElementById('exportexample13');
     $('#exportexample13').DataTable().clear();
     $('#exportexample13').DataTable().destroy();
-    contadorParametro
+    
     
     async function fetchUsers(){
       $('#global-loader').addClass("d-block");
