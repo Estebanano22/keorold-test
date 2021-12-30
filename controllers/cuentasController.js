@@ -28,7 +28,7 @@ exports.subirCuentas = async (req, res) => {
             [Op.and]: [{ id_superdistribuidor: superdistribuidor.id_usuario }, { estado: 1 }, { tipo_plataforma: 1 }]
         },
         order: [['plataforma', 'DESC']],
-        limit: 1000
+        limit: 500
     });
 
     const cuentas = await Cuentas.findAll({
@@ -36,7 +36,7 @@ exports.subirCuentas = async (req, res) => {
             [Op.and]: [{ idSuperdistribuidor: superdistribuidor.id_usuario }, { tipoCuenta: 1 }]
         },
         order: [['fechaSubida', 'DESC']],
-        limit: 1000
+        limit: 500
     });
 
     const cuentasTomadas = await Cuentas.findAll({
@@ -44,7 +44,7 @@ exports.subirCuentas = async (req, res) => {
             [Op.and]: [{ idSuperdistribuidor: superdistribuidor.id_usuario }, { tipoCuenta: 1 }, { estado: 1 }]
         },
         order: [['fechaSubida', 'DESC']],
-        limit: 1000
+        limit: 500
     });
 
     const cuentasSinTomar = await Cuentas.findAll({
@@ -52,7 +52,7 @@ exports.subirCuentas = async (req, res) => {
             [Op.and]: [{ idSuperdistribuidor: superdistribuidor.id_usuario }, { tipoCuenta: 1 }, { estado: 0 }]
         },
         order: [['fechaSubida', 'DESC']],
-        limit: 1000
+        limit: 500
     });
 
     res.render('dashboard/subirCuentas', {
@@ -274,7 +274,7 @@ exports.adminCuentasVendidas = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 1000
+        limit: 500
     })
 
     const cuentasNormales = await Cuentas.count({
@@ -309,7 +309,7 @@ exports.adminCuentasVendidas = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: { super_patrocinador: req.user.enlace_afiliado },
-        limit: 1000
+        limit: 500
     })
 
 
@@ -412,7 +412,7 @@ exports.adminCuentasBajoPedido = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 1000
+        limit: 500
     })
 
     const cuentasBajoPedido = await Cuentas.count({
@@ -423,7 +423,7 @@ exports.adminCuentasBajoPedido = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: { super_patrocinador: req.user.enlace_afiliado },
-        limit: 1000
+        limit: 500
     })
 
     res.render('dashboard/adminCuentasBajoPedido', {
@@ -620,7 +620,7 @@ exports.adminCuentasRenovaciones = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 1000
+        limit: 500
     })
 
     const cuentasRenovaciones = await Cuentas.count({
@@ -631,7 +631,7 @@ exports.adminCuentasRenovaciones = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: { super_patrocinador: req.user.enlace_afiliado },
-        limit: 1000
+        limit: 500
     })
 
     res.render('dashboard/adminCuentasRenovaciones', {
@@ -811,7 +811,7 @@ exports.adminCuentasPersonalizadas = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 1000
+        limit: 500
     })
 
     const cuentasPersonalizadas = await Cuentas.count({
@@ -822,7 +822,7 @@ exports.adminCuentasPersonalizadas = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: { super_patrocinador: req.user.enlace_afiliado },
-        limit: 1000
+        limit: 500
     })
 
     res.render('dashboard/adminCuentasPersonalizadas', {
@@ -1002,7 +1002,7 @@ exports.adminCuentasJuegos = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 1000
+        limit: 500
     })
 
     const cuentasJuegos = await Cuentas.count({
@@ -1013,7 +1013,7 @@ exports.adminCuentasJuegos = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: { super_patrocinador: req.user.enlace_afiliado },
-        limit: 1000
+        limit: 500
     })
 
     res.render('dashboard/adminCuentasJuegos', {
