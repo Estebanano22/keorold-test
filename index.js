@@ -12,6 +12,10 @@ const routes = require('./routes');
 const socketIO = require('socket.io');
 const moment = require('moment');
 const timeout = require('connect-timeout');
+const genuuid = require('uuid');
+
+const redis = require('redis');
+const redisStore = require('connect-redis')(session);
 
 // crear conexion ala DB
 const db = require('./config/db');
@@ -40,6 +44,31 @@ dotenv.config({
     path: path.resolve(__dirname, 'production.env')
 });
 
+const REDIS_CLIENT_PASSWORD = process.env.REDIS_CLIENT_PASSWORD
+REDIS_CLIENT_HOST = process.env.REDIS_CLIENT_HOST,
+    REDIS_CLIENT_PORT = process.env.REDIS_CLIENT_PORT;
+
+
+const redisClient = redis.createClient({
+    host: REDIS_CLIENT_HOST,
+    port: REDIS_CLIENT_PORT,
+    no_ready_check: trfue,
+    auth_pass: REDIS_CLIENT_PASSWORD
+});
+
+redisClient.on('connect', () => {
+    console.log('Connected with redis');
+});
+
+redisClient.on('error', (err) => {
+    console.log('Redis error: ', err);
+});
+
+try {
+    redisClient.set('va', 'baca');
+} catch (error) {
+    console.log('ErrorSDASD:', error);   
+}
 
 // crear el servidor
 const app = express();
@@ -59,10 +88,27 @@ app.use(cookieParser());
 
 // crear session
 app.use(session({
+    genid: (req) => {
+        let randomSessionID = genuuid.v4();
+        console.log('Session ID: ', randomSessionID)
+        return randomSessionID
+    },
+    store: new redisStore({ 
+        host: REDIS_CLIENT_HOST, 
+        port: REDIS_CLIENT_PORT, 
+        client: redisClient 
+    }),
+    name: 'x-sotken',
     secret: process.env.SECRETO,
     key: process.env.KEY,
     resave: false,
-    saveUninitialized: false
+    cookie: {
+        secure: true,
+        httpOnly: true,
+        maxAge: 600000,
+        domain: '.paymentsway.co'
+    },
+    saveUninitialized: true
 }));
 
 // inicializar passport
