@@ -11,10 +11,9 @@ exports.autenticarUsuario = passport.authenticate('local', {
 
 // revisar si el ususario esta utenticado
 exports.usuarioAutenticado = async (req, res, next) => {
-
+    
     // si el usuario esta autenticado, adelante
     if(req.isAuthenticated()) {
-        console.log('El usuario esta autenticado');
         const token = await jwt.sign({user: req.user}, process.env.SECRETKEYTOKEN, {
             expiresIn: '1h'
         });
@@ -23,7 +22,6 @@ exports.usuarioAutenticado = async (req, res, next) => {
     }
 
     // sino esta autenticado
-    console.log('El usuario NO autenticado');
     return res.redirect('/ingreso');
 }
 

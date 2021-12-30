@@ -44,18 +44,17 @@ dotenv.config({
     path: path.resolve(__dirname, 'production.env')
 });
 
+// Redis connection server
 const REDIS_CLIENT_PASSWORD = process.env.REDIS_CLIENT_PASSWORD
 REDIS_CLIENT_HOST = process.env.REDIS_CLIENT_HOST,
-    REDIS_CLIENT_PORT = process.env.REDIS_CLIENT_PORT;
+    REDIS_CLIENT_PORT = process.env.REDIS_CLIENT_PORT,
+    REDIS_CLIENT_USER = process.env.REDIS_CLIENT_USER;
 
+const url = `redis://${REDIS_CLIENT_USER}:${REDIS_CLIENT_PASSWORD}@${REDIS_CLIENT_HOST}:${REDIS_CLIENT_PORT}`;
 
-const redisClient = redis.createClient({
-    host: REDIS_CLIENT_HOST,
-    port: REDIS_CLIENT_PORT,
-    no_ready_check: trfue,
-    auth_pass: REDIS_CLIENT_PASSWORD
-});
+const redisClient = redis.createClient(url);
 
+// Events and errors from redis
 redisClient.on('connect', () => {
     console.log('Connected with redis');
 });
@@ -64,17 +63,10 @@ redisClient.on('error', (err) => {
     console.log('Redis error: ', err);
 });
 
-try {
-    redisClient.set('va', 'baca');
-} catch (error) {
-    console.log('ErrorSDASD:', error);   
-}
-
 // crear el servidor
 const app = express();
 
 // habilitar EJS
-// app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // ubicacion vistas
@@ -86,12 +78,10 @@ app.use(express.static('public'));
 // habilitar cookie parser
 app.use(cookieParser());
 
-// crear session
+// Asignando redis para la sesión
 app.use(session({
     genid: (req) => {
-        let randomSessionID = genuuid.v4();
-        console.log('Session ID: ', randomSessionID)
-        return randomSessionID
+        return genuuid.v4();
     },
     store: new redisStore({ 
         host: REDIS_CLIENT_HOST, 
@@ -103,10 +93,9 @@ app.use(session({
     key: process.env.KEY,
     resave: false,
     cookie: {
-        secure: true,
-        httpOnly: true,
+        secure: false,
+        httpOnly: false,
         maxAge: 600000,
-        domain: '.paymentsway.co'
     },
     saveUninitialized: true
 }));
