@@ -1097,8 +1097,8 @@ exports.adminCuentasJuegosBusqueda = async (req, res) => {
         cuentas,
         usuarios
     })
-
 }
+
 const configuracionMulter2 = ({
     storage: multerS3({
         s3,
