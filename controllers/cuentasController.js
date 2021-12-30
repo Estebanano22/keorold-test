@@ -27,28 +27,32 @@ exports.subirCuentas = async (req, res) => {
         where: {
             [Op.and]: [{ id_superdistribuidor: superdistribuidor.id_usuario }, { estado: 1 }, { tipo_plataforma: 1 }]
         },
-        order: [['plataforma', 'DESC']]
+        order: [['plataforma', 'DESC']],
+        limit: 1000
     });
 
     const cuentas = await Cuentas.findAll({
         where: {
             [Op.and]: [{ idSuperdistribuidor: superdistribuidor.id_usuario }, { tipoCuenta: 1 }]
         },
-        order: [['fechaSubida', 'DESC']]
+        order: [['fechaSubida', 'DESC']],
+        limit: 1000
     });
 
     const cuentasTomadas = await Cuentas.findAll({
         where: {
             [Op.and]: [{ idSuperdistribuidor: superdistribuidor.id_usuario }, { tipoCuenta: 1 }, { estado: 1 }]
         },
-        order: [['fechaSubida', 'DESC']]
+        order: [['fechaSubida', 'DESC']],
+        limit: 1000
     });
 
     const cuentasSinTomar = await Cuentas.findAll({
         where: {
             [Op.and]: [{ idSuperdistribuidor: superdistribuidor.id_usuario }, { tipoCuenta: 1 }, { estado: 0 }]
         },
-        order: [['fechaSubida', 'DESC']]
+        order: [['fechaSubida', 'DESC']],
+        limit: 1000
     });
 
     res.render('dashboard/subirCuentas', {
@@ -279,8 +283,7 @@ exports.adminCuentasVendidas = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 10,
-        offset: (off !== 0) ? off * 10 : 10
+        limit: 1000
     })
 
     const cuentasNormales = await Cuentas.count({
@@ -314,7 +317,8 @@ exports.adminCuentasVendidas = async (req, res) => {
     })
 
     const usuarios = await Usuarios.findAll({
-        where: { super_patrocinador: req.user.enlace_afiliado }
+        where: { super_patrocinador: req.user.enlace_afiliado },
+        limit: 1000
     })
 
 
@@ -623,7 +627,8 @@ exports.adminCuentasRenovaciones = async (req, res) => {
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
-        order: [['fechaSubida', 'DESC']]
+        order: [['fechaSubida', 'DESC']],
+        limit: 1000
     })
 
     const cuentasRenovaciones = await Cuentas.count({
@@ -812,7 +817,8 @@ exports.adminCuentasPersonalizadas = async (req, res) => {
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
-        order: [['fechaSubida', 'DESC']]
+        order: [['fechaSubida', 'DESC']],
+        limit: 1000
     })
 
     const cuentasPersonalizadas = await Cuentas.count({
