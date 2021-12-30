@@ -151,7 +151,7 @@
                         <% cuentas.forEach(listaCuentas => { %>
                         <% if(!(listaCuentas.usuario == null || listaCuentas.plataforma == null)) {%>
                         <% const distribuidor = usuarios.find(element => element.id_usuario === listaCuentas.idDistribuidor)%>
-                        <% const nombre = distribuidor.dataValues.nombre; %>
+                        <% const nombre = distribuidor === undefined ? 'NN' : distribuidor.nombre  %>
                         <% if(listaCuentas.usuario.pais === 'Colombia') { %>
                         <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCuentas.valorPagado); %>
                         <% } else { %>
