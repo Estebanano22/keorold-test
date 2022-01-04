@@ -3,7 +3,7 @@ const Plataformas = require('../models/plataformasModelo');
 const Cuentas = require('../models/cuentasModelo');
 const Asignaciones = require('../models/asignacionesModelo');
 const Ganancias = require('../models/gananciasModelo');
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const { body, validationResult } = require('express-validator');
 const multer = require('multer');
 const shortid = require('shortid');
@@ -1001,10 +1001,13 @@ exports.adminCuentasJuegos = async (req, res) => {
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
         ],
-        order: [['fechaSubida', 'DESC']],
+        order: [
+            ['estado', 'asc'],
+            ['fechaSubida', 'desc'],
+        ],
         limit: 500
     })
-
+    console.log(cuentas[0])
     const cuentasJuegos = await Cuentas.count({
         where: {
             [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 0 }, { tipoCuenta: 5 }]

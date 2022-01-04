@@ -89,6 +89,9 @@
                         <% moment.locale('es'); %>
                         <% if(cuentas.length) { %>
                         <% cuentas.forEach(listaCuentas => { %>
+                          <%if(listaCuentas.usuario == null){%>
+                            <%listaCuentas.usuario = "nn"%>
+                          <%}%>
                         <% if(!(listaCuentas.usuario == null || listaCuentas.plataforma == null)) {%>
                         <% const distribuidor = usuarios.filter(function(element){ %>
                         <% return element.id_usuario == listaCuentas.idDistribuidor; %>
