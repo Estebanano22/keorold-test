@@ -209,11 +209,12 @@ exports.countRed = async (req, res, next) => {
     res.locals.countSuperdist = countSuperdist;
     res.locals.countDist = countDist;
     res.locals.countRes = countRes;
-    res.locals.patrocinadorNombre = patrocinador.nombre;
-    res.locals.patrocinadorTelefono = patrocinador.telefono_movil;
+    res.locals.patrocinadorNombre = patrocinador === null || undefined ? "nn" : patrocinador.nombre;
+    res.locals.patrocinadorTelefono = patrocinador === null || undefined ? "nn" : patrocinador.telefono_movil;
     next();
     
 }
+
 
 exports.cambiarPassword = async (req, res, next) => {
 
@@ -452,7 +453,7 @@ exports.whatsapp = async (req, res) => {
         }
     })
 
-    const whatsapp = patrocinadores.telefono_movil;
+    const whatsapp = patrocinadores.telefono_movil === null || undefined ? "NN" :  patrocinadores.telefono_movil;
     res.json({ whatsappPatrocinador: whatsapp});
     return;
 
