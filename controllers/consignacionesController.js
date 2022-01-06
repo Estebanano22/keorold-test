@@ -401,9 +401,11 @@ exports.adminConsignaciones = async (req, res) => {
         include: [
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
         ],
-        order: [['fecha', 'DESC']]
+        order: [['estado', 'ASC'],
+        ['fecha', 'ASC']],
+        limit: 500
     });
-
+    console.log(consignaciones[0])
     const countConsignaciones = await Consignaciones.count({
         where: {
             [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 0 }]
