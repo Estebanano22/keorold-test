@@ -402,8 +402,8 @@ exports.adminConsignaciones = async (req, res) => {
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
         ],
         order: [['estado', 'ASC'],
-        ['fecha', 'ASC']],
-        limit: 500
+        ['fecha', 'DESC']],
+        limit: 1000
     });
     console.log(consignaciones[0])
     const countConsignaciones = await Consignaciones.count({
