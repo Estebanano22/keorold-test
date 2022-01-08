@@ -16,14 +16,18 @@ exports.inicio = (req, res) => {
 };
 
 exports.aplicaciones = (req, res) => {
+  const UrlDomain = req.hostname;
   res.render("aplicaciones", {
     nombrePagina: "aplicaciones",
+    UrlDomain
   });
 };
 
 exports.formRegistro = (req, res) => {
+  const UrlDomain = req.hostname;
   res.render("registro", {
     nombrePagina: "Registro",
+    UrlDomain
   });
 };
 
@@ -286,7 +290,9 @@ exports.confirmarCuenta = async (req, res, next) => {
 };
 
 exports.formIngreso = (req, res) => {
+  const UrlDomain = req.hostname;
   res.render("ingreso", {
     nombrePagina: "Ingreso",
+    UrlDomain
   });
 };
