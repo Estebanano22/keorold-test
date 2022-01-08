@@ -8,26 +8,20 @@ const generator = require("generate-password");
 const bcrypt = require("bcrypt-nodejs");
 
 exports.inicio = (req, res) => {
-  const UrlDomain = req.hostname;
   res.render("inicio", {
     nombrePagina: "El mejor entretenimiento en linea",
-    UrlDomain
   });
 };
 
 exports.aplicaciones = (req, res) => {
-  const UrlDomain = req.hostname;
   res.render("aplicaciones", {
     nombrePagina: "aplicaciones",
-    UrlDomain
   });
 };
 
 exports.formRegistro = (req, res) => {
-  const UrlDomain = req.hostname;
   res.render("registro", {
     nombrePagina: "Registro",
-    UrlDomain
   });
 };
 
@@ -290,9 +284,7 @@ exports.confirmarCuenta = async (req, res, next) => {
 };
 
 exports.formIngreso = (req, res) => {
-  const UrlDomain = req.hostname;
   res.render("ingreso", {
     nombrePagina: "Ingreso",
-    UrlDomain
   });
 };

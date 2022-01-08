@@ -118,6 +118,7 @@ app.use(async (req, res, next) => {
     res.locals.year = fecha.getFullYear();
     res.locals.fecha = fecha.toLocaleString('es-CO');
     res.locals.moment = moment;
+    res.locals.UrlDomain = req.hostname;
     next();
 });
 
