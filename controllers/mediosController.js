@@ -8,7 +8,6 @@ const { v4: uuid_v4 } = require('uuid');
 const fs = require('fs');
 const { s3, bucket } = require('../config/awsS3');
 const multerS3 = require('multer-s3');
-console.log('hotfixes');
 
 exports.mediosConsignacion = async (req, res) => {
 
