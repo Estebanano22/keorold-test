@@ -44,7 +44,6 @@ exports.reportarConsignacion = async (req, res) => {
 
 exports.verifyTransaction = async (req, res) =>{
     const paramRef  = req.query.ref_payco;
-    console.log(paramRef)
     let reqRaw;
     try{
         reqRaw = await axios.get('https://secure.epayco.co/validation/v1/reference/'+paramRef);
@@ -70,7 +69,6 @@ exports.verifyTransaction = async (req, res) =>{
         return res.redirect('/dashboard/inicio');
     }
 
-    console.log(reqRef)
 
     if(reqRef.status === false){
         return res.redirect('/dashboard/inicio');
@@ -86,7 +84,6 @@ exports.verifyTransaction = async (req, res) =>{
         return res.redirect('/dashboard/inicio');
     }
 
-    console.log(consignacion);
 
     let estadoTransaccion;
     switch (status) {
@@ -401,11 +398,9 @@ exports.adminConsignaciones = async (req, res) => {
         include: [
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
         ],
-        order: [['estado', 'ASC'],
-        ['fecha', 'DESC']],
-        limit: 1000
+        order: [['fecha', 'DESC']],
+        limit: 3000
     });
-    console.log(consignaciones[0])
     const countConsignaciones = await Consignaciones.count({
         where: {
             [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 0 }]
