@@ -8,10 +8,8 @@ const generator = require("generate-password");
 const bcrypt = require("bcrypt-nodejs");
 
 exports.inicio = (req, res) => {
-  const UrlDomain = req.hostname;
   res.render("inicio", {
     nombrePagina: "El mejor entretenimiento en linea",
-    UrlDomain
   });
 };
 
