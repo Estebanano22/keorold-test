@@ -82,7 +82,7 @@
                         <% moment.locale('es'); %>
                         <% if(cargas.length) { %>
                         <% cargas.forEach(listaCargas => { %>
-                        <% if(!(listaCargas.usuario == null || listaCargas.plataforma == null)) {%>
+                        <% if(listaCargas.usuario !== null) {%>
                         <% if(listaCargas.usuario.pais === 'Colombia') { %>
                         <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCargas.valor); %>
                         <% var saldoAnteriorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaCargas.saldoAnterior); %>
@@ -102,10 +102,6 @@
                           <td class="text-center <%= listaCargas.fechaCarga === null ? 'text-warning' : '' %>"><%= listaCargas.fechaCarga === null ? 'Sin fecha de carga' : moment(listaCargas.fechaCarga).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-capitalize"><%= listaCargas.responsableGestion %></td>
                         </tr>
-                        <% } else { %>
-                        <script>
-                          console.log(<% listaCargas %>)
-                        </script>
                         <% } %>
                         <% }) %>
                         <% } %>
