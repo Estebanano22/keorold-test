@@ -312,7 +312,7 @@ exports.adminUsuariosSuperdistribuidor = async (req, res) => {
     const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario } });
     const usuarios = await Usuarios.findAll({
         where: {
-            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } }, { email: { [Op.ne]: 'sergio27chanona@gmail.com' } }],
+            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } }],
         },
         limit: 10,
         offset: off * 10
@@ -345,15 +345,16 @@ exports.adminUsuariosSuperdistribuidor_API = async(req, res) => {
     }else{
         off = 0
     }
-
-    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario },  } );
+    console.log(page);
+    const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario } } );
     const usuarios = await Usuarios.findAll({
         where: {
-            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } },],
+            [Op.and]: [{ super_patrocinador: req.user.enlace_afiliado }, { perfil: { [Op.ne]: 'superdistribuidor' } }]
         },
         limit: 10,
-        offset: (off !== 0) ? off * 10 : 10
+        offset: (off !== 0) ? off * 10 : 0
     });
+    // console.log(usuarios);
     const distribuidores = await Usuarios.findAll();
     const plataformas = await Plataformas.findAll({
         where: {

@@ -350,7 +350,7 @@ exports.adminCuentasVendidas_API = async (req, res) => {
         ],
         order: [['fechaSubida', 'DESC']],
         limit: 10,
-        offset: (off !== 0) ? off * 10 : 10
+        offset: (off !== 0) ? off * 10 : 0
     })
 
     const cuentasNormales = await Cuentas.count({
@@ -1052,7 +1052,7 @@ exports.adminCuentasJuegos_API = async (req, res) => {
         ],
         order: [['fechaSubida', 'DESC']],
         limit: 10,
-        offset: (off !== 0) ? off * 10 : 10
+        offset: (off !== 0) ? off * 10 : 0
     })
 
     const cuentasJuegos = await Cuentas.count({
