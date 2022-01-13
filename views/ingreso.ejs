@@ -28,7 +28,7 @@
                                         <div class="clearfix"></div>
                                         <form action="/ingreso" method="POST">
                                             <h5 class="text-left mb-2">INICIAR SESIÓN</h5>
-                                            <p class="mb-4 text-muted tx-13 ml-0 text-left">Inicie sesión para crear, descubrir y conectarse con toda la comunidad <strong>Full Entretenimiento</strong></p>
+                                            <p class="mb-4 text-muted tx-13 ml-0 text-left">Inicie sesión para crear, descubrir y conectarse con toda la comunidad <strong><%- UrlDomain === 'mipantalla.com' ? 'Mi Pantalla' : 'Full entretenimiento' %></strong></p>
                                             <div class="form-group text-left">
                                                 <label>Correo electrónico</label>
                                                 <input class="form-control" name="email" placeholder="Introduce tu correo electrónico" type="text">
