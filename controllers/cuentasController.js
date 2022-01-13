@@ -35,8 +35,8 @@ exports.subirCuentas = async (req, res) => {
         where: {
             [Op.and]: [{ idSuperdistribuidor: superdistribuidor.id_usuario }, { tipoCuenta: 1 }]
         },
-        order: [['estado', 'asc'],['fechaSubida', 'asc']],
-        limit: 800
+        order: [['estado', 'asc'],['fechaSubida', 'desc']],
+        limit: 1500
     });
 
     const cuentasTomadas = await Cuentas.findAll({
