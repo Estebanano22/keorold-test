@@ -68,7 +68,8 @@ exports.validarRegistro = async (req, res, next) => {
     body("telefono")
       .not()
       .isEmpty()
-      .withMessage("El teléfono es obligatorio")
+      .isLength({ min: 8 })
+      .withMessage("El teléfono es obligatorio y debe ser correcto")
       .escape(),
     body("pais").not().isEmpty().withMessage("El pais es obligatorio").escape(),
     body("enlacePatrocinador")
@@ -135,77 +136,90 @@ exports.validarRegistro = async (req, res, next) => {
 };
 
 exports.crearRegistro = async (req, res) => {
-  const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split("-");
-  const perfilEnlace =
-    validacionEnlacePatrocinador[validacionEnlacePatrocinador.length - 1];
-  var enlPat2 = "";
-  for (var i = 0; i < validacionEnlacePatrocinador.length - 1; i++) {
-    enlPat2 += validacionEnlacePatrocinador[i] + "-";
-  }
-
-  const enlPat = enlPat2.substring(0, enlPat2.length - 1);
-
-  const datosRed = await Usuarios.findOne({
-    where: { enlace_afiliado: enlPat, bloqueo: 0 },
-  });
-
-  const usuario = req.body;
-  const superPatrocinador = datosRed.super_patrocinador;
-  const replacer = new RegExp(" ", "g");
-  const digito = Math.round(Math.random() * (999 - 0) + 0);
-  const enlace = usuario.nombre.replace(replacer, "-").toLowerCase();
-  const enlace_afiliado = enlace + "-" + digito;
-  const response = await axios.get("https://api.ipify.org?format=json");
-  const ip = response.data.ip;
-  const observaciones = "Usuario creado desde codigo afiliado";
-
-  if (perfilEnlace === "res21ok7") {
-    var perfil = "reseller";
-  } else if (perfilEnlace === "okdist21m") {
-    var perfil = "distribuidor";
-  } else {
-    req.flash("danger", "El código de afiliación no es valido");
-    res.redirect("/registro");
-    return;
-  }
-
-  try {
-    await Usuarios.create({
-      nombre: usuario.nombre,
-      email: usuario.email,
-      password: usuario.password,
-      enlace_afiliado: enlace_afiliado,
-      pais: usuario.pais,
-      direccion: usuario.direccion,
-      telefono_movil: usuario.telefono,
-      ip: ip,
-      perfil: perfil,
-      observaciones: observaciones,
-      patrocinador: enlPat,
-      super_patrocinador: superPatrocinador,
+  // console.log(usuario.pais == "Seleccione un pais" || usuario.telefono.length <= 10)
+  const validation = req.body;
+  if (validation.pais == "Seleccione un pais" ) {
+    req.flash(
+      "danger",
+      "Selecciona un pais"
+      );
+      return res.render("registro", {
+        nombrePagina: "Registro",
+        mensajes: req.flash(),
+      });
+    } else {
+      const usuario = req.body;
+      const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split("-");
+    const perfilEnlace =
+      validacionEnlacePatrocinador[validacionEnlacePatrocinador.length - 1];
+    var enlPat2 = "";
+    for (var i = 0; i < validacionEnlacePatrocinador.length - 1; i++) {
+      enlPat2 += validacionEnlacePatrocinador[i] + "-";
+    }
+  
+    const enlPat = enlPat2.substring(0, enlPat2.length - 1);
+  
+    const datosRed = await Usuarios.findOne({
+      where: { enlace_afiliado: enlPat, bloqueo: 0 },
     });
-
-    // URL confirmacion
-    const url = `http://${req.headers.host}/confirmar-cuenta/${usuario.email}`;
-
-    // Enviar email
-    await enviarEmails.enviarEmail({
-      usuario,
-      url,
-      subject: "Confirma tu cuenta de Full Entretenimiento",
-      archivo: "confirmar-cuenta",
-    });
-
-    // Todo: flash message y redireccionar
-    req.flash("success", "Te hemos enviado un E-mail para confirmar tu cuenta");
-    res.redirect("/ingreso");
-    // console.log('creando usuario');
-  } catch (error) {
-    console.log(error);
-    const erroresSequelize = error.errors.map((err) => err.message);
-
-    req.flash("danger", erroresSequelize);
-    res.redirect("/registro");
+  
+    // const superPatrocinador = datosRed.super_patrocinador;
+    const replacer = new RegExp(" ", "g");
+    const digito = Math.round(Math.random() * (999 - 0) + 0);
+    const enlace = usuario.nombre.replace(replacer, "-").toLowerCase();
+    const enlace_afiliado = enlace + "-" + digito;
+    const response = await axios.get("https://api.ipify.org?format=json");
+    const ip = response.data.ip;
+    const observaciones = "Usuario creado desde codigo afiliado";
+  
+    if (perfilEnlace === "res21ok7") {
+      var perfil = "reseller";
+    } else if (perfilEnlace === "okdist21m") {
+      var perfil = "distribuidor";
+    } else {
+      req.flash("danger", "El código de afiliación no es valido");
+      res.redirect("/registro");
+      return;
+    }
+  
+    try {
+      await Usuarios.create({
+        nombre: usuario.nombre,
+        email: usuario.email,
+        password: usuario.password,
+        enlace_afiliado: enlace_afiliado,
+        pais: usuario.pais,
+        direccion: usuario.direccion,
+        telefono_movil: usuario.telefono,
+        ip: ip,
+        perfil: perfil,
+        observaciones: observaciones,
+        patrocinador: enlPat,
+        super_patrocinador: superPatrocinador,
+      });
+  
+      // URL confirmacion
+      const url = `http://${req.headers.host}/confirmar-cuenta/${usuario.email}`;
+  
+      // Enviar email
+      await enviarEmails.enviarEmail({
+        usuario,
+        url,
+        subject: "Confirma tu cuenta de Full Entretenimiento",
+        archivo: "confirmar-cuenta",
+      });
+  
+      // Todo: flash message y redireccionar
+      req.flash("success", "Te hemos enviado un E-mail para confirmar tu cuenta");
+      res.redirect("/ingreso");
+      // console.log('creando usuario');
+    } catch (error) {
+      console.log(error);
+      const erroresSequelize = error.errors.map((err) => err.message);
+  
+      req.flash("danger", erroresSequelize);
+      res.redirect("/registro");
+    }
   }
 };
 
