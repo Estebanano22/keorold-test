@@ -37,10 +37,9 @@
             display: block;
         }
       }
-
   </style>
-  <title>Full Entretenimiento | <%- nombrePagina  %></title>
-  <link rel=icon type="image/png" href="assetsInicio/img/favicon.png"> </head>
+  <title><%- UrlDomain === 'mipantalla.com' ? 'Mi Pantalla' : 'Full entretenimiento' %> <%- nombrePagina  %></title>
+  <link rel=icon type="image/png" href="<%- UrlDomain === 'mipantalla.com' ? 'https://storagepublicfull.sfo3.digitaloceanspaces.com/marcas/icono_c.png' : 'assetsInicio/img/favicon.png' %>"> </head>
 <div class=preloader>
   <div class=loader>
     <div class=shadow></div>
@@ -135,7 +134,7 @@
           <p style="color: #230e56 !important;">
             <strong><%- UrlDomain === 'mipantalla.com' ? 'Mi Pantalla' : 'Fullentretenimiento' %></strong> es una plataforma que esta en funcionamiento desde hace 4 años, con presencia en más de 6 paises a nivel internacional y más de <strong>3.000 distribuidores activos</strong> que le permite a todos sus usuarios, vender y renovar cuentas de más de 15 plataformas de streaming entre las cuales se encuentran las más reconocidas como (Netflix, Amazon Prime, Disney +, HBO, Spotify, etc...).<br><br>
 
-            Al inscribirte a fullentretenimiento, podras disponer de la plataforma en cualquier lugar y desde cualquier dispositivo, por medio de nuestro dashboard podras crear una red de distribuidores y vender cuentas a clientes finales. Lleva un reporte detallado de tus ventas y tu red en cualquier parte del mundo.
+            Al inscribirte a <%- UrlDomain === 'mipantalla.com' ? 'Mi Pantalla' : 'Fullentretenimiento' %>, podras disponer de la plataforma en cualquier lugar y desde cualquier dispositivo, por medio de nuestro dashboard podras crear una red de distribuidores y vender cuentas a clientes finales. Lleva un reporte detallado de tus ventas y tu red en cualquier parte del mundo.
           </p>
         </div>
       </div>
