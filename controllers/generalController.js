@@ -163,7 +163,7 @@ exports.crearRegistro = async (req, res) => {
       where: { enlace_afiliado: enlPat, bloqueo: 0 },
     });
   
-    // const superPatrocinador = datosRed.super_patrocinador;
+    const superPatrocinador = datosRed.super_patrocinador;
     const replacer = new RegExp(" ", "g");
     const digito = Math.round(Math.random() * (999 - 0) + 0);
     const enlace = usuario.nombre.replace(replacer, "-").toLowerCase();
