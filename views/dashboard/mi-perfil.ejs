@@ -171,9 +171,13 @@
                           <div class="mg-sm-r-20 mg-b-10">
                             <div class="main-profile-contact-list">
                               <div class="media">
-                                <div class="media-icon"><img src="/assetsDashboard/img/flags/co.svg" alt=""></div>
+                                <% paises.data.forEach(pais => { %>
+                                  <% if(pais.name === usuario.pais) { %>
+                                  <div class="media-icon"><img src="/assetsDashboard/img/flags/<%= pais.cca2 %>.svg" alt=""></div>
+                                  <% } %>
+                                  <% }) %>
                                 <div class="media-body"> <span>Pais</span>
-                                  <div> Colombia </div>
+                                  <div> <%- usuario.pais %> </div>
                                 </div>
                               </div>
                             </div>
