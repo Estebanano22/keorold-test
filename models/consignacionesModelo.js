@@ -32,7 +32,7 @@ const Consignaciones = db.define('consignaciones', {
         defaultValue: null
     },
     tipoConsignacion: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(100),
         defaultValue : null
     },
     referencia: {
