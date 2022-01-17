@@ -20,19 +20,19 @@ const Cuentas = db.define('cuentasSubidas', {
         defaultValue: null
     },
     user: {
-        type: Sequelize.STRING(250),
+        type: Sequelize.STRING(600),
         defaultValue: null
     },
     password: {
-        type: Sequelize.STRING(250),
+        type: Sequelize.STRING(600),
         defaultValue: null
     },
     pantalla: {
-        type: Sequelize.STRING(250),
+        type: Sequelize.STRING(600),
         defaultValue: null
     },
     pin: {
-        type: Sequelize.STRING(250),
+        type: Sequelize.STRING(600),
         defaultValue: null
     },
     idJuego: {
