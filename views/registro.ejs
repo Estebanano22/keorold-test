@@ -15,16 +15,16 @@
             <div class="col-lg-6 col-xl-5 d-none d-lg-block text-center bg-ingreso">
               <div class="mt-5 pt-2 p-2">
                 <center>
-                  <img src="<%- UrlDomain === 'mipantalla.com' ? 'https://storagepublicfull.sfo3.digitaloceanspaces.com/marcas/logo_b.svg' : 'assetsInicio/img/logo.png' %>" class="header-brand-img mb-4 logo-ingreso" alt="logo">
+                  <img src="<%- UrlDomain === 'mipantalla.com' ? 'https://storagepublicfull.sfo3.digitaloceanspaces.com/marcas/logo_b.png' : 'assetsInicio/img/logo.png' %>" class="header-brand-img mb-4 logo-ingreso" alt="logo">
                 </center>
               </div>
-              <img src="/assetsDashboard/img/persona-ingreso.png" class="pos-absolute img-persona-ingreso" alt="logo">
+              <img src="<%= UrlDomain === 'mipantalla.com' ? '/assetsDashboard/img/miPantalla.png' : '/assetsInicio/img/black-logo.png'%>" class="pos-absolute img-persona-ingreso" alt="logo">
             </div>
             <div class="col-lg-6 col-xl-7 col-xs-12 col-sm-12 login_form ">
               <div class="container-fluid">
                 <div class="row row-sm">
                   <div class="card-body mt-2 mb-2">
-                    <img src="<%= UrlDomain === 'mipantalla.com' ? '/assetsInicio/img/miPantalla.png' : '/assetsInicio/img/black-logo.png'%>" class="text-center d-lg-none header-brand-img mb-5 mt-4" alt="logo">
+                    <img src="/assetsInicio/img/black-logo.png" class="text-center d-lg-none header-brand-img mb-5 mt-4" alt="logo">
                     <div class="clearfix"></div>
                     <h5 class="text-left mb-2">REGISTRATE AHORA!</h5>
                     <p class="mb-4 text-muted tx-13 ml-0 text-left">Registrarse es gratis y solo toma un minuto. Recuerda que para poder registrarte debes tener un codigo de afiliado.</p>
