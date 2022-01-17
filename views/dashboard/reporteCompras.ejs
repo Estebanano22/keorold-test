@@ -92,9 +92,9 @@
                         <% } %>
                         <tr>
                           <td class="text-capitalize"><%= listaCargas.usuario.nombre %></td>
-                          <td class="text-right"><%= valorFormateado %></td>
-                          <td class="text-right"><%= saldoAnteriorFormateado %></td>
-                          <td class="text-right"><%= saldoNuevoFormateado %></td>
+                          <td class="text-right"><%= UrlDomain === 'mipantalla.com' ? listaCargas.valor : valorFormateado %></td>
+                          <td class="text-right"><%= UrlDomain === 'mipantalla.com' ? listaCargas.saldoAnterior : saldoAnteriorFormateado %></td>
+                          <td class="text-right"><%= UrlDomain === 'mipantalla.com' ? listaCargas.saldoNuevo : saldoNuevoFormateado %></td>
                           <td class="text-capitalize"><%= listaCargas.tipoCarga %></td>
                           <td class="text-capitalize"><%= listaCargas.accionCarga %></td>
                           <td class="text-center <%= listaCargas.fechaCarga === null ? 'text-warning' : '' %>"><%= listaCargas.fechaCarga === null ? 'Sin fecha de carga' : moment(listaCargas.fechaCarga).format('MMMM Do YYYY, h:mm:ss a') %></td>
