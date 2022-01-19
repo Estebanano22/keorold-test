@@ -148,13 +148,8 @@ exports.compraCuentaNormal = async (req, res) => {
             [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: req.user.id_usuario }]
         }
     });
-    console.log(asignacionUsuario.valor);
-    console.log(req.user.saldo);
-
-    // if (Number(asignacionUsuario.valor > Number(req.user.saldo))) {
-    //     res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento, debido a que su saldo no es suficiente.' });
-    //     return;
-    // }
+    // console.log(asignacionUsuario.valor);
+    // console.log(req.user.saldo);
 
     if (Number(asignacionUsuario.valor) > Number(req.user.saldo)) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible generar una cuenta de esta plataforma en este momento, debido a que su saldo no es suficiente.' });
@@ -189,6 +184,10 @@ exports.compraCuentaNormal = async (req, res) => {
     usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
     await usuario.save();
 
+    //--------------------------------------------------------//
+    //         Ganancia Distribuidor 1er Nivel                //
+    //--------------------------------------------------------//
+
     //Generar Ganancia Disitribuidor
     const distribuidor = await Usuarios.findOne({
         where: {
@@ -218,6 +217,92 @@ exports.compraCuentaNormal = async (req, res) => {
         usuarioIdUsuario: req.user.id_usuario,
         plataformaIdPlataforma: req.body.id
     });
+
+    //--------------------------------------------------------//
+
+    //--------------------------------------------------------//
+    //         Ganancia Distribuidor 2do Nivel                //
+    //--------------------------------------------------------//
+
+    //Generar Ganancia Disitribuidor
+    const distribuidor2 = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{ enlace_afiliado: distribuidor.patrocinador }]
+        }
+    });
+
+    const asignacionDistribuidor2 = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: distribuidor2.id_usuario }]
+        }
+    });
+
+    if (asignacionDistribuidor2) {
+
+        var valorDistribuidor1 = Number(asignacionDistribuidor.valor);
+        var valorDistribuidor2 = Number(asignacionDistribuidor2.valor);
+        var gananciaDistribuidor2 = valorDistribuidor1 - valorDistribuidor2;
+
+        // Ganancias Distribuidor Saldo
+        distribuidor2.saldo = Number(distribuidor2.saldo) + Number(gananciaDistribuidor2);
+        await distribuidor2.save();
+
+        // Crear ganancia en tabla
+        Ganancias.create({
+            idGanancia: uuid_v4(),
+            ganancia: gananciaDistribuidor2,
+            distribuidor: distribuidor2.id_usuario,
+            usuarioIdUsuario: req.user.id_usuario,
+            plataformaIdPlataforma: req.body.id
+        });
+
+    }
+
+    //--------------------------------------------------------//
+
+    //--------------------------------------------------------//
+    //         Ganancia Distribuidor 3er Nivel                //
+    //--------------------------------------------------------//
+
+    //Generar Ganancia Disitribuidor
+    const distribuidor3 = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{ enlace_afiliado: distribuidor2.patrocinador }]
+        }
+    });
+
+    const asignacionDistribuidor3 = await Asignaciones.findOne({
+        where: {
+            [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: distribuidor3.id_usuario }]
+        }
+    });
+
+    if (asignacionDistribuidor3) {
+
+        var valorDistribuidor3 = Number(asignacionDistribuidor3.valor);
+        var valorDistribuidor2_3 = Number(asignacionDistribuidor2.valor);
+        var gananciaDistribuidor3 = valorDistribuidor2_3 - valorDistribuidor3;
+
+        // Ganancias Distribuidor Saldo
+        distribuidor3.saldo = Number(distribuidor3.saldo) + Number(gananciaDistribuidor3);
+        await distribuidor3.save();
+
+        // Crear ganancia en tabla
+        Ganancias.create({
+            idGanancia: uuid_v4(),
+            ganancia: gananciaDistribuidor3,
+            distribuidor: distribuidor3.id_usuario,
+            usuarioIdUsuario: req.user.id_usuario,
+            plataformaIdPlataforma: req.body.id
+        });
+
+    }
+
+    //--------------------------------------------------------//
+
+    // console.log(gananciaDistribuidor != undefined ? 'Distribuidor Nivel 1: '+ gananciaDistribuidor : 'no existe');
+    // console.log(gananciaDistribuidor2 != undefined ?'Distribuidor Nivel 2: '+ gananciaDistribuidor2 : 'no existe');
+    // console.log(gananciaDistribuidor3 != undefined ?'Distribuidor Nivel 3: '+ gananciaDistribuidor3 : 'no existe');
 
     // Actualizar cuenta
     cuenta.idDistribuidor = distribuidor.id_usuario;
