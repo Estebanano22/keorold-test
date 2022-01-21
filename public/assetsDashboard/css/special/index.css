@@ -1,0 +1,14 @@
+.plataforma_label{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: end;
+}
+.plataforma_label input{
+    margin-right: 8px;
+    height: 34px;
+    width: 20%;
+}
+.busqueda-off{
+    display: none;
+}

@@ -959,6 +959,12 @@ module.exports = function () {
         dashboardController.countRed,
         comprarPlataformasController.plataformas
     );
+    router.get('/dashboard/plataforma/busqueda',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaUsuario,
+        comprarPlataformasController.plataformasBusqueda
+    );
 
     router.post('/plataformas/compraCuentaNormal',
         authController.usuarioAutenticado,

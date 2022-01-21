@@ -500,7 +500,6 @@
         { title: "Cargar", 
           data: 'Cargar', 
           "render": function(data,type, row) {
-            console.log(data)
            return `<button class="btn ripple btn-primary" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCargar" onclick="modalCargar(event, '${data.id_usuario}', '${data.nombre}')">Cargar saldo</span></button>`
         } },
         { title: "Asignar Plataformas", 

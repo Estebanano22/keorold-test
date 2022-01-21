@@ -77,7 +77,14 @@
           <!-- ======================
                             Plataformas Normales
                         ======================= -->
-
+          <label class="plataforma_label busqueda-off">
+            <input type="search" class="form-control form-control-sm" placeholder="Buscar..." aria-controls="exportexample" x="" id="busquedaD">
+            <button class="btn btn-primary" onclick="busqueda()">Buscar</button>
+          </label>
+          <section class="busqueda-off" id="busqueda">
+            <h5 class="main-content-title tx-24 mg-b-5 mt-4">Busqueda cuentas</h5>
+            <p class="text-muted">Usted podra comprar las siguientes cuentas de forma inmediata.</p>
+          </section>
           <h2 class="main-content-title tx-24 mg-b-5 mt-4">Cuentas</h2>
           <p class="text-muted">Usted podra comprar las siguientes cuentas de forma inmediata.</p>
           <div class="row row-sm">
@@ -969,7 +976,6 @@
 
   <!-- Footer -->
   <%- include('layautsDashboard/footer') %>
-
   <!-- Scripts Personalizados -->
 
   <% if(locals.mensajes) { %>
@@ -1000,6 +1006,45 @@
 
 
   <script>
+    let create
+    // const busqueda= ()=>{
+    //   const busquedaInput = document.getElementById('busquedaD').value
+    //   if (busquedaInput == '' ) {
+    //   swal({
+    //     title: "Busqueda no realizada",
+    //     text: "Debes tener un valor para poder realizar la busqueda",
+    //     type: "error",
+    //   })
+    //   }else{
+    //     return axios({
+    //       url: `/dashboard/plataforma/busqueda`,
+    //       method: 'GET',
+    //       params: {busquedaInput:busquedaInput}, 
+    //     }).then(rest => {
+    //       console.log(rest.data)
+    //       const resultado = rest.data.busquedas
+    //       if (resultado.length > 0) {
+    //         let valorFormateado
+    //         let stock
+    //         const contenedor = document.getElementById('busqueda')
+    //         let cuentas = rest.data.cuentas
+    //         contenedor.classList.remove('busqueda-off')
+    //         for (let i = 0; i < resultado.length; i++) {
+    //           console.log(resultado[i].plataforma.logo)   
+    //         }
+    //       }else{
+    //         contenedor.classList.addClass('busqueda-off')
+    //       }
+
+    //     }).catch(err => {
+    //       swal({
+    //           title: 'Request Error',
+    //           text: '500',
+    //           type: 'error'
+    //         });
+    //     })
+    //   }
+    // }
     function modalCompraCallofduty(e, id, nombre, logo) {
 
       const idPlataformaCompraCallofduty = document.getElementById("idPlataformaCompraCallofduty");

@@ -792,9 +792,16 @@ exports.tablaPrecios = async (req, res) => {
         include: [
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' }
+        ],
+        order: [
+            [{
+                model: Plataformas,
+                foreignKey: 'plataformaIdPlataforma'
+            },
+            'plataforma','ASC'
+            ]
         ]
     })
-
     res.render('dashboard/tablaPrecios', {
         nombrePagina: 'Tabla de precios',
         titulo: 'Tabla de precios',

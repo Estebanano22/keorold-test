@@ -18,14 +18,14 @@ exports.plataformas = async (req, res) => {
         where: { patrocinador: req.user.enlace_afiliado }
     });
 
-    const plataformas = await Plataformas.findAll({
+    let plataformas = await Plataformas.findAll({
         where: {
             [Op.and]: [{ id_superdistribuidor: superdistribuidor.id_usuario }, { estado: 1 }]
         },
         order: [['plataforma', 'DESC']]
     });
 
-    const plataformasNormales = await Asignaciones.findAll({
+    let plataformasNormales = await Asignaciones.findAll({
         where: {
             [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
@@ -37,10 +37,17 @@ exports.plataformas = async (req, res) => {
                 }
             },
         ],
-        // order: [['plataforma', 'DESC']]
+        order: [
+            [{
+                model: Plataformas,
+                foreignKey: 'plataformaIdPlataforma'
+            },
+            'plataforma','ASC'
+            ]
+        ]
     });
 
-    const plataformasBajoPedido = await Asignaciones.findAll({
+    let plataformasBajoPedido = await Asignaciones.findAll({
         where: {
             [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
@@ -52,10 +59,18 @@ exports.plataformas = async (req, res) => {
                 }
             },
         ],
-        // order: [['plataforma', 'DESC']]
+        order: [
+            [{
+                model: Plataformas,
+                foreignKey: 'plataformaIdPlataforma'
+            },
+            'plataforma','ASC'
+            ]
+        ]
+
     });
 
-    const plataformasPersonalizadas = await Asignaciones.findAll({
+    let plataformasPersonalizadas = await Asignaciones.findAll({
         where: {
             [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
@@ -67,10 +82,18 @@ exports.plataformas = async (req, res) => {
                 }
             },
         ],
+        order: [
+            [{
+                model: Plataformas,
+                foreignKey: 'plataformaIdPlataforma'
+            },
+            'plataforma','ASC'
+            ]
+        ]
         // order: [['plataforma', 'DESC']]
     });
 
-    const plataformasRenovaciones = await Asignaciones.findAll({
+    let plataformasRenovaciones = await Asignaciones.findAll({
         where: {
             [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
@@ -82,10 +105,18 @@ exports.plataformas = async (req, res) => {
                 }
             },
         ],
+        order: [
+            [{
+                model: Plataformas,
+                foreignKey: 'plataformaIdPlataforma'
+            },
+            'plataforma','ASC'
+            ]
+        ]
         // order: [['plataforma', 'DESC']]
     });
 
-    const plataformasJuegos = await Asignaciones.findAll({
+    let plataformasJuegos = await Asignaciones.findAll({
         where: {
             [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
@@ -98,13 +129,21 @@ exports.plataformas = async (req, res) => {
             },
         ],
         // order: [['plataforma', 'DESC']]
+        order: [
+            [{
+                model: Plataformas,
+                foreignKey: 'plataformaIdPlataforma'
+            },
+            'plataforma','ASC'
+            ]
+        ]
     });
 
-    const asignaciones = await Asignaciones.findAll({
+    let asignaciones = await Asignaciones.findAll({
         where: { usuarioIdUsuario: req.user.id_usuario }
     })
 
-    const cuentas = await Cuentas.findAll({
+    let cuentas = await Cuentas.findAll({
         where: {
             [Op.and]: [{ estado: 0 }, { idSuperdistribuidor: superdistribuidor.id_usuario }]
         }
@@ -126,6 +165,29 @@ exports.plataformas = async (req, res) => {
         asignaciones,
         cuentas
     })
+}
+
+//busqueda plataformas
+exports.plataformasBusqueda = async (req, res) => {
+    const datos = req.query.busquedaInput
+    const busquedas = await Asignaciones.findAll({
+        where: {
+            usuarioIdUsuario: req.user.id_usuario
+        },
+        include: {
+            model: Plataformas, foreignKey: 'plataformaIdPlataforma',
+            where: {
+                plataforma: {[Op.like]: `%${datos}%`}
+            }
+        }
+    })
+    let cuentas = await Cuentas.findAll({
+        where: {
+            [Op.and]: [{ estado: 0 }, { idSuperdistribuidor: superdistribuidor.id_usuario }]
+        }
+    })
+    res.json({ busquedas, cuentas })
+    
 }
 
 exports.compraCuentaNormal = async (req, res) => {
