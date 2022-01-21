@@ -25,7 +25,7 @@ exports.subirCuentas = async (req, res) => {
 
     const plataformas = await Plataformas.findAll({
         where: {
-            [Op.and]: [{ id_superdistribuidor: superdistribuidor.id_usuario }, { tipo_plataforma: 1 }]
+            [Op.and]: [{ id_superdistribuidor: superdistribuidor.id_usuario }, { estado: 1 }, { tipo_plataforma: 1 }]
         },
         order: [['plataforma', 'DESC']],
         limit: 500

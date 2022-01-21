@@ -203,7 +203,7 @@ exports.adminPlataformasSuperdistribuidor = async (req, res) => {
 
     const plataformas = await Plataformas.findAll({
         where: {
-            [Op.and]: [{ estado: 1 }, { id_superdistribuidor: req.user.id_usuario }],
+            [Op.and]: [{ id_superdistribuidor: req.user.id_usuario }],
         }
     });
 
