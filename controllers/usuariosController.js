@@ -354,7 +354,6 @@ exports.adminUsuariosSuperdistribuidor_API = async(req, res) => {
         limit: 10,
         offset: (off !== 0) ? off * 10 : 0
     });
-    // console.log(usuarios);
     const distribuidores = await Usuarios.findAll();
     const plataformas = await Plataformas.findAll({
         where: {
@@ -509,7 +508,6 @@ exports.usuarios = async (req, res) => {
         where: { estado: 1 }
     });
     
-    console.log(usuarios);
 
     res.render('dashboard/usuarios', {
         nombrePagina: 'Administrador Usuarios',

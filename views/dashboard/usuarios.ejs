@@ -122,7 +122,7 @@
                             <% }) %>
                           </td>
                           <td class="text-lowercase"><%= listaUsuario.email %></td>
-                          <td class="text-capitalize"><%= listaUsuario.telefono_movil %></td>
+                          <td class="text-capitalize"><%= listaUsuario.telefono_movil == undefined || null ? "NN" : listaUsuario.telefono_movil%></td>
                           <td class="text-capitalize">
                             <select class="form-control select-sm select2-no-search" name="row-2-office" onchange="cambioPerfil(this, '<%= listaUsuario.id_usuario %>')" data-id="<%= listaUsuario.id_usuario %>">
                               <option class="text-capitalize" value="<%= listaUsuario.perfil %>" selected><%= listaUsuario.perfil %></option>

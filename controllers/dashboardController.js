@@ -453,7 +453,7 @@ exports.whatsapp = async (req, res) => {
         }
     })
 
-    const whatsapp = patrocinadores.telefono_movil === null || undefined ? "NN" :  patrocinadores.telefono_movil;
+    const whatsapp = patrocinadores === null || undefined ? "NN" :  patrocinadores.telefono_movil;
     res.json({ whatsappPatrocinador: whatsapp});
     return;
 
