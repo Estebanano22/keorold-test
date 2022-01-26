@@ -251,28 +251,20 @@
               </thead>
               <tbody>
                 <% if(plataformas.length) { %>
-
+                <% var i = 1; %>
                 <% plataformas.forEach(listaPlataformas => { %>
                 <tr>
                   <td>
-                    <input type='checkbox' class='asignarCheckbox' id-asignacion='<%= listaPlataformas.id_plataforma %>' id="check_<%= listaPlataformas.id_plataforma %>">
+                    <input type="checkbox" class="asignarCheckbox" id-asignacion="<%= listaPlataformas.id_plataforma %>" id="check_<%= listaPlataformas.id_plataforma %>">
                   </td>
                   <td class="text-center">
                     <img src="<%= listaPlataformas.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaPlataformas.logo %>" alt="" class="img-circle">
                   </td>
+
                   <td class="text-capitalize text-left"><%= listaPlataformas.plataforma %></td>
                   <td>
                     <input class="form-control input-md inputValor" type="text" name="valorPlataforma" id="valorPlataforma_<%= listaPlataformas.id_plataforma %>" data-id="<%= listaPlataformas.id_plataforma %>" value="" placeholder="0.00">
                   </td>
-                  <!-- <td>
-												<div class="btn btn-list">
-	
-													<a class="btn ripple btn-success modal-effect" title="Editar" onclick="realizarAsignacion(event)"><i class="fas fa-check text-white"></i></a>
-	
-													<a class="btn ripple btn-danger modal-effect" title="Eliminar" onclick="eliminarAsignacion(event)"><i class="fas fa-times text-white"></i></a>
-	
-												</div>
-											</td> -->
                 </tr>
                 <% }) %>
                 <% } %>
@@ -531,7 +523,7 @@
   function busqueda() {
     const busquedaValor = document.getElementById("busquedaD").value
     if (busquedaValor == '') {
-      console.log()
+
       swal({
         title: "Agrega un valor para realizar la busqueda",
         type: 'error'
@@ -1007,6 +999,81 @@
         })
 
     }
+    
+    function eliminarAsignacion() {
+
+      const arrayId = document.querySelector('.btnAsignar').getAttribute('arrayAsignacion');
+      const objetoSplitId = arrayId.split(',');
+
+      const objetoId = [];
+
+      for (var i = 0; i < objetoSplitId.length; i++) {
+        objetoId.push(objetoSplitId[i]);
+      }
+
+      const resultado = objetoId.map((item) => [{
+        id: item,
+      }]);
+
+      const id = document.getElementById("idUserAsignar").value;
+
+      $('#global-loader').addClass("d-block");
+      $('#global-loader').removeClass("d-none");
+      fetch('/adminUsuariosSuperdistribuidor/eliminarAsignacionPlataformas', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: id,
+            asignaciones: resultado
+          })
+        })
+        .then(res => res.text())
+        .then(data => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          const respuesta = JSON.parse(data);
+          if (respuesta.resp === 'success') {
+
+            swal({
+                title: respuesta.titulo,
+                text: respuesta.descripcion,
+                type: respuesta.resp,
+                confirmButtonColor: '#57a94f',
+                closeOnClickOutside: false
+              },
+              function(isConfirm) {
+                if (isConfirm) {
+                  location.reload();
+                }
+              });
+
+          } else {
+
+            swal({
+                title: respuesta.titulo,
+                text: respuesta.descripcion,
+                type: respuesta.resp,
+                confirmButtonColor: '#fd6074'
+              },
+              function(isConfirm) {
+                if (isConfirm) {
+                  location.reload();
+                }
+              });
+          }
+        }).catch(() => {
+          $('#global-loader').removeClass("d-block");
+          $('#global-loader').addClass("d-none");
+          swal({
+            title: 'Request Error',
+            text: '500 - Admin Usuarios Superdistribuidor',
+            type: 'error'
+          });
+        })
+
+    }
 
     function cambioPerfil(seleccion, id) {
       const perfil = seleccion.value;
@@ -1076,7 +1143,6 @@
 
             var idP = asignaciones[f].plataformaIdPlataforma;
             var valorP = asignaciones[f].valor;
-
             $("#valorPlataforma_" + idP).val(valorP);
           }
 

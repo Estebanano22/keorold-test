@@ -316,6 +316,12 @@ module.exports = function () {
         usuariosController.asignarPlataformaSuperdistribuidor
     );
 
+    router.post('/adminUsuariosSuperdistribuidor/eliminarAsignacionPlataformas',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaSuperdistribuidor,
+        usuariosController.eliminarAsignacionPlataformas
+    );
 
     // Administrador Plataformas (Superdistribuidor)
     router.get('/dashboard/adminPlataformasSuperdistribuidor',

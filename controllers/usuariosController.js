@@ -7,6 +7,7 @@ const { body, validationResult } = require('express-validator');
 const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
+require('util').inspect.defaultOptions.depth = null;
 
 // Inicio
 exports.adminUsuarios = async (req, res) => {
@@ -273,6 +274,165 @@ exports.asignarPlataformaSuperdistribuidor = async (req, res) => {
     }
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Las plataformas se asignaron con éxito al usuario.' });
+    return;
+
+}
+
+exports.eliminarAsignacionPlataformas = async (req, res) => {
+
+    const id_usuario = req.body.id.trim(); // Primer usuario a eliminar asignación
+    const objetoAsignaciones = req.body.asignaciones;
+
+    if (objetoAsignaciones === '' || objetoAsignaciones.length < 1) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Por favor marque las plataformas que desea eliminar.' });
+        return;
+    }
+
+    // datos del usuario a eliminar asignación
+    const usuario = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{ id_usuario: id_usuario }],
+        },
+        attributes: ['patrocinador', 'super_patrocinador', 'enlace_afiliado'],
+    });
+
+    // const enlace_distribuidor = usuario.patrocinador;
+    // const enlace_superdistribuidor = usuario.super_patrocinador;
+
+    // recorrer array con asignaciones
+    for (var x = 0; x < objetoAsignaciones.length; x++) {
+       
+        const idPlataforma = objetoAsignaciones[x][0].id;
+        
+        const red1 = await Usuarios.findAll({
+            where: {patrocinador: usuario.enlace_afiliado},
+            raw: true,
+            attributes: ['id_usuario', 'enlace_afiliado'],
+            // limit: 2
+        });
+
+        try {
+            const asignacionPrincipal = await Asignaciones.destroy({
+                where: {
+                    [Op.and]:[{usuarioIdUsuario:id_usuario}, {plataformaIdPlataforma: idPlataforma}]
+                }
+            });
+        } catch (error) {
+            console.log('Error en red principal: ' + error);
+        }
+
+        for (var i = 0; i < red1.length; i++) {
+    
+            // console.log('Red 1: '+red1[i]);
+            const usuarioRed1 = red1[i].id_usuario;
+
+            try {
+                const asignacionRed1 = await Asignaciones.destroy({
+                    where: {
+                        [Op.and]:[{usuarioIdUsuario: usuarioRed1}, {plataformaIdPlataforma: idPlataforma}]
+                    }
+                });
+            } catch (error) {
+                console.log('Error en red 1: ' + error);
+            }
+    
+            const red2 = await Usuarios.findAll({
+                where: {patrocinador: red1[i].enlace_afiliado},
+                raw: true,
+                attributes: ['id_usuario', 'enlace_afiliado']
+            });
+    
+            for (var e = 0; e < red2.length; e++) {
+    
+                // console.log('Red 2: '+red2[e]);
+                const usuarioRed2 = red2[e].id_usuario;
+
+                try {
+                    const asignacionRed2 = await Asignaciones.destroy({
+                        where: {
+                            [Op.and]:[{usuarioIdUsuario: usuarioRed2}, {plataformaIdPlataforma: idPlataforma}]
+                        }
+                    });
+                } catch (error) {
+                    console.log('Error en red 2: ' + error);
+                }
+    
+                const red3 = await Usuarios.findAll({
+                    where: {patrocinador: red2[e].enlace_afiliado},
+                    raw: true,
+                    attributes: ['id_usuario', 'enlace_afiliado']
+                });
+    
+                for (var a = 0; a < red3.length; a++) {
+    
+                    // console.log('Red 3: '+red3[a]);
+                    const usuarioRed3 = red3[a].id_usuario;
+
+                    try {
+                        const asignacionRed3 = await Asignaciones.destroy({
+                            where: {
+                                [Op.and]:[{usuarioIdUsuario: usuarioRed3}, {plataformaIdPlataforma: idPlataforma}]
+                            }
+                        });
+                    } catch (error) {
+                        console.log('Error en red 3: ' + error);
+                    }
+        
+                    const red4 = await Usuarios.findAll({
+                        where: {patrocinador: red3[a].enlace_afiliado},
+                        raw: true,
+                        attributes: ['id_usuario', 'enlace_afiliado']
+                    });
+    
+                    for (var o = 0; o < red4.length; o++) {
+    
+                        // console.log('Red 4: '+red4[o]);
+                        const usuarioRed4 = red4[o].id_usuario;
+
+                        try {
+                            const asignacionRed4 = await Asignaciones.destroy({
+                                where: {
+                                    [Op.and]:[{usuarioIdUsuario: usuarioRed4}, {plataformaIdPlataforma: idPlataforma}]
+                                }
+                            });
+                        } catch (error) {
+                            console.log('Error en red 4: ' + error);
+                        }
+            
+                        const red5 = await Usuarios.findAll({
+                            where: {patrocinador: red4[o].enlace_afiliado},
+                            raw: true,
+                            attributes: ['id_usuario', 'enlace_afiliado']
+                        });
+    
+                        for (var u = 0; u < red5.length; u++) {
+    
+                            // console.log('Red 4: '+red5[u].id_usuario);
+                            const usuarioRed5 = red5[u].id_usuario;
+
+                            try {
+                                const asignacionRed5 = await Asignaciones.destroy({
+                                    where: {
+                                        [Op.and]:[{usuarioIdUsuario: usuarioRed5}, {plataformaIdPlataforma: idPlataforma}]
+                                    }
+                                });
+                            } catch (error) {
+                                console.log('Error en red 5: ' + error);
+                            }
+                    
+                        }
+                
+                    }
+            
+                }
+        
+            }
+    
+        }
+
+    }
+
+    res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Las plataformas asígnadas han sido elimiandas con éxito al usuario.' });
     return;
 
 }

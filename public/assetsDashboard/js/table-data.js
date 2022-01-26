@@ -207,7 +207,7 @@ $(function () {
    });
 
    $('#tablaAsignar').DataTable({
-      pageLength: 50,
+      pageLength: 250,
       responsive: true,
       language: {
          searchPlaceholder: 'Buscar...',
