@@ -319,7 +319,7 @@ module.exports = function () {
     router.post('/adminUsuariosSuperdistribuidor/eliminarAsignacionPlataformas',
         authController.usuarioAutenticado,
         authController.verifyToken,
-        rolController.permisosPaginaSuperdistribuidor,
+        rolController.permisosPaginaGeneral,
         usuariosController.eliminarAsignacionPlataformas
     );
 
