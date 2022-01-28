@@ -452,8 +452,13 @@ exports.whatsapp = async (req, res) => {
             enlace_afiliado: req.user.patrocinador
         }
     })
-
-    const whatsapp = patrocinadores === null || undefined ? "NN" :  patrocinadores.telefono_movil;
+    let numero = "+1385 628-8444"
+    let whatsapp
+    if (patrocinadores.telefono_movil == numero) {
+        whatsapp = "+13056970420";
+    } else {
+        whatsapp = patrocinadores === null || undefined ? "NN" :  patrocinadores.telefono_movil;
+    }
     res.json({ whatsappPatrocinador: whatsapp});
     return;
 
