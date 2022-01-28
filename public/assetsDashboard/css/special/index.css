@@ -24,9 +24,13 @@ input[type="range"]::-webkit-slider-runnable-track {
     border-radius: 30px;
 }
 #loader_charge-state, .loader_charge-state{
-    color: #9e1877;
+    color: #450553;
     font-size: 32px;
     font-weight: 700;
     margin-top: -23px;
     display: inline-block;
+}
+.loader_charge-state{
+    font-size: 16px;
+    font-weight: 300;
 }
