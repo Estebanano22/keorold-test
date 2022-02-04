@@ -422,7 +422,6 @@ exports.adminCuentasBajoPedido = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: { super_patrocinador: req.user.enlace_afiliado },
-        limit: 1000
     })
 
     res.render('dashboard/adminCuentasBajoPedido', {
