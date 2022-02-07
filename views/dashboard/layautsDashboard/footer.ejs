@@ -584,6 +584,8 @@
                 const telegramPatrocinador = document.getElementById('soporteTelegram');
                 if (respuesta.telegramPatrocinador !== 'sin telegram') {
                   telegramPatrocinador.href =  respuesta.telegramPatrocinador ;
+                }else{
+                  telegramPatrocinador.style.display = 'none'
                 }
               })
           }
