@@ -583,7 +583,7 @@
                 console.log(respuesta)
                 const telegramPatrocinador = document.getElementById('soporteTelegram');
                 if (respuesta.telegramPatrocinador !== 'sin telegram') {
-                  telegramPatrocinador.href =  respuesta.telegramPatrocinador ;
+                  telegramPatrocinador.href =  'https://t.me/' + respuesta.telegramPatrocinador ;
                 }else{
                   telegramPatrocinador.style.display = 'none'
                 }
