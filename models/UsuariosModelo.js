@@ -121,7 +121,11 @@ const Usuarios = db.define('usuarios', {
         type: Sequelize.STRING(16),
         defaultValue : null
     },
-
+    telegram_link: {
+        type: Sequelize.STRING(255),
+        defaultValue : null
+    },
+    
 },{ 
     // tableName: 'usuarios',
     hooks: {

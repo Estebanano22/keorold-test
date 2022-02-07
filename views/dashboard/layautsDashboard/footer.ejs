@@ -565,6 +565,30 @@
           }
 
           whatsappPatrocinador();
+          //Telegram
+          function telegramPatrocinador(e) {
+
+            fetch('/soporte/telegram', {
+                method: 'POST',
+                headers: {
+                  'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                  data: 1
+                })
+              })
+              .then(res => res.text())
+              .then(data => {
+                const respuesta = JSON.parse(data);
+                console.log(respuesta)
+                const telegramPatrocinador = document.getElementById('soporteTelegram');
+                if (respuesta.telegramPatrocinador !== 'sin telegram') {
+                  telegramPatrocinador.href =  respuesta.telegramPatrocinador ;
+                }
+              })
+          }
+
+          telegramPatrocinador();
         </script>
 
         <% } %>
