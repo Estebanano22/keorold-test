@@ -1275,7 +1275,6 @@ exports.adminCuentasJuegos = async (req, res) => {
         ],
         limit: 1000
     })
-    console.log(cuentas[0])
     const cuentasJuegos = await Cuentas.count({
         where: {
             [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 0 }, { tipoCuenta: 5 }]
@@ -1284,7 +1283,6 @@ exports.adminCuentasJuegos = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: { super_patrocinador: req.user.enlace_afiliado },
-        limit: 1000
     })
 
     res.render('dashboard/adminCuentasJuegos', {

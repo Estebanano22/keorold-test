@@ -101,7 +101,10 @@ exports.notificacionesUsuario = async (req, res) => {
     
         const countJuegos = await Cuentas.count({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 5 }]
+                [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 0 }, { tipoCuenta: 5 }],
+                plataformaIdPlataforma: {
+                    [Op.ne]: null
+                }
             },
         });
 

@@ -175,7 +175,7 @@
                 const incidencias = respuesta.incidencias;
                 const pse = respuesta.pse;
                 const iConsignaciones = respuesta.consignaciones;
-
+                console.log(incidencias.length)
                 const audio = document.getElementById('sonido');
                 audio.load();
 
@@ -320,7 +320,6 @@
                   cuentasPersonalizadas.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin cuentas pendientes</p></div>`;
                 }
 
-
                 // Renovaciones
                 if (renovaciones.length !== 0) {
                   const countRenovaciones = document.getElementById('countRenovaciones');
@@ -364,6 +363,7 @@
 
                   cuentasRenovaciones.innerHTML = `<div class="d-flex px-3 py-2"><p class="mb-0 text-capitalize text-center" style="color: #8f9cc0;">Sin cuentas pendientes</p></div>`;
                 }
+                console.log(respuesta.countIncidencias)
 
                 // Juegos
                 if (juegos.length !== 0) {
@@ -376,10 +376,10 @@
                       const array2 = plataformas.filter(function(p3) {
                         return p3.id_plataforma === juegos[o].plataformaIdPlataforma;
                       });
-
-                      const plataforma = array2[0].plataforma;
-
-                      if (juegos[o].estado === 1) {
+                      let plataforma
+                      if (array2[0] !== undefined) {
+                        plataforma = array2[0].plataforma;
+                        if (juegos[o].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">gestionada</span>`;
                         var span2 = `<span class="ml-auto"><i class="fas fa-circle text-success"></i></span>`;
                       } else if(juegos[o].estado === 2){
@@ -396,6 +396,9 @@
                                                 ${span2}
                                             </div>`;
                     }
+                      }
+
+                      
                   }
 
                   cuentasJuegos.innerHTML = listaJuegos;
@@ -406,7 +409,7 @@
                 }
 
                 // Incidencias
-                if (incidencias.length !== 0) {
+                if (respuesta.countIncidencias !== 0) {
                   const countReclamaciones = document.getElementById('countReclamaciones');
                   countReclamaciones.innerHTML = respuesta.countIncidencias;
                   var listaIncidencias = ``;
