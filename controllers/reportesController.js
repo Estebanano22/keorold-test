@@ -1586,7 +1586,7 @@ exports.reporteVentas = async (req, res) => {
 
     const cargas = await Cargas.findAll({
         where: {
-            [Op.and]: [{ responsableGestion: req.user.nombre }]
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
         include: [
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
