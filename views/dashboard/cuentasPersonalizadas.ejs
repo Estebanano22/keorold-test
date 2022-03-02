@@ -89,7 +89,7 @@
                           <td class="text-center">
                             <img src="<%= listaCuentas.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaCuentas.plataforma.logo %>" alt="" class="img-circle">
                           </td>
-                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('DD:MM:YYYY HH:MM:SS') %></td>
+                          <td class="text-center"><%= moment(listaCuentas.fechaSubida).format('MMMM Do YYYY, h:mm:ss a') %></td>
                           <td class="text-capitalize"><%= listaCuentas.plataforma.plataforma %></td>
                           <td class="text-capitalize text-center">
                             <span class="badge <%= listaCuentas.plataforma.tipo_plataforma === 1 ? 'badge-primary' : listaCuentas.plataforma.tipo_plataforma === 2 ? 'badge-secondary' : listaCuentas.plataforma.tipo_plataforma === 3 ? 'badge-danger' : listaCuentas.plataforma.tipo_plataforma === 4 ? 'badge-info' : listaCuentas.plataforma.tipo_plataforma === 5 ? 'badge-warning' : 'badge-light' %>">
