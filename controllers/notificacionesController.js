@@ -80,7 +80,7 @@ exports.notificacionesUsuario = async (req, res) => {
                 }
             },
         });
-    
+     
         const countPersonalizadas = await Cuentas.count({
             where: {
                 [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 3 }, {[Op.not]: [{plataformaIdPlataforma: null}]}],
