@@ -541,6 +541,7 @@ exports.adminCuentasBajoPedido = async (req, res) => {
                 { idSuperdistribuidor: req.user.id_usuario },
                 { estado: 0 },
                 { tipoCuenta: 2 },
+                { [Op.not]: [{ plataformaIdPlataforma: null }] },
             ],
         },
     });
@@ -888,7 +889,11 @@ exports.adminCuentasRenovaciones = async (req, res) => {
                 { idSuperdistribuidor: req.user.id_usuario },
                 { estado: 0 },
                 { tipoCuenta: 4 },
+                { [Op.not]: [{ plataformaIdPlataforma: null }] },
             ],
+            usuarioIdUsuario: {
+                [Op.ne]: null,
+            },
         },
     });
 
@@ -1557,7 +1562,11 @@ exports.adminCuentasJuegos = async (req, res) => {
                 { idSuperdistribuidor: req.user.id_usuario },
                 { estado: 0 },
                 { tipoCuenta: 5 },
+                { [Op.not]: [{ plataformaIdPlataforma: null }] },
             ],
+            plataformaIdPlataforma: {
+                [Op.ne]: null,
+            },
         },
     });
 
