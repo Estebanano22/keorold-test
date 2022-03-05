@@ -19,12 +19,12 @@ exports.notificacionesUsuario = async (req, res) => {
 
         const cuentasBajoPedido = await Cuentas.findAll({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 2 }]
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 2 }, {[Op.not]: [{plataformaIdPlataforma: null}]}],
             },
             order: [['fechaSubida', 'DESC']],
-            limit: 2,
         });
-
+        console.log(cuentasBajoPedido)
+        
         const cuentasPersonalizadas = await Cuentas.findAll({
             where: {
                 [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 3 }]
@@ -74,7 +74,7 @@ exports.notificacionesUsuario = async (req, res) => {
     
         const countBajoPedido = await Cuentas.count({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 2 }],
+                [Op.and]: [{idSduperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 2 }, {[Op.not]: [{plataformaIdPlataforma: null}]}],
                 usuarioIdUsuario: {
                     [Op.ne]: null
                 }
@@ -83,7 +83,7 @@ exports.notificacionesUsuario = async (req, res) => {
     
         const countPersonalizadas = await Cuentas.count({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 3 }],
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 3 }, {[Op.not]: [{plataformaIdPlataforma: null}]}],
                 usuarioIdUsuario: {
                     [Op.ne]: null
                 }
@@ -92,7 +92,7 @@ exports.notificacionesUsuario = async (req, res) => {
     
         const countRenovaciones = await Cuentas.count({
             where: {
-                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 4 }],
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 4 }, {[Op.not]: [{plataformaIdPlataforma: null}]}],
                 usuarioIdUsuario: {
                     [Op.ne]: null
                 }
@@ -101,7 +101,7 @@ exports.notificacionesUsuario = async (req, res) => {
     
         const countJuegos = await Cuentas.count({
             where: {
-                [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 0 }, { tipoCuenta: 5 }],
+                [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 0 }, { tipoCuenta: 5 }, {[Op.not]: [{plataformaIdPlataforma: null}]}],
                 plataformaIdPlataforma: {
                     [Op.ne]: null
                 }
