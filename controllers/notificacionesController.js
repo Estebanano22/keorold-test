@@ -23,7 +23,6 @@ exports.notificacionesUsuario = async (req, res) => {
             },
             order: [['fechaSubida', 'DESC']],
         });
-        console.log(cuentasBajoPedido)
         
         const cuentasPersonalizadas = await Cuentas.findAll({
             where: {
@@ -74,7 +73,7 @@ exports.notificacionesUsuario = async (req, res) => {
     
         const countBajoPedido = await Cuentas.count({
             where: {
-                [Op.and]: [{idSduperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 2 }, {[Op.not]: [{plataformaIdPlataforma: null}]}],
+                [Op.and]: [{idSuperdistribuidor: req.user.id_usuario}, { estado: 0 }, { tipoCuenta: 2 }, {[Op.not]: [{plataformaIdPlataforma: null}]}],
                 usuarioIdUsuario: {
                     [Op.ne]: null
                 }
