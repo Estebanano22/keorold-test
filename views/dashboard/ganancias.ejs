@@ -66,7 +66,7 @@
                           <th>Vendedor</th>
                           <th>Perfil vendedor</th>
                           <th>Logo</th>
-                          <th>Plataforma</th>
+                          <th>Medio Transaccional</th>
                           <th>Ganancia</th>
                           <th>Tipo plataforma</th>
                           <th>Fecha</th>
@@ -76,39 +76,13 @@
                         <% moment.locale('es'); %>
                         <% if(ganancias.length) { %>
                         <% ganancias.forEach(listaGanancias => { %>
-                        <% const distribuidor = usuarios.filter(function(element){ %>
-                        <% return element.id_usuario == listaGanancias.distribuidor; %>
-                        <% }); %>
-                        <% const nombre = distribuidor[0].nombre; %>
-                        <% if(!(listaGanancias.length < 1 || !listaGanancias.usuario)) {%>
-                        <% if(listaGanancias.usuario.pais === 'Colombia') { %>
+                          
                         <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaGanancias.ganancia); %>
-                        <% } else { %>
-                        <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaGanancias.ganancia); %>
-                        <% } %>
+                        
                         <tr>
                           <td class="text-left text-capitalize"><%= nombre %></td>
                           <td class="text-left text-capitalize"><%= listaGanancias.usuario.nombre %></td>
                           <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaGanancias.usuario.perfil %></td>
-                          <td class="text-center">
-                            <% let plataforma_existe = (listaGanancias.plataforma===null) ? false : true %>
-                            <% let logo_plataforma = ''; %>
-                            <% let nombre_plataforma = ''; %>
-                            <% let badge_plataforma = ''; %>
-                            <% let tipo_plataforma = ''; %>
-                            <% if(plataforma_existe) {
-                            logo_plataforma = listaGanancias.plataforma.logo === null ? '/assetsDashboard/img/users/default.jpg' : listaGanancias.plataforma.logo;
-                            nombre_plataforma = listaGanancias.plataforma.plataforma;
-                            badge_plataforma = listaGanancias.plataforma.tipo_plataforma === 1 ? 'badge-primary' : listaGanancias.plataforma.tipo_plataforma === 2 ? 'badge-secondary' : listaGanancias.plataforma.tipo_plataforma === 3 ? 'badge-danger' : listaGanancias.plataforma.tipo_plataforma === 4 ? 'badge-info' : listaGanancias.plataforma.tipo_plataforma === 5 ? 'badge-warning' : 'badge-light';
-                            tipo_plataforma = listaGanancias.plataforma.tipo_plataforma === 1 ? 'Normal' : listaGanancias.plataforma.tipo_plataforma === 2 ? 'Bajo Pedido' : listaGanancias.plataforma.tipo_plataforma === 3 ? 'Personalizada' : listaGanancias.plataforma.tipo_plataforma === 4 ? 'Renovaciones' : listaGanancias.plataforma.tipo_plataforma === 5 ? 'Juegos' : 'N/A';
-                            } else {
-                            logo_plataforma = '/assetsDashboard/img/users/default.jpg';
-                            nombre_plataforma = '---';
-                            badge_plataforma = 'badge-light';
-                            tipo_plataforma = 'N/A';
-                            } %>
-                            <img src="<%= logo_plataforma %>" alt="" class="img-circle">
-                          </td>
                           <td class="text-capitalize"><%= nombre_plataforma %></td>
                           <td class="text-capitalize text-right"><%= valorFormateado %></td>
                           <td class="text-capitalize text-center">
@@ -118,7 +92,6 @@
                           </td>
                           <td class="text-center"><%= moment(listaGanancias.fecha).format('DD:MM:YYYY HH:MM:SS') %></td>
                         </tr>
-                        <% } %>
                         <% }) %>
                         <% } %>
                       </tbody>
