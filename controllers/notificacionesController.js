@@ -33,6 +33,7 @@ exports.notificacionesUsuario = async (req, res) => {
                     { idSuperdistribuidor: req.user.id_usuario },
                     { estado: 0 },
                     { tipoCuenta: 3 },
+                    { [Op.not]: [{ plataformaIdPlataforma: null }] },
                 ],
             },
             order: [['fechaSubida', 'DESC']],
