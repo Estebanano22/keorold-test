@@ -4,7 +4,6 @@
 <body class="main-body leftmenu body-ingreso">
 
   <%- include('layautsDashboard/loader') %>
-
   <!-- Page -->
   <div class="page">
 
@@ -248,7 +247,7 @@
               return element.id_plataforma == respuesta.insidencias[i].plataformaIdPlataforma;
             });
 
-            const plat = plataforma[0].plataforma;
+            const plat = plataforma.length == 0 ? 'nn' : plataforma[0].plataforma;
             const nombrePlataforma = `<div class='view-message text-left'>${plat}</div>`;
             const nombre = `<div class='view-message text-left'>${respuesta.insidencias[i].usuario.nombre}</div>`;
             const fecha = `<div class='view-message text-right font-weight-semibold'>${moment(respuesta.insidencias[i].fecha).format('MMMM Do YYYY, h:mm:ss a')}</div>`;

@@ -4,7 +4,14 @@
 <body class="main-body leftmenu body-ingreso">
 
   <%- include('layautsDashboard/loader') %>
+  <script>
+    let state = document.getElementById('loader_charge-state')
+    let carga = "<%=cuentas.length%>"
+    contador = 0
+    document.getElementById('global-loader-container').style.display = "flex"
 
+    // $('#loaderCharge').attr('max',Number(carga));
+  </script>
   <!-- Page -->
   <div class="page">
 
@@ -149,6 +156,7 @@
                         <% moment.locale('es'); %>
                         <% if(cuentas.length) { %>
                         <% cuentas.forEach(listaCuentas => { %>
+                          
                         <% if(!(listaCuentas.usuario == null || listaCuentas.plataforma == null)) {%>
                         <% const distribuidor = usuarios.find(element => element.id_usuario === listaCuentas.idDistribuidor)%>
                         <% const nombre = distribuidor === undefined ? 'NN' : distribuidor.nombre  %>
@@ -172,6 +180,11 @@
                         <% var nuevo_password = listaCuentas.password; %>
                         <% var idJuego = 'no aplica' %>
                         <% } %>
+                        <script>
+                          textoContador = (contador/carga)*100
+                          state.innerText = Math.trunc(textoContador) + '%'
+                          contador = contador+=1
+                        </script>
                         <tr>
                           <td class="text-left text-capitalize"><%= nombre %></td>
                           <td class="text-left text-capitalize"><%= listaCuentas.usuario.nombre %></td>
@@ -273,7 +286,7 @@
 
 
   <!-- Scripts Personalizados -->
-
+  
   <% if(locals.mensajes) { %>
   <% const validacionErrores = Object.keys(locals.mensajes) %>
   <% if(validacionErrores.length) { %>

@@ -139,12 +139,8 @@
                           </td>
                           <td class="text-capitalize"><%= listaUsuario.enlace_afiliado %></td>
 
-                          <% distribuidores.forEach(listaDistribuidor => { %>
-                          <% if(listaDistribuidor.enlace_afiliado === listaUsuario.patrocinador) { %>
-                          <% const nombreDistribuidor = listaDistribuidor.nombre %>
+                          <% nombreDistribuidor = usuarios.patrocinador %>
                           <td class="text-capitalize"><%= nombreDistribuidor %></td>
-                          <% } %>
-                          <% }) %>
 
                           <td class="text-capitalize">
                             <div class="btn btn-list">

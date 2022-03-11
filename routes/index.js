@@ -94,6 +94,12 @@ module.exports = function () {
         dashboardController.uploadFoto,
         dashboardController.subirFoto
     );
+    router.post('/dashboard/mi-perfil/actualizarTelegram',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        dashboardController.countRed,
+        dashboardController.telegram
+    )
 
     // Cerrar Sesion
     router.get('/cerrar-sesion', (req, res) => {
@@ -1278,6 +1284,13 @@ module.exports = function () {
         authController.verifyToken,
         rolController.permisosPaginaGeneral,
         dashboardController.whatsapp
+    );
+    // Soporte Telegram
+    router.post('/soporte/telegram',
+        authController.usuarioAutenticado,
+        authController.verifyToken,
+        rolController.permisosPaginaGeneral,
+        dashboardController.telegramMenu
     );
 
     return router;

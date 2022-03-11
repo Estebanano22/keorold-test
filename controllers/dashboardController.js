@@ -11,6 +11,7 @@ const { v4: uuid_v4 } = require('uuid');
 const bcrypt = require('bcrypt-nodejs');
 const {s3, bucket} = require('../config/awsS3');
 const multerS3 = require('multer-s3');
+const { succes, errors } = require('../network');
 
 // Inicio
 exports.inicio = async (req, res) => {
@@ -159,6 +160,7 @@ exports.asignarPlataformasUsuarios = async (req, res) => {
 // Mi Perfil
 exports.perfil =  async (req, res) => {
     const usuario = await Usuarios.findOne({ where: { email: req.user.email }});
+    let telegramUsuario = usuario.telegram_link
 
     res.render('dashboard/mi-perfil', {
         nombrePagina : 'Mi Perfil',
@@ -170,7 +172,8 @@ exports.perfil =  async (req, res) => {
         countSuperdist: res.locals.countSuperdist,
         patrocinador: res.locals.patrocinadorNombre,
         telefonoPatrocinador: res.locals.patrocinadorTelefono,
-        usuario
+        usuario,
+        telegramUsuario
     })
 }
 
@@ -452,9 +455,46 @@ exports.whatsapp = async (req, res) => {
             enlace_afiliado: req.user.patrocinador
         }
     })
-
-    const whatsapp = patrocinadores === null || undefined ? "NN" :  patrocinadores.telefono_movil;
+    let numero = "+1385 628-8444"
+    let whatsapp
+    if (patrocinadores.telefono_movil == numero) {
+        whatsapp = "+13056970420";
+    } else {
+        whatsapp = patrocinadores === null || undefined ? "NN" :  patrocinadores.telefono_movil;
+    }
     res.json({ whatsappPatrocinador: whatsapp});
     return;
+}
+exports.telegramMenu = async (req, res) => {
 
+    const patrocinadores = await Usuarios.findOne({
+        where: {
+            enlace_afiliado: req.user.patrocinador
+        }
+    })
+    let telegram
+    if (patrocinadores.telegram_link == null || undefined) {
+        telegram = "sin telegram";
+    } else {
+        telegram =  patrocinadores.telegram_link;
+    }
+    res.json({ telegramPatrocinador: telegram});
+    return;
+}
+
+exports.telegram = async (req, res) => {
+    let usuario = await Usuarios.findOne({ where: { email: req.user.email } })
+    try {
+        let telegram = req.body.telegram
+        usuario.telegram_link = telegram 
+        await usuario.save();
+        succes(req, res, {
+            title: 'Telegram actualizado con exito',
+            icon: 'success',
+            text: `Ahora tu telegram es ${telegram}`  
+        })
+    } catch (error) {
+        console.log('entra')
+        errors(req, res, 'error',500,error)
+    }
 }

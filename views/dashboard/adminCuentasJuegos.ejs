@@ -4,7 +4,14 @@
 <body class="main-body leftmenu body-ingreso">
 
   <%- include('layautsDashboard/loader') %>
+  <script>
+    let state = document.getElementById('loader_charge-state')
+    let carga = "<%=cuentas.length%>"
+    contador = 0
+    document.getElementById('global-loader-container').style.display = "flex"
 
+    // $('#loaderCharge').attr('max',Number(carga));
+  </script>
   <!-- Page -->
   <div class="page">
 
@@ -89,6 +96,11 @@
                         <% moment.locale('es'); %>
                         <% if(cuentas.length) { %>
                         <% cuentas.forEach(listaCuentas => { %>
+                          <script>
+                            textoContador = (contador/carga)*100
+                            state.innerText = Math.trunc(textoContador) + '%'
+                            contador = contador+=1
+                          </script>
                           <%if(listaCuentas.usuario == null){%>
                             <%listaCuentas.usuario = "nn"%>
                           <%}%>
