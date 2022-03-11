@@ -139,7 +139,7 @@
                           </td>
                           <td class="text-capitalize"><%= listaUsuario.enlace_afiliado %></td>
 
-                          <% nombreDistribuidor = distribuidores.find(listaDistribuidor => listaDistribuidor.enlace_afiliado === listaUsuario.patrocinador) %>
+                          <% nombreDistribuidor = usuarios.patrocinador %>
                           <td class="text-capitalize"><%= nombreDistribuidor %></td>
 
                           <td class="text-capitalize">
