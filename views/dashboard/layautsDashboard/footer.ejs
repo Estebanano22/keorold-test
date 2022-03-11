@@ -292,7 +292,7 @@
                         return p2.id_plataforma === personalizadas[e].plataformaIdPlataforma;
                       });
 
-                      const plataforma = array2[0].plataforma;
+                      const plataforma = array2[0] === undefined ? 'NN' :  array2[0].plataforma;
 
                       if (personalizadas[e].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">gestionada</span>`;
