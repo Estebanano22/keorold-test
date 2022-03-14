@@ -219,6 +219,7 @@ exports.notificacionesUsuario = async (req, res) => {
                 [Op.and]: [
                     { usuarioIdUsuario: req.user.id_usuario },
                     { tipoCuenta: 2 },
+                    { [Op.not]: [{ plataformaIdPlataforma: null }] }
                 ],
             },
             order: [['fechaSubida', 'DESC']],
@@ -230,6 +231,7 @@ exports.notificacionesUsuario = async (req, res) => {
                 [Op.and]: [
                     { usuarioIdUsuario: req.user.id_usuario },
                     { tipoCuenta: 3 },
+                    { [Op.not]: [{ plataformaIdPlataforma: null }] }
                 ],
             },
             order: [['fechaSubida', 'DESC']],
@@ -241,6 +243,7 @@ exports.notificacionesUsuario = async (req, res) => {
                 [Op.and]: [
                     { usuarioIdUsuario: req.user.id_usuario },
                     { tipoCuenta: 4 },
+                    { [Op.not]: [{ plataformaIdPlataforma: null }] }
                 ],
             },
             order: [['fechaSubida', 'DESC']],
@@ -252,6 +255,7 @@ exports.notificacionesUsuario = async (req, res) => {
                 [Op.and]: [
                     { usuarioIdUsuario: req.user.id_usuario },
                     { tipoCuenta: 5 },
+                    { [Op.not]: [{ plataformaIdPlataforma: null }] }
                 ],
             },
             order: [['fechaSubida', 'DESC']],
@@ -287,6 +291,7 @@ exports.notificacionesUsuario = async (req, res) => {
                     { usuarioIdUsuario: req.user.id_usuario },
                     { estado: 0 },
                     { tipoCuenta: 2 },
+                    { [Op.not]: [{ plataformaIdPlataforma: null }] }
                 ],
             },
         });
@@ -297,6 +302,7 @@ exports.notificacionesUsuario = async (req, res) => {
                     { usuarioIdUsuario: req.user.id_usuario },
                     { estado: 0 },
                     { tipoCuenta: 3 },
+                    { [Op.not]: [{ plataformaIdPlataforma: null }] }
                 ],
             },
         });
@@ -307,6 +313,7 @@ exports.notificacionesUsuario = async (req, res) => {
                     { usuarioIdUsuario: req.user.id_usuario },
                     { estado: 0 },
                     { tipoCuenta: 4 },
+                    { [Op.not]: [{ plataformaIdPlataforma: null }] }
                 ],
             },
         });
@@ -317,6 +324,7 @@ exports.notificacionesUsuario = async (req, res) => {
                     { usuarioIdUsuario: req.user.id_usuario },
                     { estado: 0 },
                     { tipoCuenta: 5 },
+                    { [Op.not]: [{ plataformaIdPlataforma: null }] }
                 ],
             },
         });

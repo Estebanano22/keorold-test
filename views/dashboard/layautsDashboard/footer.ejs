@@ -251,7 +251,7 @@
                         return p1.id_plataforma === bajoPedido[i].plataformaIdPlataforma;
                       });
 
-                      const plataforma = array[0].plataforma;
+                      const plataforma = array[0] === undefined || null ? 'NN':array[0].plataforma ;
 
                       if (bajoPedido[i].estado === 1) {
                         var span1 = `<span class="ml-auto text-success">gestionada</span>`;
