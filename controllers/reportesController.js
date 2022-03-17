@@ -1584,21 +1584,32 @@ exports.reporteComprasSaldo = async (req, res) => {
 
 exports.reporteVentas = async (req, res) => {
 
-    const cargas = await Cargas.findAll({
-        where: {
-            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
-        },
-        include: [
-            { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
-        ],
-        order: [['fechaCarga', 'DESC']]
-    })
-
     const usuarios = await Usuarios.findAll({
         where: {
             [Op.and]: [{ patrocinador: req.user.enlace_afiliado }]
-        }
+        } ,
+        raw: true,
     })
+    const cargas=[]
+    for (let i = 0; i < usuarios.length; i++) {
+        let idUser = usuarios[i].id_usuario
+         let cargaUsuario = await Cargas.findAll({
+            where: {
+                [Op.and]: [{ usuarioIdUsuario: idUser }]
+            },
+            include: [
+                { model: Usuarios, foreignKey: 'usuarioIdUsuario' }
+             ],
+            order: [['fechaCarga', 'DESC']],
+            
+        })
+        if (cargaUsuario.length !== 0) {
+            cargas.push(...cargaUsuario);
+        }
+    }
+    
+
+    
 
     res.render('dashboard/reporteVentas', {
         nombrePagina: 'Reporte ventas de saldo',
