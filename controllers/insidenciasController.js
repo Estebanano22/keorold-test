@@ -268,7 +268,6 @@ exports.insidenciasSuperdistribuidor = async (req, res) => {
             [Op.and]: [{ id_superdistribuidor: req.user.id_usuario }, { estado: 1 }]
         }
     });
-
     res.json({ insidencias: insidenciaNoRespondidas, plataformas: plataformas });
     return;
 
@@ -302,7 +301,7 @@ exports.respondidasSuperdistribuidor = async (req, res) => {
 
     const insidenciaNoRespondidas = await Insidencias.findAll({
         where: {
-            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }]
+            [Op.and]: [{ idSuperdistribuidor: req.user.id_usuario }, { estado: 1 }, ]
         },
         include: [
             { model: Usuarios, foreignKey: 'usuarioIdUsuario' },
