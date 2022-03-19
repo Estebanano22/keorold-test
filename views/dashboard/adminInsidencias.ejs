@@ -301,8 +301,6 @@
           $('#global-loader').addClass("d-none");
           const respuesta = JSON.parse(data);
 
-          console.log(respuesta.insidencias);
-
           var datos = [];
           for (var i = 0; i < respuesta.insidencias.length; i++) {
             const estado = `<div class='view-message text-success'><i class='fas fa-circle mr-2'></i>Respondida</div>`;
@@ -366,7 +364,6 @@
           $('#global-loader').addClass("d-none");
           const respuesta = JSON.parse(data);
 
-          console.log(respuesta.insidencias);
 
           var datos = [];
           for (var i = 0; i < respuesta.insidencias.length; i++) {
