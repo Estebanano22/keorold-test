@@ -24,7 +24,10 @@ exports.reportarConsignacion = async (req, res) => {
 
     const medios = await Medios.findAll({
         where: {
-            [Op.and]: [{ idSuperdistribuidor: superdistribuidor.id_usuario }, { estado: 1 }]
+            [Op.and]: [{ idSuperdistribuidor: superdistribuidor.id_usuario }, { estado: 1 }, {
+                [Op.not]: {
+                    idMedio: ["4cad3d26-8ed0-4d8c-ac3a-d83b8e0fc311", "f5a97ea5-9c24-4353-9702-34454814df81"]
+            }}]
         }
     });
 
