@@ -276,7 +276,7 @@
           $('#global-loader').addClass("d-none");
           swal({
             title: 'Request Error',
-            text: '500 - Admin Insidencias',
+            text: '500 - Admin Insidencias 1',
             type: 'error'
           });
         })
@@ -301,8 +301,6 @@
           $('#global-loader').addClass("d-none");
           const respuesta = JSON.parse(data);
 
-          console.log(respuesta.insidencias);
-
           var datos = [];
           for (var i = 0; i < respuesta.insidencias.length; i++) {
             const estado = `<div class='view-message text-success'><i class='fas fa-circle mr-2'></i>Respondida</div>`;
@@ -311,10 +309,9 @@
             const plataforma = respuesta.plataformas.filter(function(element) {
               return element.id_plataforma == respuesta.insidencias[i].plataformaIdPlataforma;
             });
-
-            const plat = plataforma[0].plataforma;
+            const plat = plataforma.length !== 0 ?  plataforma[0].plataforma: 'NN'
             const nombrePlataforma = `<div class='view-message text-left'>${plat}</div>`;
-            const nombre = `<div class='view-message text-left'>${respuesta.insidencias[i].usuario.nombre}</div>`;
+            const nombre = `<div class='view-message text-left'>${respuesta.insidencias[i].usuario !== null ? respuesta.insidencias[i].usuario.nombre : 'NN'}</div>`;
             const fecha = `<div class='view-message text-right font-weight-semibold'>${moment(respuesta.insidencias[i].fecha).format('MMMM Do YYYY, h:mm:ss a')}</div>`;
 
             const lista = [estado, asunto, nombrePlataforma, nombre, fecha];
@@ -336,12 +333,13 @@
             ellipsis_box(30);
           }
 
-        }).catch(() => {
+        }).catch((err) => {
+          console.log(err)
           $('#global-loader').removeClass("d-block");
           $('#global-loader').addClass("d-none");
           swal({
             title: 'Request Error',
-            text: '500 - Admin Insidencias',
+            text: '500 - Admin Insidencias 2',
             type: 'error'
           });
         })
@@ -366,7 +364,6 @@
           $('#global-loader').addClass("d-none");
           const respuesta = JSON.parse(data);
 
-          console.log(respuesta.insidencias);
 
           var datos = [];
           for (var i = 0; i < respuesta.insidencias.length; i++) {
@@ -376,8 +373,8 @@
             const plataforma = respuesta.plataformas.filter(function(element) {
               return element.id_plataforma == respuesta.insidencias[i].plataformaIdPlataforma;
             });
-
-            const plat = plataforma[0].plataforma;
+            console.log(plataforma)
+            const plat = plataforma !== undefined ?  plataforma[0].plataforma: 'NN';
             const nombrePlataforma = `<div class='view-message text-left'>${plat}</div>`;
             const nombre = `<div class='view-message text-left'>${respuesta.insidencias[i].usuario.nombre}</div>`;
             const fecha = `<div class='view-message text-right font-weight-semibold'>${moment(respuesta.insidencias[i].fecha).format('MMMM Do YYYY, h:mm:ss a')}</div>`;
@@ -406,7 +403,7 @@
           $('#global-loader').addClass("d-none");
           swal({
             title: 'Request Error',
-            text: '500 - Admin Insidencias',
+            text: '500 - Admin Insidencias 3',
             type: 'error'
           });
         })
@@ -490,7 +487,7 @@
           $('#global-loader').addClass("d-none");
           swal({
             title: 'Request Error',
-            text: '500 - Admin Insidencias',
+            text: '500 - Admin Insidencias 4',
             type: 'error'
           });
         })
@@ -571,7 +568,7 @@
           $('#global-loader').addClass("d-none");
           swal({
             title: 'Request Error',
-            text: '500 - Admin Insidencias',
+            text: '500 - Admin Insidencias 5',
             type: 'error'
           });
         })

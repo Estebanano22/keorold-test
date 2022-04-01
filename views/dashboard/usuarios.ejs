@@ -212,9 +212,9 @@
           <button type="button" class="btn ripple btn-primary checkbox-toggle" onclick="cargarSaldo()">
             <i class="far fa-plus-square"></i> <span class="ml-1">Cargar Saldo</span>
           </button>
-          <button type="button" class="btn ripple btn-warning checkbox-toggle" onclick="restarSaldo()">
+          <!-- <button type="button" class="btn ripple btn-warning checkbox-toggle" onclick="restarSaldo()">
             <i class="far fa-minus-square"></i> <span class="ml-1">Restar Saldo</span>
-          </button>
+          </button> -->
           <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
         </div>
       </div>
@@ -389,58 +389,68 @@
       const idCargar = document.getElementById("idCargar").value;
       const saldoCargar = document.getElementById("saldoCargar").value;
       const responsable = document.getElementById("responsableGestion").value;
-
-      $('#global-loader').addClass("d-block");
-      $('#global-loader').removeClass("d-none");
-      fetch('/usuarios/cargarSaldo', {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json'
-          },
-          body: JSON.stringify({
-            id: idCargar,
-            valor: saldoCargar,
-            responsable: responsable
+      if(saldoCargar.includes(",")){
+        swal({
+            title: 'Error',
+            text: 'Utiliza "." (puntos) en vez de "," (Comas)',
+            type: 'error',
+            confirmButtonColor: '#57a94f'
           })
-        })
-        .then(res => res.text())
-        .then(data => {
-          $('#global-loader').removeClass("d-block");
-          $('#global-loader').addClass("d-none");
-          const respuesta = JSON.parse(data);
-          if (respuesta.resp === 'success') {
+      }else{
 
+        $('#global-loader').addClass("d-block");
+        $('#global-loader').removeClass("d-none");
+        fetch('/usuarios/cargarSaldo', {
+            method: 'POST',
+            headers: {
+              'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: idCargar,
+              valor: saldoCargar,
+              responsable: responsable
+            })
+          })
+          .then(res => res.text())
+          .then(data => {
+            $('#global-loader').removeClass("d-block");
+            $('#global-loader').addClass("d-none");
+            const respuesta = JSON.parse(data);
+            if (respuesta.resp === 'success') {
+  
+              swal({
+                  title: respuesta.titulo,
+                  text: respuesta.descripcion,
+                  type: respuesta.resp,
+                  confirmButtonColor: '#57a94f',
+                  closeOnClickOutside: false
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
+                    location.reload();
+                  }
+                });
+  
+            } else {
+  
+              $('#alertaCargar').fadeIn();
+              const error = '<button aria-label="Close" class="close" data-dismiss="alert" type="button"> <span aria-hidden="true" class="text-danger">×</span> </button> <strong>Oh no!</strong> ' + respuesta.descripcion + '.';
+              $('#alertaCargar').html(error);
+              $('#alertaCargar').delay(2000).fadeOut();
+            }
+          }).catch(() => {
+            $('#global-loader').removeClass("d-block");
+            $('#global-loader').addClass("d-none");
             swal({
-                title: respuesta.titulo,
-                text: respuesta.descripcion,
-                type: respuesta.resp,
-                confirmButtonColor: '#57a94f',
-                closeOnClickOutside: false
-              },
-              function(isConfirm) {
-                if (isConfirm) {
-                  location.reload();
-                }
-              });
+              title: 'Request Error',
+              text: '500 - usuarios',
+              type: 'error'
+            });
+          })
+  
+      }
+      }
 
-          } else {
-
-            $('#alertaCargar').fadeIn();
-            const error = '<button aria-label="Close" class="close" data-dismiss="alert" type="button"> <span aria-hidden="true" class="text-danger">×</span> </button> <strong>Oh no!</strong> ' + respuesta.descripcion + '.';
-            $('#alertaCargar').html(error);
-            $('#alertaCargar').delay(2000).fadeOut();
-          }
-        }).catch(() => {
-          $('#global-loader').removeClass("d-block");
-          $('#global-loader').addClass("d-none");
-          swal({
-            title: 'Request Error',
-            text: '500 - usuarios',
-            type: 'error'
-          });
-        })
-
-    }
 
     function restarSaldo() {
 
