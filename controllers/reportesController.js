@@ -749,23 +749,25 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
     worksheet.column(12).setWidth(20);
     worksheet.column(13).setWidth(20);
     worksheet.column(14).setWidth(20);
+    worksheet.column(15).setWidth(20);
 
-    worksheet.cell(1, 1, 1, 14, true).string('Reporte Cuentas Vendidas Superdistribuidor - Fullentretenimiento').style(style4);
+    worksheet.cell(1, 1, 1, 15, true).string('Reporte Cuentas Vendidas Superdistribuidor - Fullentretenimiento').style(style4);
 
     worksheet.cell(2, 1).string('Id cuenta').style(style1);
     worksheet.cell(2, 2).string('Distribuidor').style(style1);
     worksheet.cell(2, 3).string('Usuario vendedor').style(style1);
     worksheet.cell(2, 4).string('Perfil usuario').style(style1);
     worksheet.cell(2, 5).string('Plataforma').style(style1);
-    worksheet.cell(2, 6).string('Valor pagado').style(style1);
-    worksheet.cell(2, 7).string('Tipo plataforma').style(style1);
-    worksheet.cell(2, 8).string('User').style(style1);
-    worksheet.cell(2, 9).string('Password').style(style1);
-    worksheet.cell(2, 10).string('Pantalla').style(style1);
-    worksheet.cell(2, 11).string('Pin').style(style1);
-    worksheet.cell(2, 12).string('ID Jugador').style(style1);
-    worksheet.cell(2, 13).string('Fecha de compra').style(style1);
-    worksheet.cell(2, 14).string('Fecha de subida').style(style1);
+    worksheet.cell(2, 6).string('Valor base superdistribuidor').style(style1);
+    worksheet.cell(2, 7).string('Valor pagado').style(style1);
+    worksheet.cell(2, 8).string('Tipo plataforma').style(style1);
+    worksheet.cell(2, 9).string('User').style(style1);
+    worksheet.cell(2, 10).string('Password').style(style1);
+    worksheet.cell(2, 11).string('Pantalla').style(style1);
+    worksheet.cell(2, 12).string('Pin').style(style1);
+    worksheet.cell(2, 13).string('ID Jugador').style(style1);
+    worksheet.cell(2, 14).string('Fecha de compra').style(style1);
+    worksheet.cell(2, 15).string('Fecha de subida').style(style1);
 
     for (let i = 0; i < cuentas.length; i += 1) {
         if(cuentas[i].plataforma)
@@ -806,26 +808,34 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
                 [Op.and]: [{ id_usuario: cuentas[i].idDistribuidor }]
             }
         })
+
         if (distribuidor !== null || undefined) {
             const nombreDistribuidor = distribuidor.nombre;
             let usuario_nombre = (cuentas[i].usuario) ? cuentas[i].usuario.nombre : '';
             let usuario_perfil = (cuentas[i].usuario) ? cuentas[i].usuario.perfil : '';
             let plataforma_nombre = (cuentas[i].plataforma) ? cuentas[i].plataforma.plataforma : '';
+
+            const valorSuperdistribuidor = await Asignaciones.findOne({
+                where: {
+                    [Op.and]:[{plataformaIdPlataforma: cuentas[i].plataformaIdPlataforma}, {usuarioIdUsuario: req.user.id_usuario}]
+                }
+            });
     
             worksheet.cell(i + 3, 1).string(cuentas[i].idCuenta).style(style2);
             worksheet.cell(i + 3, 2).string(nombreDistribuidor).style(style2);
             worksheet.cell(i + 3, 3).string(usuario_nombre).style(style2);
             worksheet.cell(i + 3, 4).string(usuario_perfil).style(style2);
             worksheet.cell(i + 3, 5).string(plataforma_nombre).style(style2);
-            worksheet.cell(i + 3, 6).number(Number(cuentas[i].valorPagado)).style(style3);
-            worksheet.cell(i + 3, 7).string(tipoPlataforma).style(style2);
-            worksheet.cell(i + 3, 8).string(cuentas[i].user).style(style2);
-            worksheet.cell(i + 3, 9).string(cuentas[i].password).style(style2);
-            worksheet.cell(i + 3, 10).string(cuentas[i].pantalla).style(style2);
-            worksheet.cell(i + 3, 11).string(cuentas[i].pin).style(style2);
-            worksheet.cell(i + 3, 12).string(cuentas[i].idJuego).style(style2);
-            worksheet.cell(i + 3, 13).date(cuentas[i].fechaCompra).style(style5);
-            worksheet.cell(i + 3, 14).date(cuentas[i].fechaSubida).style(style5);
+            worksheet.cell(i + 3, 6).number(Number(valorSuperdistribuidor.valor)).style(style3);
+            worksheet.cell(i + 3, 7).number(Number(cuentas[i].valorPagado)).style(style3);
+            worksheet.cell(i + 3, 8).string(tipoPlataforma).style(style2);
+            worksheet.cell(i + 3, 9).string(cuentas[i].user).style(style2);
+            worksheet.cell(i + 3, 10).string(cuentas[i].password).style(style2);
+            worksheet.cell(i + 3, 11).string(cuentas[i].pantalla).style(style2);
+            worksheet.cell(i + 3, 12).string(cuentas[i].pin).style(style2);
+            worksheet.cell(i + 3, 13).string(cuentas[i].idJuego).style(style2);
+            worksheet.cell(i + 3, 14).date(cuentas[i].fechaCompra).style(style5);
+            worksheet.cell(i + 3, 15).date(cuentas[i].fechaSubida).style(style5);
         }
     }
 
