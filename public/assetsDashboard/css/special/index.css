@@ -7,7 +7,7 @@
 .plataforma_label input{
     margin-right: 8px;
     height: 34px;
-    width: 20%;
+    width: 100%;
 }
 .busqueda-off{
     display: none;

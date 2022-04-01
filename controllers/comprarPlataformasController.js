@@ -169,24 +169,41 @@ exports.plataformas = async (req, res) => {
 
 //busqueda plataformas
 exports.plataformasBusqueda = async (req, res) => {
-    const datos = req.query.busquedaInput
+
+    const datos = req.body.busquedaInput;
+    
     const busquedas = await Asignaciones.findAll({
         where: {
-            usuarioIdUsuario: req.user.id_usuario
+            [Op.and]: [{ usuarioIdUsuario: req.user.id_usuario }]
         },
-        include: {
-            model: Plataformas, foreignKey: 'plataformaIdPlataforma',
-            where: {
-                plataforma: {[Op.like]: `%${datos}%`}
+        include: [
+            {
+                model: Plataformas, foreignKey: 'plataformaIdPlataforma',
+                where: {
+                    [Op.and]: [{ estado: 1 }, {plataforma: {[Op.like]: `%${datos}%`}}]
+                }
+            },
+            {
+                model: Usuarios, foreignKey: 'usuarioIdUsuario'
             }
-        }
-    })
-    let cuentas = await Cuentas.findAll({
+        ],
+        order: [
+            [{
+                model: Plataformas,
+                foreignKey: 'plataformaIdPlataforma'
+            },
+            'plataforma','ASC'
+            ]
+        ]
+    });
+
+    const usuario = await Usuarios.findOne({
         where: {
-            [Op.and]: [{ estado: 0 }, { idSuperdistribuidor: superdistribuidor.id_usuario }]
+            [Op.and]:[{id_usuario: req.user.id_usuario}]
         }
-    })
-    res.json({ busquedas, cuentas })
+    });
+
+    res.json({ busquedas, usuario })
     
 }
 

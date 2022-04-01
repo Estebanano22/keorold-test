@@ -971,10 +971,11 @@ module.exports = function () {
         dashboardController.countRed,
         comprarPlataformasController.plataformas
     );
-    router.get('/dashboard/plataforma/busqueda',
+
+    router.post('/plataformas/filtro',
         authController.usuarioAutenticado,
         authController.verifyToken,
-        rolController.permisosPaginaUsuario,
+        rolController.permisosPaginaGeneral,
         comprarPlataformasController.plataformasBusqueda
     );
 

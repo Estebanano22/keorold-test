@@ -75,18 +75,28 @@
           </div>
 
           <!-- ======================
-                            Plataformas Normales
-                        ======================= -->
-          <label class="plataforma_label busqueda-off">
-            <input type="search" class="form-control form-control-sm" placeholder="Buscar..." aria-controls="exportexample" x="" id="busquedaD">
-            <button class="btn btn-primary" onclick="busqueda()">Buscar</button>
-          </label>
-          <section class="busqueda-off" id="busqueda">
-            <h5 class="main-content-title tx-24 mg-b-5 mt-4">Busqueda cuentas</h5>
-            <p class="text-muted">Usted podra comprar las siguientes cuentas de forma inmediata.</p>
-          </section>
-          <h2 class="main-content-title tx-24 mg-b-5 mt-4">Cuentas</h2>
-          <p class="text-muted">Usted podra comprar las siguientes cuentas de forma inmediata.</p>
+              Plataformas Normales
+          ======================= -->
+
+          <div class="page-header">
+            <div id="text_titulo_busqueda">
+              <h2 class="main-content-title tx-24 mg-b-5 mt-4">Cuentas</h2>
+              <p class="text-muted">Usted podra comprar las siguientes cuentas de forma inmediata.</p>
+            </div>
+            <div class="d-flex">
+              <div class="justify-content-center">
+                <label class="plataforma_label">
+                  <input type="search" class="form-control form-control-sm" placeholder="Buscar..." aria-controls="exportexample" onkeyup="busqueda(event)" id="busquedaD">
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row row-sm" id="divBusqueda">
+          </div>
+
+          <div id="divRender">
+
           <div class="row row-sm">
 
             <% if(plataformasNormales.length) { %>
@@ -387,6 +397,7 @@
 
           </div>
 
+          </div>
 
           <!-- =============================
 							Fin Componentes Pagina
@@ -1006,45 +1017,141 @@
 
 
   <script>
-    let create
-    // const busqueda= ()=>{
-    //   const busquedaInput = document.getElementById('busquedaD').value
-    //   if (busquedaInput == '' ) {
-    //   swal({
-    //     title: "Busqueda no realizada",
-    //     text: "Debes tener un valor para poder realizar la busqueda",
-    //     type: "error",
-    //   })
-    //   }else{
-    //     return axios({
-    //       url: `/dashboard/plataforma/busqueda`,
-    //       method: 'GET',
-    //       params: {busquedaInput:busquedaInput}, 
-    //     }).then(rest => {
-    //       console.log(rest.data)
-    //       const resultado = rest.data.busquedas
-    //       if (resultado.length > 0) {
-    //         let valorFormateado
-    //         let stock
-    //         const contenedor = document.getElementById('busqueda')
-    //         let cuentas = rest.data.cuentas
-    //         contenedor.classList.remove('busqueda-off')
-    //         for (let i = 0; i < resultado.length; i++) {
-    //           console.log(resultado[i].plataforma.logo)   
-    //         }
-    //       }else{
-    //         contenedor.classList.addClass('busqueda-off')
-    //       }
 
-    //     }).catch(err => {
-    //       swal({
-    //           title: 'Request Error',
-    //           text: '500',
-    //           type: 'error'
-    //         });
-    //     })
-    //   }
-    // }
+    const busqueda = (e) => {
+
+      var busquedaInput = document.getElementById('busquedaD').value;
+      const divBusqueda = document.getElementById('divBusqueda');
+      const divRender = document.getElementById('divRender');
+
+      if (busquedaInput.length != 0 ) {
+
+        document.getElementById('text_titulo_busqueda').innerHTML = `<h5 class="main-content-title tx-24 mg-b-5 mt-4">Busqueda cuentas</h5>
+        <p class="text-muted">Usted podra comprar las siguientes cuentas de forma inmediata.</p>`;
+
+        fetch('/plataformas/filtro', {
+            method: 'POST',
+            headers: {
+              'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              busquedaInput
+            })
+          })
+          .then(res => res.text())
+          .then(data => {
+
+            const respuesta = JSON.parse(data);
+            const datos = respuesta.busquedas;
+
+            var html = '';
+
+            datos.forEach(element => {
+
+              const nPlataforma = element.plataforma.plataforma.toLowerCase();
+
+              if(respuesta.usuario.pais === 'Colombia') {
+                var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(element.valor);
+              } else {
+                var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(element.valor);
+              }
+
+              if (Number(respuesta.usuario.saldo) >= Number(element.valor)) {
+
+                if(element.plataforma.tipo_plataforma === 1) {
+
+                  var boton = `<button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraNormal" onclick="modalCompraNormal(event, '${element.plataforma.id_plataforma}', '${element.plataforma.plataforma}', '${element.plataforma.logo}')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>`;
+
+                } else if (element.plataforma.tipo_plataforma === 2) {
+
+                  var boton = `<button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraPedido" onclick="modalCompraPedido(event, '${element.plataforma.id_plataforma}', '${element.plataforma.plataforma}', '${element.plataforma.logo}')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>`;
+
+                } else if (element.plataforma.tipo_plataforma === 3) {
+
+                  var boton = `<button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraPersonalizada" onclick="modalCompraPersonalizada(event, '${element.plataforma.id_plataforma}', '${element.plataforma.plataforma}', '${element.plataforma.logo}')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>`;
+                  
+                } else if (element.plataforma.tipo_plataforma === 4) {
+
+                  var boton = `<button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraRenovacion" onclick="modalCompraRenovacion(event, '${element.plataforma.id_plataforma}', '${element.plataforma.plataforma}', '${element.plataforma.logo}')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>`;
+                  
+                } else if (element.plataforma.tipo_plataforma === 5) {
+
+                  if(nPlataforma.includes('free fire')) {
+
+                    var boton = `<button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraFreefire" onclick="modalCompraFreefire(event, '${element.plataforma.id_plataforma}', '${element.plataforma.plataforma}', '${element.plataforma.logo}')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>`;
+
+                  } else if (nPlataforma.includes('call of duty')) {
+
+                    var boton = `<button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalCompraCallofduty" onclick="modalCompraCallofduty(event, '${element.plataforma.id_plataforma}', '${element.plataforma.plataforma}', '${element.plataforma.logo}')"><i class="ti ti-shopping-cart-full"></i> Comprar</button>`;
+
+                  }
+
+                }
+
+              } else {
+
+                var boton = `<button type="button" class="btn-comprar mt-2" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalSinSaldo"><i class="ti ti-shopping-cart-full"></i> Comprar</button>`;
+                
+              }
+
+              html += `<div class="col-sm-12 col-md-3">
+                <div class="card custom-card our-team">
+                  <div class="card-body">
+                    <div class="mb-3 circulo-etiqueta"></div>
+                    <div class="picture avatar-lg online text-center">
+                      <img alt="avatar" class="rounded-circle" src="${element.plataforma.logo}">
+                    </div>
+                    <div class="text-center mt-3">
+                      <h5 class="pro-user-username text-dark mt-2 mb-0">${element.plataforma.plataforma}</h5>
+                      <p class="user-info-rating mt-2">
+                        <a href="#"><i class="fa fa-star text-warning"> </i></a>
+                        <a href="#"><i class="fa fa-star text-warning"> </i></a>
+                        <a href="#"><i class="fa fa-star text-warning"> </i></a>
+                        <a href="#"><i class="fa fa-star text-warning"> </i></a>
+                        <a href="#"><i class="fa fa-star text-warning"> </i></a>
+                      </p>
+                    </div>
+                    <h4 class="text-center color-primary">
+                      ${valorFormateado}
+                    </h4>
+                    <div class="text-center">
+                      <button type="button" class="btn-informacion mt-2 mr-1" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modalInformacion" onclick="modalInformacion(event, '${element.plataforma.plataforma}', '${element.plataforma.logo}', '${element.plataforma.descripcion}')"><i class="fas fa-info"></i></button>
+
+                      ${boton}
+
+                    </div>
+                  </div>
+                </div>
+              </div>`;
+
+            });
+
+            divBusqueda.innerHTML = html;
+            divRender.classList.remove('d-block');
+            divRender.classList.add('d-none');
+
+          }).catch((error) => {
+
+            swal({
+              title: 'Request Error',
+              text: error,
+              type: 'error'
+            });
+
+          });
+      
+      } else {
+
+        document.getElementById('text_titulo_busqueda').innerHTML = `<h2 class="main-content-title tx-24 mg-b-5 mt-4">Cuentas</h2>
+        <p class="text-muted">Usted podra comprar las siguientes cuentas de forma inmediata.</p>`;
+
+        divBusqueda.innerHTML = '';
+        divRender.classList.remove('d-none');
+        divRender.classList.add('d-block');
+
+      }
+      
+    }
     function modalCompraCallofduty(e, id, nombre, logo) {
 
       const idPlataformaCompraCallofduty = document.getElementById("idPlataformaCompraCallofduty");
