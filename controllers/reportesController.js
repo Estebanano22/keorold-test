@@ -826,8 +826,8 @@ exports.reporteCuentasSuperdistribuidor = async (req, res) => {
             worksheet.cell(i + 3, 3).string(usuario_nombre).style(style2);
             worksheet.cell(i + 3, 4).string(usuario_perfil).style(style2);
             worksheet.cell(i + 3, 5).string(plataforma_nombre).style(style2);
-            worksheet.cell(i + 3, 6).number(Number(valorSuperdistribuidor.valor)).style(style3);
-            worksheet.cell(i + 3, 7).number(Number(cuentas[i].valorPagado)).style(style3);
+            worksheet.cell(i + 3, 6).number(valorSuperdistribuidor === null ? 0 : Number(valorSuperdistribuidor.valor)).style(style3);
+            worksheet.cell(i + 3, 7).number(cuentas[i].valorPagado === null ? 0 : Number(cuentas[i].valorPagado)).style(style3);
             worksheet.cell(i + 3, 8).string(tipoPlataforma).style(style2);
             worksheet.cell(i + 3, 9).string(cuentas[i].user).style(style2);
             worksheet.cell(i + 3, 10).string(cuentas[i].password).style(style2);
