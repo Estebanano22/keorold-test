@@ -83,21 +83,21 @@
 .ql-bubble {
   &.ql-container {
     &:not(.ql-disabled) a::before {
-      background-color: #8f9cc0;
+      background-color: #00154f;
       border-radius: 2px;
     }
   }
 
   .ql-tooltip {
-    background-color: #8f9cc0;
+    background-color: #00154f;
     border-radius: 2px;
 
     &.ql-flip .ql-tooltip-arrow {
-      border-top-color: #8f9cc0;
+      border-top-color: #00154f;
     }
 
     &:not(.ql-flip) .ql-tooltip-arrow {
-      border-bottom-color: #8f9cc0;
+      border-bottom-color: #00154f;
     }
   }
 
@@ -175,7 +175,7 @@
       &.ql-active {
         background-color: $background;
         border-color: transparent;
-        color: #8f9cc0;
+        color: #00154f;
         font-weight: 500;
 
         .ql-stroke {
@@ -191,7 +191,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #8f9cc0;
+      color: #00154f;
       outline: none;
 
       svg {
@@ -257,7 +257,7 @@
     }
 
     &:hover .ql-picker-label, &:focus .ql-picker-label {
-      color: #8f9cc0;
+      color: #00154f;
     }
 
     &:hover .ql-picker-label .ql-stroke, &:focus .ql-picker-label .ql-stroke {

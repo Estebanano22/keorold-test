@@ -432,6 +432,8 @@ exports.aprobarConsignacion = async (req, res) => {
 
     const idConsignacion = req.body.id;
     const responsable = req.body.responsable.trim();
+    const tipo = req.body.tipo;
+    const valorBonificacion = req.body.valor;
 
     const consignacion = await Consignaciones.findOne({
         where: {
@@ -442,6 +444,15 @@ exports.aprobarConsignacion = async (req, res) => {
     if (responsable === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Lo sentimos, debe ingresar su nombre en la casilla de responable de aprobación.' });
         return;
+    }
+
+    if(tipo === 'bonificar') {
+
+        if (valorBonificacion === '') {
+            res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Lo sentimos, debe ingresar el valor a bonificar.' });
+            return;
+        }
+
     }
 
     if (!consignacion) {
@@ -469,14 +480,18 @@ exports.aprobarConsignacion = async (req, res) => {
         }
     });
 
-    const saldoNuevo = Number(usuario.saldo) + Number(consignacion.valor);
+    const penalizacion = usuario.pais === 'Colombia' ? 1000 : 0.50;
+
+    const valorConsignacion = tipo === 'bonificar' ? Number(consignacion.valor) + Number(valorBonificacion) : Number(consignacion.valor) - penalizacion;
+
+    const saldoNuevo = Number(usuario.saldo) + Number(valorConsignacion);
 
     await Cargas.create({
         idCarga: uuid_v4(),
         idSuperdistribuidor: req.user.id_usuario,
-        valor: consignacion.valor,
+        valor: valorConsignacion,
         accionCarga: 'carga',
-        tipoCarga: 'consignación',
+        tipoCarga: 'consignación - ' + tipo,
         saldoAnterior: usuario.saldo,
         saldoNuevo: saldoNuevo,
         usuarioIdUsuario: consignacion.usuarioIdUsuario,

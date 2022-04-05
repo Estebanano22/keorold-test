@@ -11,7 +11,7 @@
   border-radius: 3px;
 
   &:hover, &:focus {
-    color: #8f9cc0;
+    color: #00154f;
   }
 
   &.active {
@@ -53,7 +53,7 @@
   line-height: normal;
 
   &:hover, &:focus {
-    color: #8f9cc0;
+    color: #00154f;
   }
 
   + .nav-link {
@@ -105,7 +105,7 @@
     }
 
     &:hover, &:focus, &:hover i:not([class*=' tx-']), &:focus i:not([class*=' tx-']) {
-      color: #8f9cc0;
+      color: #00154f;
     }
 
     &.active {
@@ -182,7 +182,7 @@
     }
 
     &.active {
-      color: #8f9cc0;
+      color: #00154f;
     }
   }
 

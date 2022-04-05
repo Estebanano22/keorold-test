@@ -20,7 +20,7 @@
   }
 
   &:active {
-    color: #8f9cc0;
+    color: #00154f;
     background-color: $background;
   }
 
@@ -323,12 +323,12 @@
 }
 
 .list-group-item-light {
-  color: #8f9cc0;
+  color: #00154f;
   background-color: #f1f2f9;
 
   &.list-group-item-action {
     &:hover, &:focus {
-      color: #8f9cc0;
+      color: #00154f;
       background-color: $background;
     }
 

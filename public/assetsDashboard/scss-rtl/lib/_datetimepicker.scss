@@ -18,7 +18,7 @@
     th {
       &.prev, &.next, &.switch {
         background-color: $white;
-        color: #8f9cc0;
+        color: #00154f;
       }
 
       &.prev, &.next {
@@ -38,7 +38,7 @@
         position: absolute;
         top: 50%;
         font-size: 16px;
-        color: #8f9cc0;
+        color: #00154f;
         line-height: 0;
       }
 
@@ -68,7 +68,7 @@
         font-weight: 700;
         font-size: 13px;
         letter-spacing: 1px;
-        color: #8f9cc0;
+        color: #00154f;
       }
     }
 
@@ -178,7 +178,7 @@
           th {
             font-size: 11px;
             text-transform: uppercase;
-            color: #8f9cc0;
+            color: #00154f;
             font-weight: 700;
             text-align: center;
             padding: 8px 5px;

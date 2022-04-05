@@ -307,12 +307,12 @@ a.badge-primary {
 
 a.badge-light {
   &:hover {
-    color: #8f9cc0;
+    color: #00154f;
     background-color: #d5d9e4;
   }
 
   &:focus {
-    color: #8f9cc0;
+    color: #00154f;
     background-color: #d5d9e4;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(244, 245, 248, 0.5);
@@ -550,7 +550,7 @@ pre {
 
   a {
     .number, &:hover .number, &:active .number {
-      color: #8f9cc0;
+      color: #00154f;
       background-color: #f0f0ff;
     }
   }

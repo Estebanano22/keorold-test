@@ -28,7 +28,7 @@
         border-bottom-color: transparent;
 
         &:hover, &:focus {
-          color: #8f9cc0;
+          color: #00154f;
           background-color: $background;
         }
       }
@@ -72,18 +72,18 @@
 
 .accordion-dark {
   .card {
-    border-color: #8f9cc0;
+    border-color: #00154f;
   }
 
   .card-header a {
-    color: #8f9cc0;
+    color: #00154f;
 
     &:hover, &:focus {
-      color: #8f9cc0;
+      color: #00154f;
     }
 
     &.collapsed {
-      background-color: #8f9cc0;
+      background-color: #00154f;
       color: $white-8;
       font-weight: 500;
       letter-spacing: -.1px;
@@ -189,7 +189,7 @@
 
   .accordion-title {
     font-weight: 700;
-    color: #8f9cc0;
+    color: #00154f;
     margin: 0;
     transition: all 0.2s ease-in-out;
   }

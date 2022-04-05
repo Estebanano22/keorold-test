@@ -244,10 +244,15 @@
               <input type="text" class="form-control" placeholder="Nombre responsable" value="" id="responsableAprobacion" name="responsableAprobacion">
               <input type="hidden" name="" id="idUsuarioAprobacion" value="">
             </div>
+            <div class="row row-sm mt-4">
+              <label class="form-label">En caso de bonificar por favor ingrese el valor en la siguiente casilla:</label>
+              <input type="number" class="form-control" placeholder="0" value="" id="valorBonificacion" name="valorBonificacion">
+            </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn ripple btn-primary" type="button" onclick="aprobarConsignacion(event)">Aprobar Consignación</button>
+          <button class="btn ripple btn-success" type="button" onclick="aprobarConsignacion(event, 'bonificar')">Bonificar</button>
+          <button class="btn ripple btn-warning" type="button" onclick="aprobarConsignacion(event, 'penalizar')">Penalizar</button>
           <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
         </div>
       </div>
@@ -426,12 +431,26 @@
 
     }
 
-    function aprobarConsignacion(e) {
+    function aprobarConsignacion(e, tipo) {
+
+      swal({
+        title: 'Hola!',
+        text: 'Revisaste que todos los datos de la aprobación son correctos? si es así da click en aprobar consignación.',
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#1d5c64',
+        confirmButtonText: 'Aprobar Consignación',
+        cancelButtonColor: '#EB000E',
+        cancelmButtonText: 'Volver',
+      },
+      function(isConfirm) {
+      if (isConfirm) {
 
       $('#global-loader').addClass("d-block");
       $('#global-loader').removeClass("d-none");
       const i = document.getElementById('idUsuarioAprobacion').value;
       const responsable = document.getElementById('responsableAprobacion').value;
+      const valor = document.getElementById('valorBonificacion').value;
 
       fetch('/adminConsignaciones/aprobarConsignacion', {
           method: 'POST',
@@ -440,7 +459,9 @@
           },
           body: JSON.stringify({
             id: i,
-            responsable: responsable
+            responsable: responsable,
+            tipo,
+            valor
           })
         })
         .then(res => res.text())
@@ -482,6 +503,8 @@
             type: 'error'
           });
         })
+      }
+      })
 
     }
 
