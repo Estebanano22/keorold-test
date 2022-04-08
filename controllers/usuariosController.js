@@ -588,6 +588,12 @@ exports.cargarSaldo = async (req, res) => {
     const valorCargar = req.body.valor;
     const usuario = await Usuarios.findOne({ where: { id_usuario: idUsuario } });
     const responsable = req.body.responsable;
+    // console.log(valorCargar);
+
+    if (Number(valorCargar) < 0) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible realizar cargas de saldo negativas.' });
+        return;
+    }
 
     if (responsable === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe llenar todos los campos.' });
@@ -720,6 +726,11 @@ exports.cargarSaldoUsuario = async (req, res) => {
     const distribuidor = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario } });
     const superdistribuidor = await Usuarios.findOne({ where: { enlace_afiliado: req.user.super_patrocinador } });
     const responsable = req.body.responsable;
+
+    if (Number(valorCargar) < 0) {
+        res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible realizar cargas de saldo negativas.' });
+        return;
+    }
 
     if (responsable === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debe llenar todos los campos.' });
