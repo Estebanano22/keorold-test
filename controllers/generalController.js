@@ -181,6 +181,18 @@ exports.crearRegistro = async (req, res) => {
       res.redirect("/registro");
       return;
     }
+
+    const patrocinador = await Usuarios.findOne({
+      where: {
+        [Op.and][{enlace_afiliado: enlPat}]
+      }
+    });
+
+    if(patrocinador.pais === 'Colombia'){
+      var paisUser = 'Colombia'
+    } else if(patrocinador.pais !== 'Colombia') {
+      var paisUser = usuario.pais === 'Colombia' ? 'Ecuador' : usuario.pais
+    }
   
     try {
       await Usuarios.create({
@@ -188,7 +200,7 @@ exports.crearRegistro = async (req, res) => {
         email: usuario.email,
         password: usuario.password,
         enlace_afiliado: enlace_afiliado,
-        pais: usuario.pais,
+        pais: paisUser,
         direccion: usuario.direccion,
         telefono_movil: usuario.telefono,
         ip: ip,
