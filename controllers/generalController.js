@@ -191,7 +191,7 @@ exports.crearRegistro = async (req, res) => {
     if(patrocinador.pais === 'Colombia'){
       var paisUser = 'Colombia'
     } else if(patrocinador.pais !== 'Colombia') {
-      var paisUser = usuario.pais === 'Colombia' ? 'Ecuador' : usuario.pais
+      var paisUser = usuario.pais === 'Colombia' ? patrocinador.pais : usuario.pais
     }
   
     try {
