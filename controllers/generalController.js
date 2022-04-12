@@ -184,7 +184,7 @@ exports.crearRegistro = async (req, res) => {
 
     const patrocinador = await Usuarios.findOne({
       where: {
-        [Op.and][{enlace_afiliado: enlPat}]
+        [Op.and]:[{enlace_afiliado: enlPat}]
       }
     });
 
