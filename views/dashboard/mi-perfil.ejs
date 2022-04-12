@@ -144,7 +144,7 @@
                         <div class="row row-sm">
                           <div class="col-lg-6 col-md-6 display-flex">
                             <div class="col-6 px-0">
-                              <input class="form-control input-md text-left" type="text" id="enlaceAfiliado" value="<%= usuario.enlace_afiliado %>-okdist21m" readonly>
+                              <input class="form-control input-md text-left" type="text" id="enlaceAfiliado" readonly>
                             </div>
                             <div class="col-6">
                               <a class="btn btn-secondary ml-1 text-white copiarPortapapeles" data-clipboard-target="#enlaceAfiliado"><i class="fe fe-copy"></i> Copiar</a>
@@ -155,7 +155,7 @@
                         <div class="row row-sm">
                           <div class="col-lg-6 col-md-6 display-flex">
                             <div class="col-6 px-0">
-                              <input class="form-control input-md text-left" type="text" id="enlaceAfiliado2" value="<%= usuario.enlace_afiliado %>-res21ok7" readonly>
+                              <input class="form-control input-md text-left" type="text" id="enlaceAfiliado2" readonly>
                             </div>
                             <div class="col-6">
                               <a class="btn btn-secondary ml-1 text-white copiarPortapapeles" data-clipboard-target="#enlaceAfiliado2"><i class="fe fe-copy"></i> Copiar</a>
@@ -488,6 +488,21 @@
   <% } %>
 
   <script>
+
+    enlaceAfiliado = () => {
+      let hostname = window.location.host;
+      document.getElementById("enlaceAfiliado").value = hostname + '/registro/<%= usuario.enlace_afiliado %>-okdist21m';
+    }
+
+    enlaceAfiliado();
+    
+    enlaceAfiliado2 = () => {
+      let hostname = window.location.host;
+      document.getElementById("enlaceAfiliado2").value = hostname + '/registro/<%= usuario.enlace_afiliado %>-res21ok7';
+    }
+
+    enlaceAfiliado2();
+
     const clipboard = new Clipboard('.copiarPortapapeles');
 
     $("#password").keyup(function() {

@@ -29,9 +29,10 @@ module.exports = function () {
     router.get('/', generalController.inicio);
 
     // Crear y confirmar cuenta usuario
-    router.get('/registro',
+    router.get('/registro/:patrocinador',
         generalController.formRegistro,
     );
+
     router.post('/registro', generalController.validarRegistro);
     router.post('/registro', generalController.crearRegistro);
     router.get('/confirmar-cuenta/:correo', generalController.confirmarCuenta);

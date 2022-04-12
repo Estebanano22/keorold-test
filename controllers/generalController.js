@@ -19,9 +19,26 @@ exports.aplicaciones = (req, res) => {
   });
 };
 
-exports.formRegistro = (req, res) => {
+exports.formRegistro = async (req, res) => {
+
+  const validacionEnlacePatrocinador = req.params.patrocinador.split("-");
+  var enlPat2 = "";
+  for (var i = 0; i < validacionEnlacePatrocinador.length - 1; i++) {
+    enlPat2 += validacionEnlacePatrocinador[i] + "-";
+  }
+
+  const enlPat = enlPat2.substring(0, enlPat2.length - 1);
+
+  const patrocinador = await Usuarios.findOne({
+    where: {
+      [Op.and]:[{enlace_afiliado: enlPat}]
+    }
+  })
+
   res.render("registro", {
     nombrePagina: "Registro",
+    get: req.params.patrocinador,
+    paisPatrocinador: patrocinador.pais
   });
 };
 

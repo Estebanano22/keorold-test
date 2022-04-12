@@ -61,11 +61,26 @@
                         <div class="col-lg-6 col-md-6">
                           <div class="form-group text-left">
                             <label>Pais</label>
-                            <select class="form-control select2" name="pais">
+                            <select class="form-control select2" name="pais" id="paisRegistro">
                               <option>
                                 Seleccione un pais
                               </option>
-                              <% paises.data.forEach(pais => { %>
+
+                              <% if (paisPatrocinador === 'Colombia') { %>
+                                
+                                <% var array = paises.data.filter(function(element){ %>
+                                  <% return element.name == 'Colombia'; %>
+                                <% }); %>
+
+                              <% } else { %>
+
+                                <% var array = paises.data.filter(function(element){ %>
+                                  <% return element.name != 'Colombia'; %>
+                                <% }); %>  
+                                
+                              <% } %>
+                              
+                              <% array.forEach(pais => { %>
 
                               <option value="<%= pais.name %>">
                                 <%= pais.name %>
@@ -81,7 +96,7 @@
                         <div class="col-lg-12 col-md-12">
                           <div class="form-group text-left">
                             <label>Codigo de Afiliación</label>
-                            <input class="form-control" name="enlacePatrocinador" placeholder="Ingrese el codigo de su distribuidor" type="text">
+                            <input class="form-control" name="enlacePatrocinador" value="<%- get %>" placeholder="Ingrese el codigo de su distribuidor" type="text" readonly>
                           </div>
                         </div>
                       </div>
