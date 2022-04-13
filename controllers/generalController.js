@@ -56,6 +56,12 @@ exports.validarRegistro = async (req, res, next) => {
 
   const enlPat = enlPat2.substring(0, enlPat2.length - 1);
 
+  const patrocinador = await Usuarios.findOne({
+    where: {
+      [Op.and]:[{enlace_afiliado: enlPat}]
+    }
+  })
+
   // validar distribuidor
   const validarDistribuidor = await Usuarios.findOne({
     where: { enlace_afiliado: enlPat, bloqueo: 0 },
@@ -125,8 +131,11 @@ exports.validarRegistro = async (req, res, next) => {
     );
     res.render("registro", {
       nombrePagina: "Registro",
+      get: enlPat,
+      paisPatrocinador: patrocinador.pais,
       mensajes: req.flash(),
     });
+    // console.log(enlPat);
     return;
   }
 
@@ -144,6 +153,8 @@ exports.validarRegistro = async (req, res, next) => {
     );
     return res.render("registro", {
       nombrePagina: "Registro",
+      get: enlPat,
+      paisPatrocinador: patrocinador.pais,
       mensajes: req.flash(),
     });
   }
@@ -155,6 +166,18 @@ exports.validarRegistro = async (req, res, next) => {
 exports.crearRegistro = async (req, res) => {
   // console.log(usuario.pais == "Seleccione un pais" || usuario.telefono.length <= 10)
   const validation = req.body;
+
+  const usuario = req.body;
+  const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split("-");
+  const perfilEnlace =
+    validacionEnlacePatrocinador[validacionEnlacePatrocinador.length - 1];
+  var enlPat2 = "";
+  for (var i = 0; i < validacionEnlacePatrocinador.length - 1; i++) {
+    enlPat2 += validacionEnlacePatrocinador[i] + "-";
+  }
+
+  const enlPat = enlPat2.substring(0, enlPat2.length - 1);
+  
   if (validation.pais == "Seleccione un pais" ) {
     req.flash(
       "danger",
@@ -162,19 +185,11 @@ exports.crearRegistro = async (req, res) => {
       );
       return res.render("registro", {
         nombrePagina: "Registro",
+        get: enlPat,
+        paisPatrocinador: patrocinador.pais,
         mensajes: req.flash(),
       });
-    } else {
-      const usuario = req.body;
-      const validacionEnlacePatrocinador = req.body.enlacePatrocinador.split("-");
-    const perfilEnlace =
-      validacionEnlacePatrocinador[validacionEnlacePatrocinador.length - 1];
-    var enlPat2 = "";
-    for (var i = 0; i < validacionEnlacePatrocinador.length - 1; i++) {
-      enlPat2 += validacionEnlacePatrocinador[i] + "-";
-    }
-  
-    const enlPat = enlPat2.substring(0, enlPat2.length - 1);
+  }
   
     const datosRed = await Usuarios.findOne({
       where: { enlace_afiliado: enlPat, bloqueo: 0 },
@@ -195,7 +210,10 @@ exports.crearRegistro = async (req, res) => {
       var perfil = "distribuidor";
     } else {
       req.flash("danger", "El código de afiliación no es valido");
-      res.redirect("/registro");
+      res.redirect("/registro", {
+        get: enlPat,
+        paisPatrocinador: patrocinador.pais,
+      });
       return;
     }
 
@@ -247,9 +265,12 @@ exports.crearRegistro = async (req, res) => {
       const erroresSequelize = error.errors.map((err) => err.message);
   
       req.flash("danger", erroresSequelize);
-      res.redirect("/registro");
+      res.redirect("/registro", {
+        get: enlPat,
+        paisPatrocinador: patrocinador.pais,
+      });
     }
-  }
+  
 };
 
 exports.recuperarPasswords = async (req, res) => {
@@ -311,7 +332,7 @@ exports.confirmarCuenta = async (req, res, next) => {
       "warning",
       "El usuario " + req.params.correo + " no existe en nuestra plataforma"
     );
-    res.redirect("/registro");
+    res.redirect("/ingreso");
     return next();
   }
 
