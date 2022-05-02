@@ -166,6 +166,7 @@ exports.updateEpaycoTransaction = async (req, res) => {
                         referencePayco: newRefEpayco
                     }
                 }
+                
             }).then(async (rest2) => {
                 console.log(rest2.data);
                 if(rest2.data.data.status === 'Rechazada'){
