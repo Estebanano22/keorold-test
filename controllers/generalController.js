@@ -1,4 +1,4 @@
-const Usuarios = require("../models/UsuariosModelo");
+const Usuarios = require("../models/usuariosModelo");
 const { Op } = require("sequelize");
 const { body, validationResult } = require("express-validator");
 const enviarEmails = require("../handlers/emails");

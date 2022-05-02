@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/db');
 const { v4: uuid_v4 } = require('uuid');
-const Usuarios = require('./UsuariosModelo');
+const Usuarios = require('./usuariosModelo');
 const Plataformas = require('./plataformasModelo');
 
 const Ganancias = db.define('gananciasVentas', {

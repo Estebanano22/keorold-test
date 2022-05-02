@@ -1,4 +1,4 @@
-const Usuarios = require('../models/UsuariosModelo');
+const Usuarios = require('../models/usuariosModelo');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 

@@ -1,4 +1,4 @@
-const Usuarios = require('../models/UsuariosModelo');
+const Usuarios = require('../models/usuariosModelo');
 const Insidencias = require('../models/insidenciasModelo');
 const Plataformas = require('../models/plataformasModelo');
 const { Op } = require("sequelize");

@@ -21,7 +21,7 @@ const redisStore = require('connect-redis')(session);
 const db = require('./config/db');
 
 // Importar modelo
-require('./models/UsuariosModelo');
+require('./models/usuariosModelo');
 require('./models/plataformasModelo');
 require('./models/marcasModelo');
 require('./models/asignacionesModelo');

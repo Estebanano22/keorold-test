@@ -1,4 +1,4 @@
-const Usuarios = require('../models/UsuariosModelo');
+const Usuarios = require('../models/usuariosModelo');
 const Consignaciones = require('../models/consignacionesModelo');
 const Medios = require('../models/mediosModelo');
 const Cargas = require('../models/cargasModelo');

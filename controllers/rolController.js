@@ -1,4 +1,4 @@
-const Usuarios = require('../models/UsuariosModelo');
+const Usuarios = require('../models/usuariosModelo');
 
 exports.permisosPaginaAdmin = async (req, res, next) => {
 
