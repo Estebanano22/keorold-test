@@ -139,6 +139,7 @@ exports.validarRegistro = async (req, res, next) => {
     return;
   }
 
+  
   const email = req.body.email;
   const userExist = await Usuarios.findOne({
     where: {
