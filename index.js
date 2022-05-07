@@ -112,7 +112,12 @@ app.use(flash());
 app.use(async (req, res, next) => {
     res.locals.usuario = { ...req.user } || null;
     res.locals.mensajes = req.flash();
-    const paises = await axios.get('https://' + req.headers.host + '/assetsDashboard/json/paises.json');
+    let paises = [];
+    try{
+        paises = await axios.get('https://' + req.headers.host + '/assetsDashboard/json/paises.json');
+    } catch(error){
+        console.log(error.message);
+    }
     res.locals.paises = paises;
     const fecha = new Date();
     res.locals.year = fecha.getFullYear();
