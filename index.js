@@ -116,8 +116,15 @@ app.use(async (req, res, next) => {
     try{
         paises = await axios.get('https://' + req.headers.host + '/assetsDashboard/json/paises.json');
     } catch(error){
+        console.log('HTTPS ERROR');
         console.log(error.message);
-    }
+        try{    
+            paises = await axios.get('http://' + req.headers.host + '/assetsDashboard/json/paises.json');
+        } catch (errors){
+            console.log('HTTP ERROR');
+            console.log(errors.message);
+        }
+    } 
     res.locals.paises = paises;
     const fecha = new Date();
     res.locals.year = fecha.getFullYear();
