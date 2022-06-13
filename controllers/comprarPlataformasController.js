@@ -403,6 +403,28 @@ exports.compraCuentaPedido = async (req, res) => {
     const telefonoCliente = req.body.telefono;
     const nombreCliente = req.body.cliente.trim();
 
+    const plat = await Plataformas.findOne({
+        where: {
+            [Op.and]: [{id_plataforma: req.body.id}]
+        }
+    })
+
+    const nombrePlataforma = plat.plataforma.toLowerCase();
+
+    if (nombrePlataforma.includes('demo')) {
+        if (req.user.pais === 'Colombia') {
+            if (Number(req.user.saldo) < 15000) {
+                res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Usted no cuenta con saldo suficiente para solicitar demos, recuerde que el saldo minimo es $ 15.000 COP.' });
+                return;
+            }
+        } else {
+            if (Number(req.user.saldo) < 8) {
+                res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Usted no cuenta con saldo suficiente para solicitar demos, recuerde que el saldo minimo es $ 8 USD.' });
+                return;
+            }
+        }
+    }
+
     if (telefonoCliente === '' || nombreCliente === '') {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'Debes llenar todos los campos y autorizar el envio de datos.' });
         return;
