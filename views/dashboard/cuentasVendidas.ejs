@@ -158,11 +158,13 @@
                         <% if(listaCuentas.plataforma.tipo_plataforma === 5) { %>
                         <% if(listaCuentas.user !== null || listaCuentas.password !== null) { %>
                         <% const user_analizado = /^([^]+)@(\w+).(\w+)$/.exec(listaCuentas.user); %>
+                        <% if(user_analizado !== null) {%> 
                         <% const [,prefijo,servidor,dominio] = user_analizado; %>
                         <% const reemplazo = prefijo.replace(/./g,"*"); %>
                         <% var nuevo_email_user = `${reemplazo}@${servidor}.${dominio}`; %>
                         <% var nuevo_password = listaCuentas.password.replace(/./g,"*"); %>
                         <% var idJuego = 'no aplica' %>
+                        <% } %> 
                         <% } else { %>
                         <% var nuevo_email_user = 'no aplica' %>
                         <% var nuevo_password = 'no aplica' %>
