@@ -236,7 +236,6 @@
           $('#global-loader').removeClass("d-block");
           $('#global-loader').addClass("d-none");
           const respuesta = JSON.parse(data);
-
           var datos = [];
           for (var i = 0; i < respuesta.insidencias.length; i++) {
 
@@ -249,7 +248,12 @@
 
             const plat = plataforma.length == 0 ? 'nn' : plataforma[0].plataforma;
             const nombrePlataforma = `<div class='view-message text-left'>${plat}</div>`;
-            const nombre = `<div class='view-message text-left'>${respuesta.insidencias[i].usuario.nombre}</div>`;
+            let nombre;
+            if (respuesta.insidencias[i].usuario !== null) {
+              nombre = `<div class='view-message text-left'>${respuesta.insidencias[i].usuario.nombre}</div>`;
+            } else {
+              nombre = `<div class='view-message text-left'> - </div>`;
+            }
             const fecha = `<div class='view-message text-right font-weight-semibold'>${moment(respuesta.insidencias[i].fecha).format('MMMM Do YYYY, h:mm:ss a')}</div>`;
 
             const lista = [estado, asunto, nombrePlataforma, nombre, fecha];
@@ -271,7 +275,10 @@
             ellipsis_box(30);
           }
 
-        }).catch(() => {
+          return
+
+        }).catch((err) => {
+          console.log(err)
           $('#global-loader').removeClass("d-block");
           $('#global-loader').addClass("d-none");
           swal({
@@ -364,7 +371,6 @@
           $('#global-loader').addClass("d-none");
           const respuesta = JSON.parse(data);
 
-
           var datos = [];
           for (var i = 0; i < respuesta.insidencias.length; i++) {
             const estado = `<div class='view-message ${respuesta.insidencias[i].estado === 1 ? 'text-success' : 'text-danger'}'><i class='fas fa-circle mr-2'></i>${respuesta.insidencias[i].estado === 1 ? 'Respondida' : 'Sin responder'}</div>`;
@@ -373,10 +379,19 @@
             const plataforma = respuesta.plataformas.filter(function(element) {
               return element.id_plataforma == respuesta.insidencias[i].plataformaIdPlataforma;
             });
-            console.log(plataforma)
-            const plat = plataforma !== undefined ?  plataforma[0].plataforma: 'NN';
+            let plat;
+            if (plataforma.length > 0) {
+              plat = plataforma[0].plataforma;
+            } else {
+              plat = 'NN';
+            }
             const nombrePlataforma = `<div class='view-message text-left'>${plat}</div>`;
-            const nombre = `<div class='view-message text-left'>${respuesta.insidencias[i].usuario.nombre}</div>`;
+            let nombre;
+            if (respuesta.insidencias[i].usuario !== null) {
+              nombre = `<div class='view-message text-left'>${respuesta.insidencias[i].usuario.nombre}</div>`;
+            } else {
+              nombre = `<div class='view-message text-left'> - </div>`;
+            }
             const fecha = `<div class='view-message text-right font-weight-semibold'>${moment(respuesta.insidencias[i].fecha).format('MMMM Do YYYY, h:mm:ss a')}</div>`;
 
             const lista = [estado, asunto, nombrePlataforma, nombre, fecha];
@@ -398,7 +413,8 @@
             ellipsis_box(30);
           }
 
-        }).catch(() => {
+        }).catch((err) => {
+          console.log(err);
           $('#global-loader').removeClass("d-block");
           $('#global-loader').addClass("d-none");
           swal({
