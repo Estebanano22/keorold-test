@@ -487,19 +487,23 @@ exports.aprobarConsignacion = async (req, res) => {
 
     const saldoNuevo = Number(usuario.saldo) + Number(valorConsignacion);
 
-    await Cargas.create({
-        idCarga: uuid_v4(),
-        idSuperdistribuidor: req.user.id_usuario,
-        valor: valorConsignacion,
-        accionCarga: 'carga',
-        tipoCarga: 'consignación - ' + tipo,
-        saldoAnterior: usuario.saldo,
-        saldoNuevo: saldoNuevo,
-        usuarioIdUsuario: consignacion.usuarioIdUsuario,
-        responsableGestion: responsable
-    });
 
-    usuario.saldo = saldoNuevo;
+    try {
+        await Cargas.create({
+            idCarga: uuid_v4(),
+            idSuperdistribuidor: req.user.id_usuario,
+            valor: valorConsignacion,
+            accionCarga: 'carga',
+            tipoCarga: 'consignación - ' + tipo,
+            saldoAnterior: usuario.saldo,
+            saldoNuevo: saldoNuevo,
+            usuarioIdUsuario: consignacion.usuarioIdUsuario,
+            responsableGestion: responsable
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
     await usuario.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Consignación aprobada con éxito.' });
