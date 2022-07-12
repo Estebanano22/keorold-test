@@ -504,6 +504,7 @@ exports.aprobarConsignacion = async (req, res) => {
         console.log(error);
     }
 
+    usuario.saldo = saldoNuevo;
     await usuario.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: 'Consignación aprobada con éxito.' });
