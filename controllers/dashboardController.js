@@ -19,7 +19,7 @@ exports.inicio = async (req, res) => {
     
     if(req.user.perfil === 'superdistribuidor'){
 
-        var asignaciones = await Asignaciones.findAll({ where: { id_superDistribuidor: req.user.id_usuario }});
+        var asignaciones = req.user.plataformasAginadas;
         var cuentas = await Cuentas.findAll({ 
             where: { 
             [Op.and]:[{idSuperdistribuidor: req.user.id_usuario}, {estado: 1}]
@@ -45,7 +45,7 @@ exports.inicio = async (req, res) => {
 
     } else {
         
-        var asignaciones = await Asignaciones.findAll({ where: { usuarioIdUsuario: req.user.id_usuario }});
+        var asignaciones = req.user.plataformasAginadas;
         var cuentas = await Cuentas.findAll({ 
             where: { 
             [Op.and]:[{usuarioIdUsuario: req.user.id_usuario}, {estado: 1}]
@@ -152,6 +152,9 @@ exports.asignarPlataformasUsuarios = async (req, res) => {
         }
 
     });
+
+    usuario.plataformasAginadas = 1;
+    await usuario.save();
 
     res.json({ titulo: '¡Que bien!', resp: 'success', descripcion: '¡Felicitaciones!, hemos asignado las plataformas exitosamente a su usuario.' });
     return;

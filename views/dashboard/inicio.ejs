@@ -325,7 +325,7 @@
   <%- include('layautsDashboard/footer') %>
 
   <% if(!(usuario.perfil == 'admin' || usuario.perfil == 'superdistribuidor')) { %>
-  <% if(asignaciones.length === 0) { %>
+  <% if(asignaciones === 0) { %>
 
   <div class="modal fade" id="modalAsignaciones" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">

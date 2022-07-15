@@ -61,6 +61,10 @@ const Usuarios = db.define('usuarios', {
         type: Sequelize.INTEGER(1),
         defaultValue : 0
     },
+    plataformasAginadas: {
+        type: Sequelize.INTEGER(1),
+        defaultValue : 0
+    },
     verificacion: {
         type: Sequelize.INTEGER(1),
         defaultValue : 0
