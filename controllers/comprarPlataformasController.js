@@ -255,6 +255,34 @@ exports.compraCuentaNormal = async (req, res) => {
         }
     });
 
+    //distribuidor
+    const distribuidor = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{ enlace_afiliado: req.user.patrocinador }]
+        }
+    });
+
+    //distribuidor2
+    const distribuidor2 = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{ enlace_afiliado: distribuidor.patrocinador }]
+        }
+    });
+
+    //distribuidor3
+    const distribuidor3 = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{ enlace_afiliado: distribuidor2.patrocinador }]
+        }
+    });
+    
+    //distribuidor4
+    const distribuidor4 = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{ enlace_afiliado: distribuidor3.patrocinador }]
+        }
+    });
+
     if (!usuario) {
         res.json({ titulo: '¡Lo Sentimos!', resp: 'error', descripcion: 'No es posible solicitar la cuenta debido a que el usuario no no existe o se encuentra bloqueado.' });
         return;
@@ -263,39 +291,92 @@ exports.compraCuentaNormal = async (req, res) => {
     usuario.saldo = Number(usuario.saldo) - Number(asignacionUsuario.valor);
     await usuario.save();
 
+    const nombrePlataforma = plataforma.plataforma.toLowerCase();
+
+    // si es magis asigna el 20% al usuario
+    
+    const porcentaje0 = Number(asignacionUsuario.valor) * 0.20;
+
+    const usuario0 = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{ id_usuario: req.user.id_usuario }, { bloqueo: 0 }]
+        }
+    });
+ 
+    if (nombrePlataforma.includes('magistv')) {
+
+        // Crear ganancia en tabla
+        Ganancias.create({
+            idGanancia: uuid_v4(),
+            ganancia: porcentaje0,
+            distribuidor: distribuidor.id_usuario,
+            usuarioIdUsuario: req.user.id_usuario,
+            plataformaIdPlataforma: req.body.id
+        });
+
+        usuario0.saldo = Number(usuario0.saldo) + Number(porcentaje0);
+        await usuario1.save();
+
+    }
+
     //--------------------------------------------------------//
     //         Ganancia Distribuidor 1er Nivel                //
     //--------------------------------------------------------//
 
     //Generar Ganancia Disitribuidor
-    const distribuidor = await Usuarios.findOne({
-        where: {
-            [Op.and]: [{ enlace_afiliado: req.user.patrocinador }]
+    
+    if(distribuidor) {
+
+        const asignacionDistribuidor = await Asignaciones.findOne({
+            where: {
+                [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: distribuidor.id_usuario }]
+            }
+        });
+    
+        const valorDistribuidor = Number(asignacionDistribuidor.valor);
+        const valorUsuario = Number(asignacionUsuario.valor);
+        const gananciaDistribuidor = valorUsuario - valorDistribuidor;
+    
+        // Ganancias Distribuidor Saldo
+        distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
+        await distribuidor.save();
+    
+        // Crear ganancia en tabla
+        Ganancias.create({
+            idGanancia: uuid_v4(),
+            ganancia: gananciaDistribuidor,
+            distribuidor: distribuidor.id_usuario,
+            usuarioIdUsuario: req.user.id_usuario,
+            plataformaIdPlataforma: req.body.id
+        });
+    
+        // si es magis asigna el 4% al usuario
+        
+        const porcentaje1 = Number(asignacionUsuario.valor) * 0.04;
+    
+        const usuario1 = await Usuarios.findOne({
+            where: {
+                [Op.and]: [{ id_usuario: distribuidor.id_usuario }, { bloqueo: 0 }]
+            }
+        });
+     
+        if (nombrePlataforma.includes('magistv')) {
+    
+            // Crear ganancia en tabla
+            Ganancias.create({
+                idGanancia: uuid_v4(),
+                ganancia: porcentaje1,
+                distribuidor: distribuidor2.id_usuario,
+                usuarioIdUsuario: distribuidor.id_usuario,
+                plataformaIdPlataforma: req.body.id
+            });
+    
+            usuario1.saldo = Number(usuario1.saldo) + Number(porcentaje1);
+            await usuario1.save();
+    
         }
-    });
 
-    const asignacionDistribuidor = await Asignaciones.findOne({
-        where: {
-            [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: distribuidor.id_usuario }]
-        }
-    });
-
-    const valorDistribuidor = Number(asignacionDistribuidor.valor);
-    const valorUsuario = Number(asignacionUsuario.valor);
-    const gananciaDistribuidor = valorUsuario - valorDistribuidor;
-
-    // Ganancias Distribuidor Saldo
-    distribuidor.saldo = Number(distribuidor.saldo) + Number(gananciaDistribuidor);
-    await distribuidor.save();
-
-    // Crear ganancia en tabla
-    Ganancias.create({
-        idGanancia: uuid_v4(),
-        ganancia: gananciaDistribuidor,
-        distribuidor: distribuidor.id_usuario,
-        usuarioIdUsuario: req.user.id_usuario,
-        plataformaIdPlataforma: req.body.id
-    });
+    }
 
     //--------------------------------------------------------//
 
@@ -304,36 +385,61 @@ exports.compraCuentaNormal = async (req, res) => {
     //--------------------------------------------------------//
 
     //Generar Ganancia Disitribuidor
-    const distribuidor2 = await Usuarios.findOne({
-        where: {
-            [Op.and]: [{ enlace_afiliado: distribuidor.patrocinador }]
-        }
-    });
+    
+    if(distribuidor2) {
 
-    const asignacionDistribuidor2 = await Asignaciones.findOne({
-        where: {
-            [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: distribuidor2.id_usuario }]
-        }
-    });
-
-    if (asignacionDistribuidor2) {
-
-        var valorDistribuidor1 = Number(asignacionDistribuidor.valor);
-        var valorDistribuidor2 = Number(asignacionDistribuidor2.valor);
-        var gananciaDistribuidor2 = valorDistribuidor1 - valorDistribuidor2;
-
-        // Ganancias Distribuidor Saldo
-        distribuidor2.saldo = Number(distribuidor2.saldo) + Number(gananciaDistribuidor2);
-        await distribuidor2.save();
-
-        // Crear ganancia en tabla
-        Ganancias.create({
-            idGanancia: uuid_v4(),
-            ganancia: gananciaDistribuidor2,
-            distribuidor: distribuidor2.id_usuario,
-            usuarioIdUsuario: req.user.id_usuario,
-            plataformaIdPlataforma: req.body.id
+        const asignacionDistribuidor2 = await Asignaciones.findOne({
+            where: {
+                [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: distribuidor2.id_usuario }]
+            }
         });
+    
+        if (asignacionDistribuidor2) {
+    
+            var valorDistribuidor1 = Number(asignacionDistribuidor.valor);
+            var valorDistribuidor2 = Number(asignacionDistribuidor2.valor);
+            var gananciaDistribuidor2 = valorDistribuidor1 - valorDistribuidor2;
+    
+            // Ganancias Distribuidor Saldo
+            distribuidor2.saldo = Number(distribuidor2.saldo) + Number(gananciaDistribuidor2);
+            await distribuidor2.save();
+    
+            // Crear ganancia en tabla
+            Ganancias.create({
+                idGanancia: uuid_v4(),
+                ganancia: gananciaDistribuidor2,
+                distribuidor: distribuidor2.id_usuario,
+                usuarioIdUsuario: req.user.id_usuario,
+                plataformaIdPlataforma: req.body.id
+            });
+    
+        }
+    
+        // si es magis asigna el 3% al usuario
+        
+        const porcentaje2 = Number(asignacionUsuario.valor) * 0.03;
+    
+        const usuario2 = await Usuarios.findOne({
+            where: {
+                [Op.and]: [{ id_usuario: distribuidor2.id_usuario }, { bloqueo: 0 }]
+            }
+        });
+     
+        if (nombrePlataforma.includes('magistv')) {
+    
+            // Crear ganancia en tabla
+            Ganancias.create({
+                idGanancia: uuid_v4(),
+                ganancia: porcentaje2,
+                distribuidor: distribuidor3.id_usuario,
+                usuarioIdUsuario: distribuidor2.id_usuario,
+                plataformaIdPlataforma: req.body.id
+            });
+    
+            usuario2.saldo = Number(usuario2.saldo) + Number(porcentaje2);
+            await usuario2.save();
+    
+        }
 
     }
 
@@ -344,36 +450,61 @@ exports.compraCuentaNormal = async (req, res) => {
     //--------------------------------------------------------//
 
     //Generar Ganancia Disitribuidor
-    const distribuidor3 = await Usuarios.findOne({
-        where: {
-            [Op.and]: [{ enlace_afiliado: distribuidor2.patrocinador }]
-        }
-    });
+    
+    if(distribuidor3) {
 
-    const asignacionDistribuidor3 = await Asignaciones.findOne({
-        where: {
-            [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: distribuidor3.id_usuario }]
-        }
-    });
-
-    if (asignacionDistribuidor3) {
-
-        var valorDistribuidor3 = Number(asignacionDistribuidor3.valor);
-        var valorDistribuidor2_3 = Number(asignacionDistribuidor2.valor);
-        var gananciaDistribuidor3 = valorDistribuidor2_3 - valorDistribuidor3;
-
-        // Ganancias Distribuidor Saldo
-        distribuidor3.saldo = Number(distribuidor3.saldo) + Number(gananciaDistribuidor3);
-        await distribuidor3.save();
-
-        // Crear ganancia en tabla
-        Ganancias.create({
-            idGanancia: uuid_v4(),
-            ganancia: gananciaDistribuidor3,
-            distribuidor: distribuidor3.id_usuario,
-            usuarioIdUsuario: req.user.id_usuario,
-            plataformaIdPlataforma: req.body.id
+        const asignacionDistribuidor3 = await Asignaciones.findOne({
+            where: {
+                [Op.and]: [{ plataformaIdPlataforma: req.body.id }, { usuarioIdUsuario: distribuidor3.id_usuario }]
+            }
         });
+    
+        if (asignacionDistribuidor3) {
+    
+            var valorDistribuidor3 = Number(asignacionDistribuidor3.valor);
+            var valorDistribuidor2_3 = Number(asignacionDistribuidor2.valor);
+            var gananciaDistribuidor3 = valorDistribuidor2_3 - valorDistribuidor3;
+    
+            // Ganancias Distribuidor Saldo
+            distribuidor3.saldo = Number(distribuidor3.saldo) + Number(gananciaDistribuidor3);
+            await distribuidor3.save();
+    
+            // Crear ganancia en tabla
+            Ganancias.create({
+                idGanancia: uuid_v4(),
+                ganancia: gananciaDistribuidor3,
+                distribuidor: distribuidor3.id_usuario,
+                usuarioIdUsuario: req.user.id_usuario,
+                plataformaIdPlataforma: req.body.id
+            });
+    
+        }
+    
+        // si es magis asigna el 3% al usuario
+        
+        const porcentaje3 = Number(asignacionUsuario.valor) * 0.03;
+    
+        const usuario3 = await Usuarios.findOne({
+            where: {
+                [Op.and]: [{ id_usuario: distribuidor3.id_usuario }, { bloqueo: 0 }]
+            }
+        });
+     
+        if (nombrePlataforma.includes('magistv')) {
+    
+            // Crear ganancia en tabla
+            Ganancias.create({
+                idGanancia: uuid_v4(),
+                ganancia: porcentaje3,
+                distribuidor: distribuidor4.id_usuario,
+                usuarioIdUsuario: distribuidor3.id_usuario,
+                plataformaIdPlataforma: req.body.id
+            });
+    
+            usuario3.saldo = Number(usuario3.saldo) + Number(porcentaje3);
+            await usuario3.save();
+    
+        }
 
     }
 
@@ -397,6 +528,7 @@ exports.compraCuentaNormal = async (req, res) => {
     return;
 
 }
+
 
 exports.compraCuentaPedido = async (req, res) => {
 
