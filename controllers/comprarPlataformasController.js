@@ -314,7 +314,7 @@ exports.compraCuentaNormal = async (req, res) => {
         });
 
         usuario0.saldo = Number(usuario0.saldo) + Number(porcentaje0);
-        await usuario1.save();
+        await usuario0.save();
 
     }
 
@@ -323,8 +323,6 @@ exports.compraCuentaNormal = async (req, res) => {
     //--------------------------------------------------------//
 
     //Generar Ganancia Disitribuidor
-    
-    if(distribuidor) {
 
         const asignacionDistribuidor = await Asignaciones.findOne({
             where: {
@@ -375,8 +373,6 @@ exports.compraCuentaNormal = async (req, res) => {
     
         }
 
-    }
-
     //--------------------------------------------------------//
 
     //--------------------------------------------------------//
@@ -384,8 +380,6 @@ exports.compraCuentaNormal = async (req, res) => {
     //--------------------------------------------------------//
 
     //Generar Ganancia Disitribuidor
-    
-    if(distribuidor2) {
 
         const asignacionDistribuidor2 = await Asignaciones.findOne({
             where: {
@@ -440,8 +434,6 @@ exports.compraCuentaNormal = async (req, res) => {
     
         }
 
-    }
-
     //--------------------------------------------------------//
 
     //--------------------------------------------------------//
@@ -449,8 +441,6 @@ exports.compraCuentaNormal = async (req, res) => {
     //--------------------------------------------------------//
 
     //Generar Ganancia Disitribuidor
-    
-    if(distribuidor3) {
 
         const asignacionDistribuidor3 = await Asignaciones.findOne({
             where: {
@@ -504,8 +494,6 @@ exports.compraCuentaNormal = async (req, res) => {
             await usuario3.save();
     
         }
-
-    }
 
     //--------------------------------------------------------//
 
