@@ -14,7 +14,7 @@ const Plataformas = db.define('plataformas', {
         defaultValue : null
     },
     plataforma: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(50),
         defaultValue : null,
         validate: {
             notEmpty: {
