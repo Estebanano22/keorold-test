@@ -9,7 +9,6 @@ const multer = require('multer');
 const shortid = require('shortid');
 const { v4: uuid_v4 } = require('uuid');
 
-
 // Inicio
 exports.plataformas = async (req, res) => {
     const usuario = await Usuarios.findOne({ where: { id_usuario: req.user.id_usuario } });
