@@ -3,6 +3,7 @@ const Plataformas = require('../models/plataformasModelo');
 const Asignaciones = require('../models/asignacionesModelo');
 const Cuentas = require('../models/cuentasModelo');
 const Ganancias = require('../models/gananciasModelo');
+const Cargas = require('../models/cargasModelo');
 const { Op } = require("sequelize");
 const { body, validationResult } = require('express-validator');
 const multer = require('multer');
@@ -254,6 +255,13 @@ exports.compraCuentaNormal = async (req, res) => {
         }
     });
 
+    //super distribuidor
+    const superDistribuidor = await Usuarios.findOne({
+        where: {
+            [Op.and]: [{ enlace_afiliado: req.user.super_patrocinador }]
+        }
+    });
+    
     //distribuidor
     const distribuidor = await Usuarios.findOne({
         where: {
@@ -294,7 +302,7 @@ exports.compraCuentaNormal = async (req, res) => {
 
     // si es magis asigna el 20% al usuario
     
-    const porcentaje0 = Number(asignacionUsuario.valor) * 0.20;
+    const porcentaje0 = Number(asignacionUsuario.valor) * 0.35;
 
     const usuario0 = await Usuarios.findOne({
         where: {
@@ -305,12 +313,16 @@ exports.compraCuentaNormal = async (req, res) => {
     if (nombrePlataforma.includes('magistv')) {
 
         // Crear ganancia en tabla
-        Ganancias.create({
-            idGanancia: uuid_v4(),
-            ganancia: porcentaje0,
-            distribuidor: distribuidor.id_usuario,
+        await Cargas.create({
+            idCarga: uuid_v4(),
+            idSuperdistribuidor: superDistribuidor.id_usuario,
+            valor: porcentaje0,
+            accionCarga: 'carga',
+            tipoCarga: 'Reintegro',
+            saldoAnterior: usuario0.saldo,
+            saldoNuevo: Number(usuario0.saldo) + Number(porcentaje0),
             usuarioIdUsuario: req.user.id_usuario,
-            plataformaIdPlataforma: req.body.id
+            responsableGestion: 'Sistema'
         });
 
         usuario0.saldo = Number(usuario0.saldo) + Number(porcentaje0);
@@ -360,12 +372,16 @@ exports.compraCuentaNormal = async (req, res) => {
         if (nombrePlataforma.includes('magistv')) {
     
             // Crear ganancia en tabla
-            Ganancias.create({
-                idGanancia: uuid_v4(),
-                ganancia: porcentaje1,
-                distribuidor: distribuidor2.id_usuario,
-                usuarioIdUsuario: distribuidor.id_usuario,
-                plataformaIdPlataforma: req.body.id
+            await Cargas.create({
+                idCarga: uuid_v4(),
+                idSuperdistribuidor: superDistribuidor.id_usuario,
+                valor: porcentaje1,
+                accionCarga: 'carga',
+                tipoCarga: 'Reintegro',
+                saldoAnterior: usuario1.saldo,
+                saldoNuevo: Number(usuario1.saldo) + Number(porcentaje1),
+                usuarioIdUsuario: usuario1.id_usuario,
+                responsableGestion: 'Sistema'
             });
     
             usuario1.saldo = Number(usuario1.saldo) + Number(porcentaje1);
@@ -421,12 +437,16 @@ exports.compraCuentaNormal = async (req, res) => {
         if (nombrePlataforma.includes('magistv')) {
     
             // Crear ganancia en tabla
-            Ganancias.create({
-                idGanancia: uuid_v4(),
-                ganancia: porcentaje2,
-                distribuidor: distribuidor3.id_usuario,
-                usuarioIdUsuario: distribuidor2.id_usuario,
-                plataformaIdPlataforma: req.body.id
+            await Cargas.create({
+                idCarga: uuid_v4(),
+                idSuperdistribuidor: superDistribuidor.id_usuario,
+                valor: porcentaje2,
+                accionCarga: 'carga',
+                tipoCarga: 'Reintegro',
+                saldoAnterior: usuario2.saldo,
+                saldoNuevo: Number(usuario2.saldo) + Number(porcentaje2),
+                usuarioIdUsuario: usuario2.id_usuario,
+                responsableGestion: 'Sistema'
             });
     
             usuario2.saldo = Number(usuario2.saldo) + Number(porcentaje2);
@@ -482,12 +502,16 @@ exports.compraCuentaNormal = async (req, res) => {
         if (nombrePlataforma.includes('magistv')) {
     
             // Crear ganancia en tabla
-            Ganancias.create({
-                idGanancia: uuid_v4(),
-                ganancia: porcentaje3,
-                distribuidor: distribuidor4.id_usuario,
-                usuarioIdUsuario: distribuidor3.id_usuario,
-                plataformaIdPlataforma: req.body.id
+            await Cargas.create({
+                idCarga: uuid_v4(),
+                idSuperdistribuidor: superDistribuidor.id_usuario,
+                valor: porcentaje3,
+                accionCarga: 'carga',
+                tipoCarga: 'Reintegro',
+                saldoAnterior: usuario3.saldo,
+                saldoNuevo: Number(usuario3.saldo) + Number(porcentaje3),
+                usuarioIdUsuario: usuario3.id_usuario,
+                responsableGestion: 'Sistema'
             });
     
             usuario3.saldo = Number(usuario3.saldo) + Number(porcentaje3);
