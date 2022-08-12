@@ -76,10 +76,6 @@
                         <% moment.locale('es'); %>
                         <% if(ganancias.length) { %>
                         <% ganancias.forEach(listaGanancias => { %>
-                        <% const distribuidor = usuarios.filter(function(element){ %>
-                        <% return element.id_usuario == listaGanancias.distribuidor; %>
-                        <% }); %>
-                        <% const nombre = distribuidor[0].nombre; %>
                         <% if(!(listaGanancias.length < 1 || !listaGanancias.usuario)) {%>
                         <% if(listaGanancias.usuario.pais === 'Colombia') { %>
                         <% var valorFormateado = new Intl.NumberFormat("es-CO", {style: "currency", currency: "COP", maximumSignificantDigits: 7}).format(listaGanancias.ganancia); %>
@@ -87,7 +83,7 @@
                         <% var valorFormateado = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(listaGanancias.ganancia); %>
                         <% } %>
                         <tr>
-                          <td class="text-left text-capitalize"><%= nombre %></td>
+                          <td class="text-left text-capitalize"><%= listaGanancias.infoDistribuidor.nombre %></td>
                           <td class="text-left text-capitalize"><%= listaGanancias.usuario.nombre %></td>
                           <td class="text-left text-capitalize text-primary font-weight-bold"><%= listaGanancias.usuario.perfil %></td>
                           <td class="text-center">

@@ -39,4 +39,11 @@ Plataformas.hasOne(Ganancias, {
 });
 Ganancias.belongsTo(Plataformas);
 
+Ganancias.belongsTo(Usuarios, {
+    as: 'infoDistribuidor',
+    foreignKey: {
+        name: 'distribuidor'
+    }
+});
+
 module.exports = Ganancias;

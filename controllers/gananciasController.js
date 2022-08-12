@@ -23,9 +23,11 @@ exports.ganancias = async (req, res) => {
         },
         include: [
             {model: Usuarios, foreignKey: 'usuarioIdUsuario'},
+            {model: Usuarios, foreignKey: 'distribuidor', as: 'infoDistribuidor'},
             {model: Plataformas, foreignKey: 'plataformaIdPlataforma'}
         ],
-        order: [['fecha', 'DESC']]
+        order: [['fecha', 'DESC']],
+        limit: 500
     });
 
     const distribuidor = await Usuarios.findAll({ where: { super_patrocinador: req.user.enlace_afiliado }});
