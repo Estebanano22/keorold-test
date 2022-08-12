@@ -361,7 +361,7 @@ exports.compraCuentaNormal = async (req, res) => {
     
         // si es magis asigna el 4% al usuario
         
-        const porcentaje1 = Number(asignacionUsuario.valor) * 0.04;
+        const porcentaje1 = Number(asignacionUsuario.valor) * 0.033;
     
         const usuario1 = await Usuarios.findOne({
             where: {
@@ -426,7 +426,7 @@ exports.compraCuentaNormal = async (req, res) => {
     
         // si es magis asigna el 3% al usuario
         
-        const porcentaje2 = Number(asignacionUsuario.valor) * 0.03;
+        const porcentaje2 = Number(asignacionUsuario.valor) * 0.033;
     
         const usuario2 = await Usuarios.findOne({
             where: {
@@ -491,7 +491,7 @@ exports.compraCuentaNormal = async (req, res) => {
     
         // si es magis asigna el 3% al usuario
         
-        const porcentaje3 = Number(asignacionUsuario.valor) * 0.03;
+        const porcentaje3 = Number(asignacionUsuario.valor) * 0.033;
     
         const usuario3 = await Usuarios.findOne({
             where: {
