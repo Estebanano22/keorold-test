@@ -353,3 +353,10 @@ exports.formIngreso = (req, res) => {
     nombrePagina: "Ingreso",
   });
 };
+
+exports.sessionClose = (req, res) => {
+  res.render('session-close', {
+      nombrePagina: 'Session expired',
+      validate: false
+  })
+}

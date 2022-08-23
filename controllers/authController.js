@@ -22,7 +22,7 @@ exports.usuarioAutenticado = async (req, res, next) => {
     }
 
     // sino esta autenticado
-    return res.redirect('/ingreso');
+    return res.redirect('/session-close');
 }
 
 // Authorization: Bearer <token>

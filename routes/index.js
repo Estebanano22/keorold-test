@@ -43,7 +43,8 @@ module.exports = function () {
     router.post('/ingreso/recuperarPassword', generalController.recuperarPasswords);
 
     //aplicacion
-    router.get('/aplicaciones', generalController.aplicaciones)
+    router.get('/aplicaciones', generalController.aplicaciones);
+    router.get('/session-close', generalController.sessionClose);
 
     // =====================
     //     Dashboard
