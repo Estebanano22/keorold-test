@@ -1554,7 +1554,7 @@ exports.adminCuentasJuegos = async (req, res) => {
             ['estado', 'asc'],
             ['fechaSubida', 'desc'],
         ],
-        limit: 1000,
+        limit: 500,
     });
     const cuentasJuegos = await Cuentas.count({
         where: {
