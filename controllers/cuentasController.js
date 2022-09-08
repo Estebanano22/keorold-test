@@ -532,7 +532,7 @@ exports.adminCuentasBajoPedido = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' },
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 500,
+        limit: 300,
     });
 
     const cuentasBajoPedido = await Cuentas.count({
