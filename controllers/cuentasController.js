@@ -36,7 +36,7 @@ exports.subirCuentas = async (req, res) => {
             ],
         },
         order: [['plataforma', 'DESC']],
-        limit: 500,
+        limit: 300,
     });
 
     const cuentas = await Cuentas.findAll({
@@ -62,7 +62,7 @@ exports.subirCuentas = async (req, res) => {
             ],
         },
         order: [['fechaSubida', 'DESC']],
-        limit: 500,
+        limit: 300,
     });
 
     const cuentasSinTomar = await Cuentas.findAll({
@@ -74,7 +74,7 @@ exports.subirCuentas = async (req, res) => {
             ],
         },
         order: [['fechaSubida', 'DESC']],
-        limit: 500,
+        limit: 300,
     });
 
     res.render('dashboard/subirCuentas', {
@@ -355,7 +355,7 @@ exports.adminCuentasVendidas = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' },
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 1000,
+        limit: 500,
     });
 
     const cuentasNormales = await Cuentas.count({
@@ -880,7 +880,7 @@ exports.adminCuentasRenovaciones = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' },
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 1000,
+        limit: 500,
     });
 
     const cuentasRenovaciones = await Cuentas.count({
@@ -899,7 +899,7 @@ exports.adminCuentasRenovaciones = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: { super_patrocinador: req.user.enlace_afiliado },
-        limit: 1000,
+        limit: 500,
     });
 
     res.render('dashboard/adminCuentasRenovaciones', {
@@ -1217,7 +1217,7 @@ exports.adminCuentasPersonalizadas = async (req, res) => {
             { model: Plataformas, foreignKey: 'plataformaIdPlataforma' },
         ],
         order: [['fechaSubida', 'DESC']],
-        limit: 1000,
+        limit: 500,
     });
 
     const cuentasPersonalizadas = await Cuentas.count({
@@ -1232,7 +1232,7 @@ exports.adminCuentasPersonalizadas = async (req, res) => {
 
     const usuarios = await Usuarios.findAll({
         where: { super_patrocinador: req.user.enlace_afiliado },
-        limit: 1000,
+        limit: 500,
     });
 
     res.render('dashboard/adminCuentasPersonalizadas', {
