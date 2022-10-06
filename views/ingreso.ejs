@@ -59,7 +59,7 @@
                                                 <% } %> 
                                             <% } %>  
 
-                                            <input type="submit" class="btn ripple btn-main-primary btn-block" value="Iniciar sesión">
+                                            <input type="submit" class="btn ripple btn-main-primary btn-block" onclick="iniciandoSesion(event)" value="Iniciar sesión">
                                             
                                         </form>
                                         <div class="text-left mt-5 ml-0">
@@ -113,6 +113,18 @@
 <%- include('layauts/footer') %> 
 
 <script>
+    
+    const iniciandoSesion = (e) => {
+        
+        new Toast({
+            message: 'Iniciando Sesión!',
+            type: 'success',
+            closeButton: false,
+            close: false
+        });
+
+    }
+
     function verInput() {
         const password = document.getElementById("password");
         const tipo = password.type;

@@ -24,7 +24,9 @@ passport.use(new LocalStrategy({
         });
 
         // Todo bien
-        return done(null, usuario);
+        return done(null, usuario, {
+            message: 'Sesión iniciada satisfactoriamente!'
+        });
     }
 ))
 
