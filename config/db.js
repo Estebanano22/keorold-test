@@ -6,7 +6,6 @@ dotenv.config({
     path: path.resolve(__dirname, '../production.env')
 });
 
-
 const db = new Sequelize({
     dialect: 'postgres',
     host: process.env.DB_HOST,
@@ -14,6 +13,10 @@ const db = new Sequelize({
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_DATABASE,
+    dialectOptions: {
+        charset: 'utf8_general_ci',
+        ssl: { rejectUnauthorized: false },
+    },
     define: {
         timestamps: false
     },
