@@ -10,22 +10,26 @@
      
   <h5>En caso de ser modificadas tambien deben ser modificadas en el archivo: </h5>
   
-  ```js
-  production.env
+```css
+production.env
 ```
   
    <p>- Una vez conectado con la base de datos se debe correr el comando para correr la prueba: </p>
-    ```js
-      npm run dev
-    ```
+
+```css
+  npm run dev
+```
    <p>- Para correr las pruebas unitarias se debe correr el comando:</p>
-    ```js
-      npm run test
-    ```
+
+```css
+  npm run test
+```
+  
    <p>- Para correr la cobertura de codigo se debe correr el comando: </p>
-    ```js
-      npm run coverage
-    ```
+
+ ```css
+  npm run coverage
+```
   
   <h4>Este desarrollo fue hecho en NodeJS v14.16.1 y Express, se documento con Swagger y se uso una base de datos Postgress.</h4>
   <h4>Las pruebas unitarias fueron realizadas con Mocha, Chai y Sinon</h4>
