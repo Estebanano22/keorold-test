@@ -106,12 +106,14 @@ describe('API REST /smallest: ', async () => {
             });
     });
     
-    it('Validando status 401', (done) => {
+    it('Validando status 401 - Elementors entre [-100.000, ...100.000]', (done) => {
         chai.request(url)
             .post('/smallest')
             .send({array: arrayError1})
             .end((err, res) => {
                 expect(res).to.be.json;
+                const error = res.body.error; 
+                expect(error).to.deep.equal('Un elemento dentro del arrayA no se encuentra dentro del rango [−1,000,000 ... 1,000,000].');
                 expect(res).to.have.status(401);
                 done();
             });
@@ -123,6 +125,8 @@ describe('API REST /smallest: ', async () => {
             .send({array: arrayError2})
             .end((err, res) => {
                 expect(res).to.be.json;
+                const error = res.body.error; 
+                expect(error).to.deep.equal('Uno ó varios elementos dentro del arrayA no es numerico ó no es entero.');
                 expect(res).to.have.status(401);
                 done();
             });
@@ -134,6 +138,8 @@ describe('API REST /smallest: ', async () => {
             .send({array: arrayError3})
             .end((err, res) => {
                 expect(res).to.be.json;
+                const error = res.body.error; 
+                expect(error).to.deep.equal('Uno ó varios elementos dentro del arrayA no es numerico ó no es entero.');
                 expect(res).to.have.status(401);
                 done();
             });
@@ -159,7 +165,21 @@ describe('API REST /smallest: ', async () => {
                 expect(res).to.be.json;
                 expect(res).to.have.status(200);
                 const result = res.body.result; 
-                expect(result).to.be.equal(5);
+                expect(result).to.deep.equal(5);
+                done();
+            });
+    });
+
+    it('Validando si ya se consulto el array', (done) => {
+        chai.request(url)
+            .post('/smallest')
+            .send({array: arrayPrueba})
+            .end((err, res) => {
+                expect(res).to.be.json;
+                expect(res).to.have.status(200);
+                const result = res.body; 
+                expect(result.array.sort()).to.deep.equal(arrayPrueba.sort());
+                expect(result.result).to.deep.equal(5);
                 done();
             });
     });
@@ -189,6 +209,8 @@ describe('API REST /stats: ', async () => {
         .get(`/stats/${decimal}`)
         .end((err, res) => {
             expect(res).to.be.json;
+            const error = res.body.error; 
+            expect(error).to.deep.equal('El parametro enviado no puede ser un decimal.');
             expect(res).to.have.status(401);
             done();
         });
@@ -199,6 +221,8 @@ describe('API REST /stats: ', async () => {
         .get(`/stats/${string}`)
         .end((err, res) => {
             expect(res).to.be.json;
+            const error = res.body.error; 
+            expect(error).to.deep.equal('El parametro enviado no es numerico.');
             expect(res).to.have.status(401);
             done();
         });

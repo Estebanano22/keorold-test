@@ -7,7 +7,7 @@
         "start": "node index.js",
         "dev": "nodemon -e coffee,js,ejs index.js",
         "debug": "nodemon --inspect -e coffee,js,ejs index.js",
-        "test": "nyc --reporter=text mocha || exit 0",
+        "test": "nyc --reporter=html mocha || exit 0",
         "coverage": "nyc --check-coverage --lines 80 mocha || exit 0"
     },
     "author": "",
